@@ -5,7 +5,7 @@ import Section from "../Section";
 
 export default function Achievements() {
   return (
-    <Section id="achievements" eyebrow="05 / my professional side" title="Achievements">
+    <Section id="achievements" eyebrow="06 / my professional side" title="Achievements">
       <div className="grid gap-5 sm:grid-cols-2">
         {achievements.map((a, i) => (
           <Reveal key={a.title} delay={(i % 2) * 0.08}>

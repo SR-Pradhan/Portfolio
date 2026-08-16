@@ -90,7 +90,7 @@ export default function Hero() {
       </motion.div>
 
       <motion.a
-        href="#background"
+        href="#about"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}

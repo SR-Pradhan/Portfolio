@@ -6,12 +6,14 @@ export default function Section({
   id,
   eyebrow,
   title,
+  sub,
   children,
   className = "",
 }: {
   id: string;
   eyebrow?: string;
   title?: string;
+  sub?: string;
   children: ReactNode;
   className?: string;
 }) {
@@ -27,6 +29,7 @@ export default function Section({
           {title && (
             <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">{title}</h2>
           )}
+          {sub && <p className="mt-3 text-lg text-muted">{sub}</p>}
         </Reveal>
       )}
       {children}

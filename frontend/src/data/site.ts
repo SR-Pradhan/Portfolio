@@ -13,7 +13,7 @@ export const site = {
   location: "India",
   email: "ai.altatech@gmail.com",
   resumeUrl: "/resume.pdf", // TODO: drop your resume.pdf into /public
-  avatar: "/avatar.jpg", // TODO: drop your photo into /public
+  avatar: "/avatar.svg", // TODO: replace with your photo, e.g. "/avatar.jpg"
   socials: {
     github: "https://github.com/", // TODO
     linkedin: "https://linkedin.com/in/", // TODO
@@ -24,30 +24,52 @@ export const site = {
 
 export const nav = [
   { label: "Home", href: "#home" },
-  { label: "Background", href: "#background" },
+  { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
+  { label: "Education", href: "#education" },
   { label: "Achievements", href: "#achievements" },
   { label: "Contact", href: "#contact" },
 ];
 
 export const about = {
-  heading: "Background",
+  heading: "About Me",
+  sub: "Get to know me better",
   intro:
     "TODO: two or three sentences about who you are and what you like building. Keep it human — this is the part people actually read.",
   body: "TODO: a second paragraph. What you're focused on right now, what you're curious about, what kind of work you want more of.",
   stats: [
-    { value: "3+", label: "Years writing code" },
-    { value: "15+", label: "Projects shipped" },
-    { value: "5+", label: "Open source contribs" },
+    { value: "3+", label: "Years Writing Code" },
+    { value: "15+", label: "Projects Shipped" },
+    { value: "5+", label: "Open Source Contribs" },
+    { value: "8.5", label: "CGPA" },
   ],
-  education: {
-    degree: "B.Tech, Computer Science", // TODO
-    school: "Your University", // TODO
-    detail: "CGPA 8.5 / 10.0 · 2021 – 2025", // TODO
-  },
 };
+
+export type Education = {
+  degree: string;
+  school: string;
+  period: string;
+  grade?: string;
+  detail?: string;
+};
+
+export const education: Education[] = [
+  {
+    degree: "B.Tech, Computer Science",
+    school: "Your University", // TODO
+    period: "2021 — 2025",
+    grade: "CGPA 8.5 / 10.0",
+    detail: "TODO: relevant coursework, a thesis, a club you ran, anything notable.",
+  },
+  {
+    degree: "Senior Secondary (XII), Science",
+    school: "Your School", // TODO
+    period: "2019 — 2021",
+    grade: "92%",
+  },
+];
 
 export type Project = {
   title: string;
