@@ -6,9 +6,13 @@ type Star = {
   x: number;
   y: number;
   r: number;
-  drift: number;
+  /** px per frame upward — the visible motion */
+  vy: number;
+  /** px per frame sideways, much gentler */
+  vx: number;
+  /** twinkle offset and rate, deliberately separate from drift */
   phase: number;
-  speed: number;
+  twinkle: number;
 };
 
 /**
@@ -45,14 +49,20 @@ export default function Starfield() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       const count = Math.round((w * h) / 11000);
-      stars = Array.from({ length: count }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 1.3 + 0.35,
-        drift: (Math.random() - 0.5) * 0.06,
-        phase: Math.random() * Math.PI * 2,
-        speed: Math.random() * 0.02 + 0.006,
-      }));
+      stars = Array.from({ length: count }, () => {
+        const r = Math.random() * 1.3 + 0.35;
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r,
+          // bigger stars read as nearer, so they drift faster — cheap parallax.
+          // ~10-30px/sec at 60fps: clearly moving, never distracting.
+          vy: (0.16 + Math.random() * 0.34) * (0.6 + r / 1.65),
+          vx: (Math.random() - 0.5) * 0.08,
+          phase: Math.random() * Math.PI * 2,
+          twinkle: Math.random() * 0.03 + 0.01,
+        };
+      });
     }
 
     function draw() {
@@ -65,16 +75,17 @@ export default function Starfield() {
       const base = isDark() ? 0.55 : 0.35;
 
       for (const s of stars) {
-        // gentle twinkle
-        const twinkle = reduced ? 0.6 : 0.45 + Math.sin(frame * s.speed + s.phase) * 0.4;
+        const twinkle = reduced
+          ? 0.6
+          : 0.45 + Math.sin(frame * s.twinkle + s.phase) * 0.4;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${rgb},${(twinkle * base).toFixed(3)})`;
         ctx.fill();
 
         if (!reduced) {
-          s.y -= s.speed * 1.6;
-          s.x += s.drift;
+          s.y -= s.vy;
+          s.x += s.vx;
           // wrap around the edges
           if (s.y < -2) {
             s.y = h + 2;
