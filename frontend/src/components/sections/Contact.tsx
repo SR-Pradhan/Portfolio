@@ -1,0 +1,151 @@
+"use client";
+
+import { Mail, MapPin, Send } from "lucide-react";
+import { Github, Linkedin } from "@/components/BrandIcons";
+import { type FormEvent, useState } from "react";
+import { contact, site } from "@/data/site";
+import Reveal from "../Reveal";
+import Section from "../Section";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+
+type Status = "idle" | "sending" | "sent" | "error";
+
+export default function Contact() {
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setStatus("sending");
+    setError("");
+
+    try {
+      const res = await fetch(`${API_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error ?? "Something went wrong.");
+      setStatus("sent");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    }
+  }
+
+  const inputClass =
+    "w-full rounded-lg border border-border bg-background px-4 py-3 text-sm outline-none transition placeholder:text-muted focus:border-accent";
+
+  return (
+    <Section id="contact" eyebrow="06 / get in touch" title={contact.heading}>
+      <div className="grid gap-14 md:grid-cols-[1fr_1.2fr]">
+        <Reveal>
+          <p className="text-lg leading-relaxed text-muted">{contact.sub}</p>
+
+          <ul className="mt-10 space-y-5 text-sm">
+            <li className="flex items-center gap-3">
+              <Mail size={18} className="text-accent" />
+              <a href={`mailto:${site.email}`} className="hover:text-accent">
+                {site.email}
+              </a>
+            </li>
+            <li className="flex items-center gap-3">
+              <MapPin size={18} className="text-accent" />
+              <span className="text-muted">{site.location}</span>
+            </li>
+          </ul>
+
+          <div className="mt-8 flex gap-4">
+            {site.socials.github && (
+              <a
+                href={site.socials.github}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub"
+                className="grid size-10 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
+              >
+                <Github size={18} />
+              </a>
+            )}
+            {site.socials.linkedin && (
+              <a
+                href={site.socials.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+                className="grid size-10 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
+              >
+                <Linkedin size={18} />
+              </a>
+            )}
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <form
+            onSubmit={handleSubmit}
+            className="relative rounded-2xl border border-border bg-surface p-7"
+          >
+            <div className="grid gap-4 sm:grid-cols-2">
+              <input required name="name" placeholder="Name" className={inputClass} />
+              <input
+                required
+                type="email"
+                name="email"
+                placeholder="Email"
+                className={inputClass}
+              />
+            </div>
+            <input
+              required
+              name="subject"
+              placeholder="Subject"
+              className={`${inputClass} mt-4`}
+            />
+            <textarea
+              required
+              name="message"
+              rows={5}
+              placeholder="Your message"
+              className={`${inputClass} mt-4 resize-none`}
+            />
+
+            {/* Honeypot — hidden from people, catnip for bots. */}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden
+              className="absolute left-[-9999px]"
+            />
+
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+            >
+              <Send size={16} />
+              {status === "sending" ? "Sending…" : "Send message"}
+            </button>
+
+            {status === "sent" && (
+              <p className="mt-4 text-center text-sm text-accent">
+                Message sent — I&apos;ll get back to you soon.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="mt-4 text-center text-sm text-red-500">
+                {error} You can also email me directly at {site.email}.
+              </p>
+            )}
+          </form>
+        </Reveal>
+      </div>
+    </Section>
+  );
+}
