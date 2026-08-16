@@ -1,17 +1,18 @@
 import type { ReactNode } from "react";
 import Reveal from "./Reveal";
 
-/** Shared shell for every page section: id anchor, max width, heading + eyebrow. */
+/**
+ * Shared shell for every page section: id anchor, max width, and a
+ * centred header — title with an accent full stop, subtitle beneath.
+ */
 export default function Section({
   id,
-  eyebrow,
   title,
   sub,
   children,
   className = "",
 }: {
   id: string;
-  eyebrow?: string;
   title?: string;
   sub?: string;
   children: ReactNode;
@@ -19,17 +20,13 @@ export default function Section({
 }) {
   return (
     <section id={id} className={`mx-auto max-w-6xl px-6 py-24 md:py-32 ${className}`}>
-      {(eyebrow || title) && (
-        <Reveal className="mb-12">
-          {eyebrow && (
-            <p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-accent">
-              {eyebrow}
-            </p>
-          )}
-          {title && (
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">{title}</h2>
-          )}
-          {sub && <p className="mt-3 text-lg text-muted">{sub}</p>}
+      {title && (
+        <Reveal className="mb-16 text-center">
+          <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">
+            {title}
+            <span className="text-accent">.</span>
+          </h2>
+          {sub && <p className="mt-4 text-lg text-muted">{sub}</p>}
         </Reveal>
       )}
       {children}

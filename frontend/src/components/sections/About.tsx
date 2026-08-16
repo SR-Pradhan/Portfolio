@@ -5,7 +5,7 @@ import Section from "../Section";
 
 export default function About() {
   return (
-    <Section id="about" eyebrow="01 / who i am" title={about.heading} sub={about.sub}>
+    <Section id="about" title={about.heading} sub={about.sub}>
       <div className="grid items-start gap-12 md:grid-cols-2">
         <Reveal>
           <div className="relative aspect-[5/6] overflow-hidden rounded-3xl border border-border bg-surface">

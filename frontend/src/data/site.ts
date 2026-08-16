@@ -78,10 +78,14 @@ export type Project = {
   title: string;
   blurb: string;
   tags: string[];
+  /** Featured cards show these as a 2x2 grid of callout tiles. */
+  highlights?: { title: string; detail: string }[];
   demo?: string;
   code?: string;
-  image?: string;
+  npm?: string;
   featured?: boolean;
+  /** Renders a dimmed teaser card instead of a real one. */
+  comingSoon?: boolean;
 };
 
 export const projects: Project[] = [
@@ -90,6 +94,12 @@ export const projects: Project[] = [
     blurb:
       "TODO: one or two lines on what it does and, more importantly, what was hard about it. Numbers help — users, latency, scale.",
     tags: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind"],
+    highlights: [
+      { title: "Headline Feature", detail: "TODO: what makes it worth using." },
+      { title: "Second Feature", detail: "TODO: the technically interesting one." },
+      { title: "Third Feature", detail: "TODO: something users actually notice." },
+      { title: "1,000+ Users", detail: "TODO: a number that proves it works." },
+    ],
     demo: "#",
     code: "#",
     featured: true,
@@ -108,39 +118,66 @@ export const projects: Project[] = [
     code: "#",
   },
   {
-    title: "Project Four",
-    blurb: "TODO: what it does and the interesting technical bit.",
-    tags: ["React Native", "Expo", "Supabase"],
-    code: "#",
+    title: "Coming Soon",
+    blurb: "Something new is in the works. Check back soon.",
+    tags: [],
+    comingSoon: true,
   },
 ];
 
 export const skills = [
   {
     category: "Languages",
-    items: ["TypeScript", "JavaScript", "Python", "Java", "SQL"],
+    items: [
+      { name: "TypeScript", icon: "typescript" },
+      { name: "JavaScript", icon: "javascript" },
+      { name: "Python", icon: "python" },
+      { name: "Java", icon: "openjdk" },
+      { name: "HTML5", icon: "html5" },
+      { name: "CSS3", icon: "css" },
+    ],
   },
   {
-    category: "Frontend",
-    items: ["React", "Next.js", "Tailwind CSS", "Motion", "HTML5", "CSS3"],
+    category: "Frameworks & Libraries",
+    items: [
+      { name: "React", icon: "react" },
+      { name: "Next.js", icon: "nextdotjs" },
+      { name: "Node.js", icon: "nodedotjs" },
+      { name: "Express", icon: "express" },
+      { name: "Tailwind CSS", icon: "tailwindcss" },
+      { name: "Motion", icon: "framer" },
+      { name: "FastAPI", icon: "fastapi" },
+    ],
   },
   {
-    category: "Backend",
-    items: ["Node.js", "Express", "FastAPI", "REST", "GraphQL", "Prisma"],
+    category: "Databases",
+    items: [
+      { name: "PostgreSQL", icon: "postgresql" },
+      { name: "MongoDB", icon: "mongodb" },
+      { name: "Redis", icon: "redis" },
+      { name: "Prisma", icon: "prisma" },
+      { name: "Supabase", icon: "supabase" },
+    ],
   },
   {
-    category: "Data",
-    items: ["PostgreSQL", "MongoDB", "Redis", "Supabase"],
-  },
-  {
-    category: "Tools & Cloud",
-    items: ["Git", "Docker", "AWS", "Vercel", "Linux", "Figma"],
+    category: "Tools & Platforms",
+    items: [
+      { name: "Git", icon: "git" },
+      { name: "Docker", icon: "docker" },
+      { name: "AWS", icon: "amazonwebservices" },
+      { name: "Vercel", icon: "vercel" },
+      { name: "Linux", icon: "linux" },
+      { name: "Figma", icon: "figma" },
+      { name: "GraphQL", icon: "graphql" },
+    ],
   },
 ];
 
 export type Job = {
   role: string;
   company: string;
+  companyUrl?: string;
+  location?: string;
   period: string;
   points: string[];
   stack: string[];
@@ -150,6 +187,8 @@ export const experience: Job[] = [
   {
     role: "Frontend Developer",
     company: "Company Name", // TODO
+    companyUrl: "", // optional — adds a link icon next to the name
+    location: "Remote", // TODO
     period: "Jan 2025 — Present",
     points: [
       "TODO: what you owned. Start with a verb, end with an outcome.",
@@ -160,6 +199,7 @@ export const experience: Job[] = [
   {
     role: "Software Engineering Intern",
     company: "Company Name", // TODO
+    location: "Bengaluru", // TODO
     period: "Jun 2024 — Dec 2024",
     points: [
       "TODO: what you built or fixed.",

@@ -5,12 +5,7 @@ import Section from "../Section";
 
 export default function Education() {
   return (
-    <Section
-      id="education"
-      eyebrow="05 / where i studied"
-      title="Education"
-      sub="The formal part of the story"
-    >
+    <Section id="education" title="Education" sub="The formal part of the story">
       <div className="grid gap-5 md:grid-cols-2">
         {education.map((e, i) => (
           <Reveal key={`${e.school}-${e.period}`} delay={(i % 2) * 0.08}>

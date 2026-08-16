@@ -1,70 +1,120 @@
-import { ArrowUpRight } from "lucide-react";
+import { Package, Sparkles, SquareArrowOutUpRight } from "lucide-react";
 import { Github } from "@/components/BrandIcons";
-import { projects } from "@/data/site";
+import { projects, type Project } from "@/data/site";
 import Reveal from "../Reveal";
 import Section from "../Section";
 
+function TagList({ tags }: { tags: string[] }) {
+  return (
+    <ul className="mt-6 flex flex-wrap gap-2">
+      {tags.map((t) => (
+        <li
+          key={t}
+          className="rounded-md border border-border px-2.5 py-1 font-mono text-[11px] text-muted"
+        >
+          {t}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function LinkRow({ project }: { project: Project }) {
+  const links = [
+    { href: project.code, icon: Github, label: "Code" },
+    { href: project.npm, icon: Package, label: "npm" },
+    { href: project.demo, icon: SquareArrowOutUpRight, label: "Live Demo" },
+  ].filter((l) => l.href);
+
+  if (!links.length) return null;
+
+  return (
+    <div className="mt-6 flex flex-wrap items-center gap-6 border-t border-border pt-5 text-sm">
+      {links.map(({ href, icon: Icon, label }) => (
+        <a
+          key={label}
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-2 text-muted transition hover:text-accent"
+        >
+          <Icon size={15} />
+          {label}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function ComingSoonCard({ project }: { project: Project }) {
+  return (
+    <article className="flex h-full flex-col rounded-2xl border border-dashed border-border bg-surface/40 p-7 opacity-60">
+      <div className="flex items-start justify-between gap-4">
+        <h3 className="text-xl font-semibold tracking-tight">{project.title}</h3>
+        <span className="rounded-full border border-border px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-muted">
+          Soon
+        </span>
+      </div>
+      <p className="mt-3 flex-1 leading-relaxed text-muted">{project.blurb}</p>
+      <span className="mt-6 w-fit rounded-md border border-border px-3 py-1 font-mono text-xs text-muted">
+        ???
+      </span>
+    </article>
+  );
+}
+
 export default function Projects() {
   return (
-    <Section id="projects" eyebrow="02 / selected work" title="Projects">
+    <Section id="projects" title="Projects" sub="A selection of my recent work">
       <div className="grid gap-6 md:grid-cols-2">
         {projects.map((p, i) => (
-          <Reveal key={p.title} delay={(i % 2) * 0.08}>
-            <article
-              className={`group flex h-full flex-col rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-accent/60 ${
-                p.featured ? "md:col-span-2" : ""
-              }`}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="text-xl font-semibold tracking-tight">{p.title}</h3>
-                {p.featured && (
-                  <span className="rounded-full bg-accent-soft px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-accent">
-                    Featured
-                  </span>
-                )}
-              </div>
+          <Reveal
+            key={p.title}
+            delay={(i % 2) * 0.08}
+            className={`h-full ${p.featured ? "md:col-span-2" : ""}`}
+          >
+            {p.comingSoon ? (
+              <ComingSoonCard project={p} />
+            ) : (
+              <article className="flex h-full flex-col rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-accent/60">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-xl font-semibold tracking-tight">{p.title}</h3>
+                  {p.featured && (
+                    <span className="shrink-0 rounded-full bg-accent-soft px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-accent">
+                      Featured
+                    </span>
+                  )}
+                </div>
 
-              <p className="mt-3 flex-1 leading-relaxed text-muted">{p.blurb}</p>
+                <p className="mt-3 leading-relaxed text-muted">{p.blurb}</p>
 
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {p.tags.map((t) => (
-                  <li
-                    key={t}
-                    className="rounded-md border border-border px-2.5 py-1 font-mono text-xs text-muted"
-                  >
-                    {t}
-                  </li>
-                ))}
-              </ul>
+                {/* featured cards break their selling points out as tiles */}
+                {p.highlights && (
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    {p.highlights.map((h) => (
+                      <div
+                        key={h.title}
+                        className="flex gap-3 rounded-xl border border-border bg-background/60 p-4"
+                      >
+                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-accent-soft text-accent">
+                          <Sparkles size={15} />
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium">{h.title}</p>
+                          <p className="mt-0.5 text-xs leading-relaxed text-muted">
+                            {h.detail}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-              <div className="mt-6 flex items-center gap-5 border-t border-border pt-5 text-sm">
-                {p.demo && (
-                  <a
-                    href={p.demo}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-1.5 font-medium transition hover:text-accent"
-                  >
-                    Live demo
-                    <ArrowUpRight
-                      size={15}
-                      className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
-                  </a>
-                )}
-                {p.code && (
-                  <a
-                    href={p.code}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-1.5 text-muted transition hover:text-accent"
-                  >
-                    <Github size={15} />
-                    Code
-                  </a>
-                )}
-              </div>
-            </article>
+                <div className="flex-1" />
+                <TagList tags={p.tags} />
+                <LinkRow project={p} />
+              </article>
+            )}
           </Reveal>
         ))}
       </div>
