@@ -1,4 +1,4 @@
-import CursorTrail from "@/components/CursorTrail";
+import CursorFollower from "@/components/CursorFollower";
 import Footer from "@/components/Footer";
 import SiteChrome from "@/components/SiteChrome";
 import Starfield from "@/components/Starfield";
@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <Starfield />
-      <CursorTrail />
+      <CursorFollower />
       <SiteChrome />
       <main>
         <Hero />
