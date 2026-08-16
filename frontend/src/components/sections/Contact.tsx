@@ -1,9 +1,9 @@
 "use client";
 
 import { Mail, MapPin, Send } from "lucide-react";
-import { Github, Linkedin } from "@/components/BrandIcons";
 import { type FormEvent, useState } from "react";
 import { contact, site } from "@/data/site";
+import { socialLinks } from "@/lib/socials";
 import Reveal from "../Reveal";
 import Section from "../Section";
 
@@ -59,29 +59,20 @@ export default function Contact() {
             </li>
           </ul>
 
-          <div className="mt-8 flex gap-4">
-            {site.socials.github && (
+          <div className="mt-8 flex flex-wrap gap-3">
+            {socialLinks.map(({ href, icon: Icon, label }) => (
               <a
-                href={site.socials.github}
+                key={label}
+                href={href}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="GitHub"
+                aria-label={label}
+                title={label}
                 className="grid size-10 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
               >
-                <Github size={18} />
+                <Icon size={18} />
               </a>
-            )}
-            {site.socials.linkedin && (
-              <a
-                href={site.socials.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-                className="grid size-10 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
-              >
-                <Linkedin size={18} />
-              </a>
-            )}
+            ))}
           </div>
         </Reveal>
 

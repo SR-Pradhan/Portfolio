@@ -1,15 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowDown, FileDown, Mail } from "lucide-react";
-import { Github, Linkedin } from "@/components/BrandIcons";
+import { ArrowDown, FileDown } from "lucide-react";
 import { site } from "@/data/site";
-
-const socialLinks = [
-  { href: site.socials.github, icon: Github, label: "GitHub" },
-  { href: site.socials.linkedin, icon: Linkedin, label: "LinkedIn" },
-  { href: `mailto:${site.email}`, icon: Mail, label: "Email" },
-].filter((s) => s.href);
+import { socialLinks } from "@/lib/socials";
 
 export default function Hero() {
   return (
@@ -29,7 +23,7 @@ export default function Hero() {
         transition={{ duration: 0.5 }}
         className="mb-5 font-mono text-sm text-accent"
       >
-        Hi, I&apos;m {site.name.split(" ")[0]} —
+        Hi, I&apos;m {site.shortName} —
       </motion.p>
 
       <motion.h1
@@ -72,21 +66,27 @@ export default function Hero() {
           <FileDown size={16} />
           Resume
         </a>
+      </motion.div>
 
-        <div className="ml-2 flex items-center gap-4">
-          {socialLinks.map(({ href, icon: Icon, label }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={label}
-              className="text-muted transition hover:text-accent"
-            >
-              <Icon size={20} />
-            </a>
-          ))}
-        </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-8 flex items-center gap-3"
+      >
+        {socialLinks.map(({ href, icon: Icon, label }) => (
+          <a
+            key={label}
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={label}
+            title={label}
+            className="grid size-11 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
+          >
+            <Icon size={19} />
+          </a>
+        ))}
       </motion.div>
 
       <motion.a

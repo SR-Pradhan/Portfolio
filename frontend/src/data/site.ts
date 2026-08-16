@@ -8,17 +8,20 @@
 
 export const site = {
   name: "Sruti Ranjan Pradhan",
+  /** Short form used for the logo and the hero greeting. */
+  shortName: "SR",
   role: "Full Stack Developer",
   tagline: "I build fast, thoughtful web products — from the database up to the last pixel.",
   location: "India",
   email: "ai.altatech@gmail.com",
   resumeUrl: "/resume.pdf", // TODO: drop your resume.pdf into /public
   avatar: "/avatar.svg", // TODO: replace with your photo, e.g. "/avatar.jpg"
+  /** Order here is the order they render. Leave a value "" to hide it. */
   socials: {
-    github: "https://github.com/", // TODO
+    github: "https://github.com/SR-Pradhan", // TODO: confirm
     linkedin: "https://linkedin.com/in/", // TODO
-    leetcode: "https://leetcode.com/", // TODO
-    twitter: "", // optional — leave "" to hide
+    leetcode: "https://leetcode.com/u/", // TODO
+    codolio: "https://codolio.com/profile/", // TODO
   },
 };
 

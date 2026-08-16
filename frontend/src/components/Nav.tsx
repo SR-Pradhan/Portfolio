@@ -18,7 +18,7 @@ export default function Nav({ active }: { active: string }) {
       <nav className="w-full max-w-5xl rounded-2xl border border-border bg-surface/80 shadow-lg backdrop-blur-xl md:w-auto md:rounded-full">
         <div className="flex items-center gap-2 px-4 py-2 md:gap-4 md:px-5">
           <a href="#home" className="text-lg font-bold tracking-tight">
-            {site.name.split(" ")[0]}
+            {site.shortName}
             <span className="text-accent">.</span>
           </a>
 
