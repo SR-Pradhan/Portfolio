@@ -105,6 +105,10 @@ export default function CursorTrail() {
         ctx.strokeStyle = accent;
         ctx.shadowColor = accent;
 
+        // Tail: no shadowBlur here. Blurring 25 segments a frame is by far
+        // the most expensive thing this file could do, and at these widths
+        // the glow is invisible anyway.
+        ctx.shadowBlur = 0;
         for (let i = 1; i < nodes.length; i++) {
           const t = 1 - i / nodes.length; // 1 at the head, 0 at the tail
           ctx.beginPath();
@@ -112,11 +116,10 @@ export default function CursorTrail() {
           ctx.lineTo(nodes[i].x, nodes[i].y);
           ctx.lineWidth = 0.5 + t * (2.5 + boost * 3.5);
           ctx.globalAlpha = t * (0.35 + boost * 0.5);
-          ctx.shadowBlur = 8 * t * boost;
           ctx.stroke();
         }
 
-        // bright core at the head
+        // Head: one blurred draw per frame, where the glow actually reads.
         ctx.beginPath();
         ctx.arc(nodes[0].x, nodes[0].y, 2 + boost * 2, 0, Math.PI * 2);
         ctx.fillStyle = accent;
