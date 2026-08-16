@@ -45,10 +45,19 @@ function Card({ item }: { item: Achievement }) {
   );
 }
 
-function Proof({ item }: { item: Achievement }) {
+/**
+ * Absolutely positioned so a hidden proof contributes no height — otherwise
+ * every row would be as tall as its image and the section would be mostly
+ * empty space. Desktop only; there's no hover on touch.
+ */
+function Proof({ item, side }: { item: Achievement; side: "left" | "right" }) {
   if (!item.photo) return null;
   return (
-    <div className="relative overflow-hidden rounded-2xl border-2 border-accent opacity-0 shadow-[0_0_30px_-8px_var(--accent)] transition-all duration-300 group-hover:opacity-100">
+    <div
+      className={`pointer-events-none absolute top-1/2 hidden w-[calc(50%-1.5rem)] -translate-y-1/2 scale-95 overflow-hidden rounded-2xl border-2 border-accent opacity-0 shadow-[0_0_30px_-8px_var(--accent)] transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 md:block ${
+        side === "left" ? "left-0" : "right-0"
+      }`}
+    >
       <span className="absolute right-3 top-3 z-10 rounded bg-accent px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-white">
         Unlocked
       </span>
@@ -89,12 +98,11 @@ export default function Achievements() {
                     className="absolute left-1/2 hidden size-2.5 -translate-x-1/2 rounded-full bg-border transition-colors duration-300 group-hover:bg-accent group-hover:shadow-[0_0_12px_2px_var(--accent)] md:block"
                   />
 
-                  <div className={cardLeft ? "md:order-1" : "md:order-2"}>
+                  <div className={cardLeft ? "md:pr-0" : "md:col-start-2"}>
                     <Card item={item} />
                   </div>
-                  <div className={cardLeft ? "md:order-2" : "md:order-1"}>
-                    <Proof item={item} />
-                  </div>
+                  {/* proof sits in the empty half, out of the flow */}
+                  <Proof item={item} side={cardLeft ? "right" : "left"} />
                 </div>
               </Reveal>
             );
