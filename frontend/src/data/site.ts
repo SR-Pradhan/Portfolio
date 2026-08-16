@@ -33,6 +33,7 @@ export const nav = [
   { label: "Experience", href: "#experience" },
   { label: "Education", href: "#education" },
   { label: "Achievements", href: "#achievements" },
+  { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -201,35 +202,69 @@ export const experience: Job[] = [
 
 export type Achievement = {
   title: string;
+  org: string;
   detail: string;
   year: string;
-  /** Playful text shown on hover — set to "" to disable for one item. */
-  secret?: string;
+  /** Proof shown on the opposite side of the rail when the card is hovered. */
+  photo?: string;
+  /** Teaser shown before hover. */
+  hint?: string;
+  /** Payoff shown during hover. */
+  reveal?: string;
 };
 
 export const achievements: Achievement[] = [
   {
     title: "Hackathon Winner",
-    detail: "TODO: which hackathon, which track, out of how many teams.",
+    org: "Host Organisation", // TODO
+    detail: "TODO: which track, out of how many teams, what you built.",
     year: "2025",
-    secret: "🤫 you weren't supposed to hover this",
+    photo: "/proof-placeholder.svg", // TODO: swap for the real photo
+    hint: "🤫 Please don't hover your mouse onto this",
+    reveal: "Aha! You discovered the win! 🎉",
   },
   {
     title: "Runner-up — Some Competition",
+    org: "Host Organisation", // TODO
     detail: "TODO: what you built and why it placed.",
     year: "2025",
-    secret: "still hovering? bold.",
+    photo: "/proof-placeholder.svg", // TODO
+    hint: "🤫 nothing to see here",
+    reveal: "Caught me. Second place! 🥈",
   },
   {
-    title: "Certification",
-    detail: "TODO: issuer and what it covered.",
-    year: "2024",
-  },
-  {
-    title: "Open Source",
+    title: "Open Source Contributor",
+    org: "Project Name", // TODO
     detail: "TODO: merged PRs, a library you maintain, stars.",
     year: "2024",
-    secret: "ok now you're just curious",
+    hint: "🤫 seriously, don't",
+    reveal: "Fine, you found it 🙌",
+  },
+];
+
+export type Certification = {
+  title: string;
+  issuer: string;
+  year: string;
+  url?: string;
+};
+
+export const certifications: Certification[] = [
+  {
+    title: "Certification Name", // TODO
+    issuer: "Issuing Body", // TODO
+    year: "2025",
+    url: "", // optional — links the card to the credential
+  },
+  {
+    title: "Certification Name", // TODO
+    issuer: "Issuing Body", // TODO
+    year: "2024",
+  },
+  {
+    title: "Certification Name", // TODO
+    issuer: "Issuing Body", // TODO
+    year: "2024",
   },
 ];
 

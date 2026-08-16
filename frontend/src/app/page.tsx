@@ -4,6 +4,7 @@ import SiteChrome from "@/components/SiteChrome";
 import Starfield from "@/components/Starfield";
 import About from "@/components/sections/About";
 import Achievements from "@/components/sections/Achievements";
+import Certifications from "@/components/sections/Certifications";
 import Contact from "@/components/sections/Contact";
 import Education from "@/components/sections/Education";
 import Experience from "@/components/sections/Experience";
@@ -25,6 +26,7 @@ export default function Home() {
         <Experience />
         <Education />
         <Achievements />
+        <Certifications />
         <Contact />
       </main>
       <Footer />
