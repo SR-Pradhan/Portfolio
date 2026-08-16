@@ -78,12 +78,9 @@ export type Project = {
   title: string;
   blurb: string;
   tags: string[];
-  /** Featured cards show these as a 2x2 grid of callout tiles. */
-  highlights?: { title: string; detail: string }[];
   demo?: string;
   code?: string;
   npm?: string;
-  featured?: boolean;
   /** Renders a dimmed teaser card instead of a real one. */
   comingSoon?: boolean;
 };
@@ -94,15 +91,8 @@ export const projects: Project[] = [
     blurb:
       "TODO: one or two lines on what it does and, more importantly, what was hard about it. Numbers help — users, latency, scale.",
     tags: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind"],
-    highlights: [
-      { title: "Headline Feature", detail: "TODO: what makes it worth using." },
-      { title: "Second Feature", detail: "TODO: the technically interesting one." },
-      { title: "Third Feature", detail: "TODO: something users actually notice." },
-      { title: "1,000+ Users", detail: "TODO: a number that proves it works." },
-    ],
     demo: "#",
     code: "#",
-    featured: true,
   },
   {
     title: "Project Two",
