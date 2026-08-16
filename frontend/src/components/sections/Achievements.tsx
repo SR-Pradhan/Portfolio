@@ -1,6 +1,6 @@
-import { Lock, LockOpen } from "lucide-react";
 import Image from "next/image";
 import { achievements, type Achievement } from "@/data/site";
+import Padlock from "../Padlock";
 import Reveal from "../Reveal";
 import Section from "../Section";
 
@@ -8,13 +8,13 @@ function Card({ item }: { item: Achievement }) {
   return (
     <article className="rounded-2xl border border-border bg-surface p-6 transition-colors group-hover:border-accent/60">
       <div className="flex items-start gap-4">
-        <span className="relative grid size-11 shrink-0 place-items-center rounded-full border border-border text-muted transition-colors group-hover:border-accent group-hover:bg-accent-soft group-hover:text-accent">
-          {/* the padlock pops open on hover */}
-          <Lock size={17} className="transition-opacity group-hover:opacity-0" />
-          <LockOpen
-            size={17}
-            className="absolute opacity-0 transition-opacity group-hover:opacity-100"
+        <span className="relative grid size-11 shrink-0 place-items-center rounded-full border border-border text-muted transition-colors duration-300 group-hover:border-accent group-hover:bg-accent-soft group-hover:text-accent">
+          {/* one-shot ring that expands out the moment it unlocks */}
+          <span
+            aria-hidden
+            className="absolute inset-0 rounded-full border border-accent opacity-0 group-hover:motion-safe:animate-[unlock-pulse_0.65s_ease-out]"
           />
+          <Padlock size={17} />
         </span>
         <div className="min-w-0">
           <h3 className="text-lg font-semibold tracking-tight">{item.title}</h3>

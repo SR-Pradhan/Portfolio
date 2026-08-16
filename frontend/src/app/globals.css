@@ -60,3 +60,15 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* one-shot ring that expands out of the padlock when a card unlocks */
+@keyframes unlock-pulse {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
