@@ -15,7 +15,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative mx-auto flex min-h-svh max-w-6xl flex-col justify-center px-6 pt-24"
+      className="relative mx-auto flex min-h-svh max-w-6xl flex-col justify-center px-6 pt-36"
     >
       {/* soft accent glow behind the headline */}
       <div

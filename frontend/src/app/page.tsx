@@ -1,6 +1,5 @@
 import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
-import ScrollProgress from "@/components/ScrollProgress";
+import SiteChrome from "@/components/SiteChrome";
 import About from "@/components/sections/About";
 import Achievements from "@/components/sections/Achievements";
 import Contact from "@/components/sections/Contact";
@@ -13,8 +12,7 @@ import Skills from "@/components/sections/Skills";
 export default function Home() {
   return (
     <>
-      <ScrollProgress />
-      <Nav />
+      <SiteChrome />
       <main>
         <Hero />
         <About />

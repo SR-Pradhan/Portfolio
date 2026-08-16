@@ -37,7 +37,7 @@
 html {
   scroll-behavior: smooth;
   /* keep anchored sections clear of the fixed header */
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 8.5rem;
 }
 
 body {
