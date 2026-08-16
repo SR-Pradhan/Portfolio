@@ -7,11 +7,22 @@ export default function Experience() {
   return (
     <Section id="experience" title="Experience" sub="My professional journey">
       {/* the rail runs down the left; each card hangs off a node */}
-      <ol className="relative ml-2 border-l border-border pl-6 md:ml-6 md:pl-10">
+      <ol className="relative ml-2 pl-6 md:ml-6 md:pl-10">
+        {/* glowing rail: a blurred accent bar behind a crisp one, both
+            fading out at the ends so the line has no hard start or stop */}
+        <span
+          aria-hidden
+          className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-accent to-transparent"
+        />
+        <span
+          aria-hidden
+          className="absolute inset-y-0 left-0 w-[3px] -translate-x-[1px] bg-gradient-to-b from-transparent via-accent to-transparent opacity-40 blur-[3px]"
+        />
+
         {experience.map((job, i) => (
-          <li key={`${job.company}-${job.period}`} className="pb-8 last:pb-0">
+          <li key={`${job.company}-${job.period}`} className="relative pb-8 last:pb-0">
             <Reveal delay={i * 0.06}>
-              <span className="absolute -left-[6px] mt-7 size-3 rounded-full border-2 border-accent bg-background" />
+              <span className="absolute -left-[calc(1.5rem+6px)] top-7 size-3 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_2px_var(--accent)] md:-left-[calc(2.5rem+6px)]" />
 
               <article className="rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/60 md:p-7">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
