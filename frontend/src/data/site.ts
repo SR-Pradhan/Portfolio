@@ -246,25 +246,30 @@ export type Certification = {
   title: string;
   issuer: string;
   year: string;
+  /** simple-icons slug for the issuer, e.g. "postman", "coursera", "google". */
+  icon?: string;
   url?: string;
 };
 
 export const certifications: Certification[] = [
   {
-    title: "Certification Name", // TODO
-    issuer: "Issuing Body", // TODO
+    title: "API Fundamentals Student Expert", // TODO
+    issuer: "Postman", // TODO
     year: "2025",
-    url: "", // optional — links the card to the credential
+    icon: "postman",
+    url: "", // optional — links the row to the credential
   },
   {
     title: "Certification Name", // TODO
-    issuer: "Issuing Body", // TODO
+    issuer: "Coursera", // TODO
     year: "2024",
+    icon: "coursera",
   },
   {
     title: "Certification Name", // TODO
-    issuer: "Issuing Body", // TODO
+    issuer: "freeCodeCamp", // TODO
     year: "2024",
+    icon: "freecodecamp",
   },
 ];
 
