@@ -20,7 +20,7 @@ export default function Experience() {
         />
 
         {experience.map((job, i) => (
-          <li key={`${job.company}-${job.period}`} className="relative pb-8 last:pb-0">
+          <li key={i} className="relative pb-8 last:pb-0">
             <Reveal delay={i * 0.06}>
               <span className="absolute -left-[calc(1.5rem+6px)] top-7 size-3 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_2px_var(--accent)] md:-left-[calc(2.5rem+6px)]" />
 

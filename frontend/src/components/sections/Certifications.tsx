@@ -39,11 +39,13 @@ export default function Certifications() {
             style={reduced ? undefined : { x }}
             className="mx-auto flex w-max gap-6"
           >
-            {certifications.map((c) => {
+            {certifications.map((c, i) => {
               const Card = c.url ? "a" : "div";
               return (
                 <Card
-                  key={`${c.title}-${c.year}`}
+                  // index key: the list is static and never reorders, and
+                  // title+year can legitimately repeat
+                  key={i}
                   {...(c.url
                     ? { href: c.url, target: "_blank", rel: "noreferrer" }
                     : {})}

@@ -8,7 +8,7 @@ export default function Education() {
     <Section id="education" title="Education" sub="The formal part of the story">
       <div className="grid gap-5 md:grid-cols-2">
         {education.map((e, i) => (
-          <Reveal key={`${e.school}-${e.period}`} delay={(i % 2) * 0.08}>
+          <Reveal key={i} delay={(i % 2) * 0.08}>
             <article className="flex h-full flex-col rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-accent/60">
               <div className="flex items-start gap-4">
                 <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
