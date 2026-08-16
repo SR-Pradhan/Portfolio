@@ -3,7 +3,9 @@
  * cross-fading. The shackle is its own path pivoting on the base of its
  * right leg, so it hinges the way a real one does.
  *
- * Driven entirely by the parent's `group` hover — no state, no JS.
+ * The motion lives in globals.css (.padlock-shackle / .padlock-body) —
+ * see the note there for why it isn't written as Tailwind utilities.
+ * Driven entirely by the parent's `group` hover: no state, no JS.
  */
 export default function Padlock({
   size = 18,
@@ -25,17 +27,8 @@ export default function Padlock({
       aria-hidden
       className={className}
     >
-      <g
-        // fill-box makes the origin relative to the shackle itself, so it
-        // pivots on its own right leg instead of the middle of the canvas
-        style={{ transformBox: "fill-box", transformOrigin: "right bottom" }}
-        className="transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:-translate-y-[1.5px] group-hover:-rotate-[32deg]"
-      >
-        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-      </g>
-
-      {/* body gives a tiny recoil as the shackle releases */}
-      <g className="transition-transform duration-500 ease-out group-hover:translate-y-[0.5px]">
+      <path className="padlock-shackle" d="M8 10V7a4 4 0 0 1 8 0v3" />
+      <g className="padlock-body">
         <rect x="3.5" y="10" width="17" height="11" rx="2.5" />
         <circle cx="12" cy="15" r="1.15" fill="currentColor" stroke="none" />
         <path d="M12 16.2v1.6" />
