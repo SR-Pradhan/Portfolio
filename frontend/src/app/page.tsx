@@ -1,5 +1,7 @@
+import CursorTrail from "@/components/CursorTrail";
 import Footer from "@/components/Footer";
 import SiteChrome from "@/components/SiteChrome";
+import Starfield from "@/components/Starfield";
 import About from "@/components/sections/About";
 import Achievements from "@/components/sections/Achievements";
 import Contact from "@/components/sections/Contact";
@@ -12,6 +14,8 @@ import Skills from "@/components/sections/Skills";
 export default function Home() {
   return (
     <>
+      <Starfield />
+      <CursorTrail />
       <SiteChrome />
       <main>
         <Hero />

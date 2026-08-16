@@ -13,15 +13,16 @@ export default function Nav({ active }: { active: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed inset-x-0 top-14 z-40 flex justify-center px-4">
-      <nav className="w-full max-w-5xl rounded-2xl border border-border bg-surface/80 shadow-lg backdrop-blur-xl md:rounded-full">
-        <div className="flex items-center gap-2 px-4 py-2.5 md:px-6">
-          <a href="#home" className="mr-2 text-lg font-bold tracking-tight">
+    <div className="fixed inset-x-0 top-11 z-40 flex justify-center px-4">
+      {/* hugs its content on desktop rather than stretching across the page */}
+      <nav className="w-full max-w-5xl rounded-2xl border border-border bg-surface/80 shadow-lg backdrop-blur-xl md:w-auto md:rounded-full">
+        <div className="flex items-center gap-2 px-4 py-2 md:gap-4 md:px-5">
+          <a href="#home" className="text-lg font-bold tracking-tight">
             {site.name.split(" ")[0]}
             <span className="text-accent">.</span>
           </a>
 
-          <div className="mx-auto hidden items-center gap-1 md:flex">
+          <div className="hidden items-center gap-1 md:flex">
             {nav.map((item) => {
               const isActive = item.href === `#${active}`;
               return (
@@ -40,12 +41,12 @@ export default function Nav({ active }: { active: string }) {
             })}
           </div>
 
-          <div className="ml-auto flex items-center gap-2 md:ml-0">
+          <div className="ml-auto flex items-center gap-3 md:ml-0">
             <a
               href={site.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="hidden px-3 text-sm font-medium text-accent transition hover:opacity-80 sm:inline-block"
+              className="hidden text-sm font-medium text-accent transition hover:opacity-80 sm:inline-block"
             >
               Resume
             </a>

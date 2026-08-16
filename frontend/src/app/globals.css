@@ -37,11 +37,14 @@
 html {
   scroll-behavior: smooth;
   /* keep anchored sections clear of the fixed header */
-  scroll-padding-top: 8.5rem;
+  scroll-padding-top: 7.5rem;
+  /* the page colour lives here so the starfield canvas (z-index -10)
+     isn't painted over by an opaque body background */
+  background: var(--background);
 }
 
 body {
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;

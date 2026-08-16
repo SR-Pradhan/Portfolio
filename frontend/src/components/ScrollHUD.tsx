@@ -43,14 +43,15 @@ export default function ScrollHUD({ active }: { active: string }) {
 
   return (
     <div className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
-      <div className="flex h-10 items-center gap-4 px-4 font-mono text-[11px]">
+      <div className="flex h-8 items-center gap-3 px-4 font-mono text-[10px]">
         <span className="shrink-0 text-accent">→ {pct}%</span>
 
-        {/* fill track — width animates, so the text inside never distorts */}
-        <div className="relative hidden h-6 flex-1 overflow-hidden rounded-sm border border-border bg-surface sm:block">
+        {/* fill track — width animates, so the text inside never distorts.
+            No border: the unfilled part should read as empty space, not an input. */}
+        <div className="relative hidden h-4 flex-1 overflow-hidden rounded-sm bg-foreground/[0.06] sm:block">
           <motion.div
             style={{ width: fillWidth }}
-            className="absolute inset-y-0 left-0 flex items-center overflow-hidden whitespace-nowrap bg-accent px-2 text-white"
+            className="absolute inset-y-0 left-0 flex items-center overflow-hidden whitespace-nowrap rounded-sm bg-accent px-1.5 text-white"
           >
             {trail}
             <span className="ml-px animate-pulse">_</span>
