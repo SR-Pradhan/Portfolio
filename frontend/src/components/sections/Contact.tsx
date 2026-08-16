@@ -68,7 +68,7 @@ export default function Contact() {
                 rel="noreferrer"
                 aria-label={label}
                 title={label}
-                className="grid size-10 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
+                className="group grid size-10 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
               >
                 <Icon size={18} />
               </a>

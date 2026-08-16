@@ -56,8 +56,8 @@ export default function Starfield() {
           y: Math.random() * h,
           r,
           // bigger stars read as nearer, so they drift faster — cheap parallax.
-          // ~10-30px/sec at 60fps: clearly moving, never distracting.
-          vy: (0.16 + Math.random() * 0.34) * (0.6 + r / 1.65),
+          // ~20-60px/sec at 60fps: clearly moving, never distracting.
+          vy: (0.32 + Math.random() * 0.62) * (0.6 + r / 1.65),
           vx: (Math.random() - 0.5) * 0.08,
           phase: Math.random() * Math.PI * 2,
           twinkle: Math.random() * 0.03 + 0.01,

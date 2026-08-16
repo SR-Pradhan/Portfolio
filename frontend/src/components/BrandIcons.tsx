@@ -35,33 +35,21 @@ export function Leetcode({ size = 20, className }: IconProps) {
   );
 }
 
-/** Codolio has no published brand mark, so this is a monogram in its place. */
+/**
+ * Codolio's owl mark. It ships only as a raster favicon, so this is the
+ * bitmap rather than a path. Desaturated to sit with the monochrome icons
+ * around it, returning to full colour on hover of the parent link.
+ */
 export function Codolio({ size = 20, className }: IconProps) {
   return (
-    <svg
+    <img
+      src="/codolio.png"
+      alt=""
       width={size}
       height={size}
-      viewBox="0 0 24 24"
-      fill="none"
       aria-hidden
-      className={className}
-    >
-      <rect
-        x="2"
-        y="2"
-        width="20"
-        height="20"
-        rx="6"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M15.4 9.2a4 4 0 1 0 0 5.6"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
+      className={`grayscale transition duration-200 group-hover:grayscale-0 ${className ?? ""}`}
+    />
   );
 }
 
