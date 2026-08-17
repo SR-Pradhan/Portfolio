@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { about, site } from "@/data/site";
+import Highlighted from "../Highlighted";
 import Reveal from "../Reveal";
 import Section from "../Section";
 
@@ -23,8 +24,12 @@ export default function About() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="leading-7 text-muted">{about.intro}</p>
-          <p className="mt-4 leading-7 text-muted">{about.body}</p>
+          <p className="leading-7 text-muted">
+            <Highlighted text={about.intro} phrases={about.highlights} />
+          </p>
+          <p className="mt-4 leading-7 text-muted">
+            <Highlighted text={about.body} phrases={about.highlights} />
+          </p>
 
           <dl className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {about.stats.map((s) => (

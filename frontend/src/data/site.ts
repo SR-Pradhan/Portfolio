@@ -49,6 +49,23 @@ export const about = {
   intro:
     "I'm a Computer Science & Engineering student focused on AI Engineering, with a strong backend foundation in Java and Spring Boot. I'm building toward becoming an AI Engineer who can design, develop, and deploy practical AI-powered products, not just experiment with models.",
   body: "Right now, I'm deepening my skills in AI engineering, LLMs, AI APIs, intelligent workflows, and backend system design while continuing to strengthen my DSA and software engineering fundamentals. I'm particularly interested in building production-oriented AI applications where strong backend architecture and AI capabilities work together to solve real problems.",
+  /**
+   * Phrases lifted out of the muted body text into full foreground weight,
+   * so the paragraphs stay scannable. Matched literally and case-sensitively.
+   * Keep this short — highlighting everything highlights nothing.
+   */
+  highlights: [
+    "AI Engineering",
+    "Java and Spring Boot",
+    "design, develop, and deploy",
+    "AI-powered products",
+    "LLMs",
+    "AI APIs",
+    "intelligent workflows",
+    "backend system design",
+    "DSA",
+    "production-oriented AI applications",
+  ],
   stats: [
     { value: "9.51", label: "CGPA" },
     { value: "1", label: "Industry Internship" },
