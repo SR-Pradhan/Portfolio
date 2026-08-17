@@ -74,6 +74,23 @@ export default function Experience() {
                     </li>
                   ))}
                 </ul>
+
+                {job.links && job.links.length > 0 && (
+                  <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-border pt-4 text-sm">
+                    {job.links.map((link) => (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-muted transition hover:text-accent"
+                      >
+                        {link.label}
+                        <ArrowUpRight size={13} className="shrink-0" />
+                      </a>
+                    ))}
+                  </div>
+                )}
               </article>
             </Reveal>
           </li>

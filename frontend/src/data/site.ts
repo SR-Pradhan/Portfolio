@@ -287,31 +287,44 @@ export type Job = {
   period: string;
   points: string[];
   stack: string[];
+  /** Certificates, company pages — rendered as a row of small links. */
+  links?: { label: string; href: string }[];
 };
 
 export const experience: Job[] = [
   {
-    role: "Frontend Developer",
-    company: "Company Name", // TODO
-    companyUrl: "", // optional — adds a link icon next to the name
-    location: "Remote", // TODO
-    period: "Jan 2025 — Present",
+    role: "Full-Stack Java Developer Intern",
+    company: "Delhi Integrated Multi-Modal Transit System Ltd. (DIMTS)",
+    companyUrl: "https://www.dimts.in/",
+    location: "Delhi, India",
+    period: "June 2025 – August 2025",
     points: [
-      "TODO: what you owned. Start with a verb, end with an outcome.",
-      "TODO: a second bullet — ideally with a measurable result.",
+      "Built OnlineQuizWebApp with Java, JSP, Servlets (J2EE), JDBC and SQL Server, following an MVC architecture.",
+      "Implemented dynamic quiz workflows, authentication and real-time evaluation with support for concurrent users.",
+      "Designed and optimised SQL queries for efficient data retrieval, improving application response time.",
+      "Debugged and resolved application-level issues, improving system stability and performance.",
     ],
-    stack: ["Next.js", "TypeScript", "Tailwind"],
-  },
-  {
-    role: "Software Engineering Intern",
-    company: "Company Name", // TODO
-    location: "Bengaluru", // TODO
-    period: "Jun 2024 — Dec 2024",
-    points: [
-      "TODO: what you built or fixed.",
-      "TODO: impact — perf, adoption, bugs closed.",
+    stack: [
+      "Java",
+      "JSP",
+      "Servlets",
+      "JDBC",
+      "SQL Server",
+      "MVC",
+      "HTML/CSS",
+      "JavaScript",
     ],
-    stack: ["React", "Node.js", "MongoDB"],
+    links: [
+      {
+        label: "Certificate & Offer Letter",
+        href: "https://drive.google.com/drive/folders/1IAVSg9aG50B2psxdkm8PVCKVenyIPHcb",
+      },
+      {
+        label: "Company LinkedIn",
+        href: "https://www.linkedin.com/company/dimts-ltd.-a-jv-of-govt.-of-delhi-and-idfc-/posts/?feedView=all",
+      },
+      { label: "Company Website", href: "https://www.dimts.in/" },
+    ],
   },
 ];
 
