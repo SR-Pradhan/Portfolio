@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { ArrowDown, FileDown } from "lucide-react";
 import { site } from "@/data/site";
 import { socialLinks } from "@/lib/socials";
+import RotatingRole from "@/components/RotatingRole";
 import TechOrbit from "@/components/TechOrbit";
 
 export default function Hero() {
@@ -18,7 +19,7 @@ export default function Hero() {
         className="pointer-events-none absolute left-1/4 top-1/4 -z-10 size-[32rem] -translate-x-1/2 rounded-full bg-accent/15 blur-[120px]"
       />
 
-      <div className="grid items-center gap-12 md:grid-cols-[1.15fr_1fr]">
+      <div className="grid items-center gap-12 md:grid-cols-[1.3fr_1fr]">
         <div>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -37,10 +38,11 @@ export default function Hero() {
               delay: 0.08,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="max-w-4xl text-5xl font-semibold leading-[1.05] tracking-tight md:text-7xl"
+            // min-height reserves the space the longest role needs, so the
+            // text below doesn't jump as characters are typed and deleted
+            className="max-w-4xl min-h-[2.1em] text-5xl font-semibold leading-[1.05] tracking-tight md:min-h-[1.05em] md:text-6xl"
           >
-            {site.role}
-            <span className="text-accent">.</span>
+            <RotatingRole roles={site.roles} />
           </motion.h1>
 
           <motion.p

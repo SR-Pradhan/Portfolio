@@ -10,18 +10,22 @@ export const site = {
   name: "Sruti Ranjan Pradhan",
   /** Short form used for the logo and the hero greeting. */
   shortName: "SR",
-  role: "Full Stack Developer",
-  tagline: "I build fast, thoughtful web products — from the database up to the last pixel.",
-  location: "India",
-  email: "ai.altatech@gmail.com",
-  resumeUrl: "/resume.pdf", // TODO: drop your resume.pdf into /public
-  avatar: "/avatar.svg", // TODO: replace with your photo, e.g. "/avatar.jpg"
+  /** Primary title — used in the page <title> and OG tags. */
+  role: "AI Engineer",
+  /** Cycled through by the hero headline, in this order. */
+  roles: ["AI Engineer", "Backend Developer", "Problem Solver", "DSA Enthusiast"],
+  tagline:
+    "Aspiring AI Engineer with a backend development foundation — solving real-world problems through code.",
+  location: "Gurugram, India",
+  email: "pradhansr2003@gmail.com",
+  resumeUrl: "/resume.pdf", // TODO: drop resume.pdf into /public
+  avatar: "/avatar.svg", // TODO: replace with a real photo
   /** Order here is the order they render. Leave a value "" to hide it. */
   socials: {
-    github: "https://github.com/SR-Pradhan", // TODO: confirm
-    linkedin: "https://linkedin.com/in/", // TODO
-    leetcode: "https://leetcode.com/u/", // TODO
-    codolio: "https://codolio.com/profile/", // TODO
+    github: "https://github.com/SR-Pradhan",
+    linkedin: "https://www.linkedin.com/in/sruti-ranjan/",
+    leetcode: "https://leetcode.com/u/SR_Pradhan/",
+    codolio: "https://codolio.com/profile/SR-Pradhan",
   },
 };
 
