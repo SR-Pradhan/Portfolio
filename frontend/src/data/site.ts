@@ -17,7 +17,7 @@ export const site = {
   /** Cycled through by the hero headline, in this order. */
   roles: ["AI Engineer", "Backend Developer", "Problem Solver", "DSA Enthusiast"],
   tagline:
-    "Aspiring AI Engineer with a backend development foundation — solving real-world problems through code.",
+    "Aspiring AI Engineer with a backend development foundation, solving real-world problems through code.",
   location: "Gurugram, India",
   email: "pradhansr2003@gmail.com",
   resumeUrl: "/resume.pdf", // TODO: drop resume.pdf into /public
