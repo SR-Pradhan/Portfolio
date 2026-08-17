@@ -64,3 +64,30 @@ const SLUGS: Record<string, string> = {
 export function techSlug(tag: string): string | undefined {
   return SLUGS[tag.toLowerCase()];
 }
+
+/**
+ * Emoji stand-ins for tech with no published brand mark, so every chip
+ * carries a glyph and rows stay evenly aligned. Mirrors the approach used
+ * for skills. Lookup is case-insensitive.
+ */
+const EMOJIS: Record<string, string> = {
+  jsp: "📄",
+  servlets: "🧩",
+  jdbc: "🔗",
+  "sql server": "🗄️",
+  mvc: "🏛️",
+  "html/css": "🎨",
+  sql: "🗃️",
+  "rest apis": "🔌",
+  alembic: "🧱",
+  jwt: "🔐",
+  "async sqlalchemy": "🧬",
+  recharts: "📊",
+  "groq llm": "🤖",
+  pygame: "🎮",
+  imutils: "🛠️",
+};
+
+export function techEmoji(tag: string): string | undefined {
+  return EMOJIS[tag.toLowerCase()];
+}

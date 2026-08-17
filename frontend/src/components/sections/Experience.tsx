@@ -1,6 +1,9 @@
 import { ArrowUpRight } from "lucide-react";
 import { experience } from "@/data/site";
+import { techEmoji, techSlug } from "@/lib/techSlugs";
 import Reveal from "../Reveal";
+import SpotlightCard from "../SpotlightCard";
+import TechIcon from "../TechIcon";
 import Section from "../Section";
 
 export default function Experience() {
@@ -24,7 +27,8 @@ export default function Experience() {
             <Reveal delay={i * 0.06}>
               <span className="absolute -left-[calc(1.5rem+6px)] top-7 size-3 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_2px_var(--accent)] md:-left-[calc(2.5rem+6px)]" />
 
-              <article className="rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/60 md:p-7">
+              <SpotlightCard>
+                <div className="relative z-10 p-6 md:p-7">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                   <h3 className="text-lg font-semibold tracking-tight">{job.role}</h3>
                   <span className="font-mono text-xs text-muted">{job.period}</span>
@@ -68,8 +72,15 @@ export default function Experience() {
                   {job.stack.map((t) => (
                     <li
                       key={t}
-                      className="rounded-md border border-border px-2.5 py-1 font-mono text-[11px] text-muted"
+                      className="flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 font-mono text-[11px] text-muted"
                     >
+                      {techSlug(t) ? (
+                        <TechIcon slug={techSlug(t)} size={12} />
+                      ) : techEmoji(t) ? (
+                        <span aria-hidden className="text-[12px] leading-none">
+                          {techEmoji(t)}
+                        </span>
+                      ) : null}
                       {t}
                     </li>
                   ))}
@@ -91,7 +102,8 @@ export default function Experience() {
                     ))}
                   </div>
                 )}
-              </article>
+                </div>
+              </SpotlightCard>
             </Reveal>
           </li>
         ))}

@@ -1,7 +1,7 @@
 import { ArrowUpRight, Package } from "lucide-react";
 import { Github } from "@/components/BrandIcons";
 import { projects, type Project } from "@/data/site";
-import { techSlug } from "@/lib/techSlugs";
+import { techEmoji, techSlug } from "@/lib/techSlugs";
 import Reveal from "../Reveal";
 import Section from "../Section";
 import SpotlightCard from "../SpotlightCard";
@@ -112,7 +112,13 @@ export default function Projects() {
                         key={t}
                         className="flex items-center gap-1.5 rounded-md border border-border px-2 py-1 font-mono text-[11px] text-muted transition-colors group-hover:border-accent/30"
                       >
-                        <TechIcon slug={techSlug(t)} size={12} />
+                        {techSlug(t) ? (
+                          <TechIcon slug={techSlug(t)} size={12} />
+                        ) : techEmoji(t) ? (
+                          <span aria-hidden className="text-[12px] leading-none">
+                            {techEmoji(t)}
+                          </span>
+                        ) : null}
                         {t}
                       </li>
                     ))}
