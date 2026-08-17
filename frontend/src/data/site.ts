@@ -21,7 +21,7 @@ export const site = {
   location: "Gurugram, India",
   email: "pradhansr2003@gmail.com",
   resumeUrl: "/resume.pdf", // TODO: drop resume.pdf into /public
-  avatar: "/avatar.svg", // TODO: switch to "/avatar.jpg" once the file is in /public
+  avatar: "/avatar.webp", // cut-out portrait, transparent background
   /** Order here is the order they render. Leave a value "" to hide it. */
   socials: {
     github: "https://github.com/SR-Pradhan",
