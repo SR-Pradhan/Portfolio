@@ -88,7 +88,10 @@ body {
 }
 
 .group:hover .padlock-shackle {
-  transform: rotate(-42deg) translateY(-1px);
+  /* CLOCKWISE. Pivoting on the right leg, a negative (anticlockwise)
+     rotation swings the left leg down into the body — it reads as the lock
+     closing. Positive lifts the shackle up and away, which is opening. */
+  transform: rotate(38deg) translateY(-1.5px);
 }
 
 .padlock-body {

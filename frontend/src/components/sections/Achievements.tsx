@@ -54,7 +54,7 @@ function Proof({ item, side }: { item: Achievement; side: "left" | "right" }) {
   if (!item.photo) return null;
   return (
     <div
-      className={`pointer-events-none absolute top-1/2 hidden w-[calc(50%-1.5rem)] -translate-y-1/2 scale-95 overflow-hidden rounded-2xl border-2 border-accent opacity-0 shadow-[0_0_30px_-8px_var(--accent)] transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 md:block ${
+      className={`pointer-events-none absolute top-1/2 hidden aspect-[16/10] w-[calc(50%-1.5rem)] max-w-sm -translate-y-1/2 scale-95 overflow-hidden rounded-2xl border-2 border-accent opacity-0 shadow-[0_0_30px_-8px_var(--accent)] transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 md:block ${
         side === "left" ? "left-0" : "right-0"
       }`}
     >
@@ -66,7 +66,7 @@ function Proof({ item, side }: { item: Achievement; side: "left" | "right" }) {
         alt={`${item.title} — proof`}
         width={640}
         height={400}
-        className="h-full w-full object-cover"
+        className="size-full object-cover"
       />
     </div>
   );
