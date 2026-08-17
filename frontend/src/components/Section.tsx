@@ -19,9 +19,9 @@ export default function Section({
   className?: string;
 }) {
   return (
-    <section id={id} className={`mx-auto max-w-6xl px-6 py-24 md:py-32 ${className}`}>
+    <section id={id} className={`mx-auto max-w-6xl px-6 py-20 md:py-24 ${className}`}>
       {title && (
-        <Reveal className="mb-16 text-center">
+        <Reveal className="mb-12 text-center">
           <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">
             {title}
             <span className="text-accent">.</span>

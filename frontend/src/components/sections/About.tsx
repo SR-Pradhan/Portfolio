@@ -8,9 +8,9 @@ export default function About() {
     <Section id="about" title={about.heading} sub={about.sub}>
       {/* photo column deliberately narrower than the text: a 5:6 frame at half
           the page width runs ~630px tall and pushes the stats off screen */}
-      <div className="grid items-center gap-12 md:grid-cols-[0.8fr_1.2fr]">
+      <div className="grid items-center gap-10 md:grid-cols-[0.7fr_1.3fr]">
         <Reveal>
-          <div className="relative mx-auto aspect-[5/6] w-full max-w-sm overflow-hidden rounded-3xl border border-border bg-surface">
+          <div className="relative mx-auto aspect-[5/6] w-full max-w-[300px] overflow-hidden rounded-3xl border border-border bg-surface">
             <Image
               src={site.avatar}
               alt={site.name}
@@ -23,17 +23,17 @@ export default function About() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="text-lg leading-relaxed text-muted">{about.intro}</p>
-          <p className="mt-5 text-lg leading-relaxed text-muted">{about.body}</p>
+          <p className="leading-7 text-muted">{about.intro}</p>
+          <p className="mt-4 leading-7 text-muted">{about.body}</p>
 
-          <dl className="mt-10 grid grid-cols-2 gap-4">
+          <dl className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {about.stats.map((s) => (
               <div
                 key={s.label}
-                className="rounded-2xl border border-border bg-surface px-6 py-7 text-center transition-colors hover:border-accent/60"
+                className="rounded-xl border border-border bg-surface px-3 py-4 text-center transition-colors hover:border-accent/60"
               >
-                <dt className="text-3xl font-semibold tracking-tight">{s.value}</dt>
-                <dd className="mt-1.5 text-sm text-muted">{s.label}</dd>
+                <dt className="text-2xl font-semibold tracking-tight">{s.value}</dt>
+                <dd className="mt-1 text-xs leading-tight text-muted">{s.label}</dd>
               </div>
             ))}
           </dl>
