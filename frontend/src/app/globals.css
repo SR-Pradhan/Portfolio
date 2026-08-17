@@ -110,3 +110,45 @@ body {
     transition: none;
   }
 }
+
+/* ── Hero tech orbit ──────────────────────────────────────────────────
+   Rings rotate; each icon counter-rotates at the same rate so it stays
+   upright instead of tumbling. Written as CSS because the counter-spin has
+   to share an exact duration with its parent. */
+
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.orbit-ring {
+  animation: orbit-spin var(--orbit-duration) linear infinite;
+}
+
+.orbit-ring-reverse {
+  animation: orbit-spin-reverse var(--orbit-duration) linear infinite;
+}
+
+.orbit-counter {
+  animation: orbit-spin-reverse var(--orbit-duration) linear infinite;
+}
+
+.orbit-counter-reverse {
+  animation: orbit-spin var(--orbit-duration) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring,
+  .orbit-ring-reverse,
+  .orbit-counter,
+  .orbit-counter-reverse {
+    animation: none;
+  }
+}
