@@ -97,11 +97,11 @@ export default function TechOrbit() {
         </div>
       ))}
 
-      {/* core */}
+      {/* core — no accent dot here: the nav logo already carries the "SR."
+          wordmark, and a third dot in one viewport dilutes it */}
       <span className="relative grid size-24 place-items-center rounded-full border border-accent/40 bg-surface/80 backdrop-blur">
         <span className="font-mono text-2xl font-bold tracking-tight">
           {site.shortName}
-          <span className="text-accent">.</span>
         </span>
       </span>
     </div>
