@@ -221,3 +221,50 @@ body {
     animation: none;
   }
 }
+
+/* ── Project "hard part" reveal ───────────────────────────────────────
+   Hidden until the card is hovered, so cards stay short.
+
+   Two deliberate details:
+   1. The hiding lives inside `@media (hover: hover)`. Touch devices have no
+      hover, so on phones this stays permanently visible rather than being
+      unreachable.
+   2. `:focus-within` also opens it, so keyboard users tabbing to the card's
+      links get the same content a mouse user gets.
+
+   grid-template-rows 0fr -> 1fr animates to the content's natural height,
+   which max-height cannot do without hardcoding a guess. */
+
+.hard-part {
+  margin-top: 1.25rem;
+}
+
+@media (hover: hover) {
+  .hard-part {
+    display: grid;
+    grid-template-rows: 0fr;
+    margin-top: 0;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.35s ease,
+      margin-top 0.35s ease,
+      opacity 0.25s ease;
+  }
+
+  .hard-part > * {
+    overflow: hidden;
+  }
+
+  .group:hover .hard-part,
+  .group:focus-within .hard-part {
+    grid-template-rows: 1fr;
+    margin-top: 1.25rem;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hard-part {
+    transition: none;
+  }
+}

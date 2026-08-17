@@ -92,13 +92,15 @@ export default function Projects() {
                   <p className="mt-3 leading-relaxed text-muted">{p.blurb}</p>
 
                   {p.hardPart && (
-                    <div className="mt-5 border-l-2 border-accent/50 pl-4">
-                      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
-                        The hard part
-                      </p>
-                      <p className="mt-1.5 text-sm leading-relaxed text-muted">
-                        {p.hardPart}
-                      </p>
+                    <div className="hard-part">
+                      <div className="border-l-2 border-accent/50 pl-4">
+                        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+                          The hard part
+                        </p>
+                        <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                          {p.hardPart}
+                        </p>
+                      </div>
                     </div>
                   )}
 
