@@ -13,12 +13,12 @@ type Ring = {
 const RINGS: Ring[] = [
   {
     icons: ["react", "nextdotjs", "typescript", "nodedotjs", "tailwindcss", "docker"],
-    radius: 150,
+    radius: 148,
     seconds: 34,
   },
   {
     icons: ["python", "postgresql", "git"],
-    radius: 92,
+    radius: 88,
     seconds: 22,
     reverse: true,
   },
@@ -27,15 +27,29 @@ const RINGS: Ring[] = [
 /**
  * The hero's right-hand visual: the actual stack orbiting a core.
  *
- * Each ring rotates as a whole; every icon carries a counter-rotation of the
- * same duration so it stays upright rather than tumbling. All CSS animation —
- * no JS, no canvas, and it renders on the server.
+ * Positioning, precisely — getting this wrong scatters the icons off their
+ * tracks:
+ *
+ *  1. The ring is a full-size box spinning about the container's centre.
+ *  2. Each icon's placement element is ZERO-SIZE and pinned at that same
+ *     centre, then transformed `rotate(θ) translateY(-r) rotate(-θ)`. The
+ *     trailing `rotate(-θ)` cancels the placement rotation for its children,
+ *     so they aren't tilted by where they sit on the ring.
+ *  3. Only the innermost box is centred on its point (-50%, -50%) and given
+ *     the counter-spin. It rotates about its own centre, so it re-orients
+ *     without moving.
+ *
+ * Any wrapper that has a size AND a rotation will shift its child, because it
+ * rotates about its own centre rather than the ring's. Keep the wrappers
+ * zero-size.
+ *
+ * All CSS animation — no JS, no canvas, renders on the server.
  */
 export default function TechOrbit() {
   return (
     <div
       aria-hidden
-      className="relative hidden aspect-square w-full max-w-[380px] items-center justify-center md:flex"
+      className="relative hidden aspect-square w-full max-w-[360px] items-center justify-center md:flex"
     >
       {/* soft bloom behind the whole thing */}
       <span className="absolute size-56 rounded-full bg-accent/20 blur-[90px]" />
@@ -48,8 +62,12 @@ export default function TechOrbit() {
         >
           {/* the visible track */}
           <span
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-border/70"
-            style={{ width: radius * 2, height: radius * 2 }}
+            className="absolute left-1/2 top-1/2 rounded-full border border-border/70"
+            style={{
+              width: radius * 2,
+              height: radius * 2,
+              transform: "translate(-50%, -50%)",
+            }}
           />
 
           {icons.map((slug, i) => {
@@ -57,22 +75,21 @@ export default function TechOrbit() {
             return (
               <span
                 key={slug}
-                className="absolute left-1/2 top-1/2"
+                className="absolute left-1/2 top-1/2 block size-0"
                 style={{
-                  transform: `rotate(${angle}deg) translateY(-${radius}px)`,
+                  transform: `rotate(${angle}deg) translateY(-${radius}px) rotate(${-angle}deg)`,
                 }}
               >
-                {/* undo the placement rotation... */}
-                <span className="block" style={{ transform: `rotate(${-angle}deg)` }}>
-                  {/* ...then undo the ring's spin, so icons stay upright */}
-                  <span
-                    style={{ "--orbit-duration": `${seconds}s` } as React.CSSProperties}
-                    className={`grid size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-xl border border-border bg-surface shadow-lg ${
-                      reverse ? "orbit-counter-reverse" : "orbit-counter"
-                    }`}
-                  >
-                    <TechIcon slug={slug} size={20} />
-                  </span>
+                {/* size-11 is 44px, so -22px margins centre it on the ring
+                    point. Negative margins rather than a translate, so
+                    nothing competes with the counter-spin's transform. */}
+                <span
+                  style={{ "--orbit-duration": `${seconds}s` } as React.CSSProperties}
+                  className={`absolute -ml-[22px] -mt-[22px] grid size-11 place-items-center rounded-xl border border-border bg-surface shadow-lg ${
+                    reverse ? "orbit-counter-reverse" : "orbit-counter"
+                  }`}
+                >
+                  <TechIcon slug={slug} size={20} />
                 </span>
               </span>
             );
