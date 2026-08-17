@@ -29,9 +29,14 @@ export default function Skills() {
                   key={item.name}
                   className="flex items-center gap-2 rounded-xl border border-border bg-surface px-3.5 py-2 text-sm transition-colors hover:border-accent/60"
                 >
-                  {/* concepts like RAG or Leadership have no brand mark —
-                      they simply render as text rather than a filler dot */}
-                  {"icon" in item && item.icon && <TechIcon slug={item.icon} size={16} />}
+                  {/* brand mark where one exists, emoji where it doesn't */}
+                  {"icon" in item && item.icon ? (
+                    <TechIcon slug={item.icon} size={16} />
+                  ) : "emoji" in item && item.emoji ? (
+                    <span aria-hidden className="text-[15px] leading-none">
+                      {item.emoji}
+                    </span>
+                  ) : null}
                   {item.name}
                 </li>
               ))}

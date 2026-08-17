@@ -179,10 +179,9 @@ export const projects: Project[] = [
 ];
 
 /**
- * `icon` is a simple-icons slug. Items without one render as plain text —
- * that's deliberate for concepts (RAG, OOP, Leadership) that have no brand
- * mark, and for products simple-icons doesn't carry (OpenAI, Groq,
- * ChromaDB, Pinecone, RAGAS).
+ * `icon` is a simple-icons slug. Concepts and products with no published
+ * brand mark (RAG, OOP, Leadership, ChromaDB, Pinecone, RAGAS…) carry an
+ * `emoji` instead, so every chip has a glyph and the rows stay even.
  */
 export const skills = [
   {
@@ -192,7 +191,7 @@ export const skills = [
       { name: "Java", icon: "openjdk" },
       { name: "TypeScript", icon: "typescript" },
       { name: "JavaScript", icon: "javascript" },
-      { name: "SQL" },
+      { name: "SQL", emoji: "🗃️" },
     ],
   },
   {
@@ -200,15 +199,15 @@ export const skills = [
     // spans the full width — it's the category the whole site is aimed at
     featured: true,
     items: [
-      { name: "LLM APIs (Groq, OpenAI)" },
-      { name: "Prompt Engineering" },
-      { name: "RAG" },
-      { name: "Embeddings" },
+      { name: "LLM APIs (Groq, OpenAI)", emoji: "🤖" },
+      { name: "Prompt Engineering", emoji: "✍️" },
+      { name: "RAG", emoji: "🔎" },
+      { name: "Embeddings", emoji: "🧬" },
       { name: "LangChain", icon: "langchain" },
       { name: "LangGraph", icon: "langgraph" },
-      { name: "AI Agents" },
-      { name: "Multi-Agent Systems" },
-      { name: "RAGAS" },
+      { name: "AI Agents", emoji: "🕵️" },
+      { name: "Multi-Agent Systems", emoji: "🐝" },
+      { name: "RAGAS", emoji: "📊" },
     ],
   },
   {
@@ -217,9 +216,9 @@ export const skills = [
       { name: "FastAPI", icon: "fastapi" },
       { name: "Spring Boot", icon: "springboot" },
       { name: "Spring Security", icon: "springsecurity" },
-      { name: "REST APIs" },
+      { name: "REST APIs", emoji: "🔌" },
       { name: "JWT Auth", icon: "jsonwebtokens" },
-      { name: "Alembic" },
+      { name: "Alembic", emoji: "🧱" },
     ],
   },
   {
@@ -236,8 +235,8 @@ export const skills = [
     items: [
       { name: "PostgreSQL", icon: "postgresql" },
       { name: "MySQL", icon: "mysql" },
-      { name: "ChromaDB" },
-      { name: "Pinecone" },
+      { name: "ChromaDB", emoji: "🌈" },
+      { name: "Pinecone", emoji: "🌲" },
     ],
   },
   {
@@ -262,20 +261,20 @@ export const skills = [
   {
     category: "Core CS",
     items: [
-      { name: "OOP" },
-      { name: "DBMS" },
-      { name: "Operating Systems" },
-      { name: "Computer Networks" },
-      { name: "DSA" },
+      { name: "OOP", emoji: "🧩" },
+      { name: "DBMS", emoji: "🗄️" },
+      { name: "Operating Systems", emoji: "🖥️" },
+      { name: "Computer Networks", emoji: "🌐" },
+      { name: "DSA", emoji: "🧠" },
     ],
   },
   {
     category: "Soft Skills",
     items: [
-      { name: "Problem Solving" },
-      { name: "Technical Communication" },
-      { name: "Team Collaboration" },
-      { name: "Leadership" },
+      { name: "Problem Solving", emoji: "💡" },
+      { name: "Technical Communication", emoji: "🗣️" },
+      { name: "Team Collaboration", emoji: "🤝" },
+      { name: "Leadership", emoji: "🧭" },
     ],
   },
 ];
