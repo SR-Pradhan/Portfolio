@@ -17,8 +17,10 @@ export default function Nav({ active }: { active: string }) {
       {/* hugs its content on desktop rather than stretching across the page */}
       <nav className="w-full max-w-full rounded-2xl border border-border bg-surface/80 shadow-lg backdrop-blur-xl md:w-auto md:rounded-full">
         <div className="flex items-center gap-2 px-4 py-2 md:gap-4 md:px-6">
+          {/* initials, not the full name — the pill is already carrying
+              nine links, Resume and the theme toggle */}
           <a href="#home" className="text-lg font-bold tracking-tight">
-            {site.shortName}
+            {site.initials}
             <span className="text-accent">.</span>
           </a>
 

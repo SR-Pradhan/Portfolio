@@ -21,7 +21,7 @@ export const site = {
   location: "Gurugram, India",
   email: "pradhansr2003@gmail.com",
   resumeUrl: "/resume.pdf", // TODO: drop resume.pdf into /public
-  avatar: "/avatar.svg", // TODO: replace with a real photo
+  avatar: "/avatar.svg", // TODO: switch to "/avatar.jpg" once the file is in /public
   /** Order here is the order they render. Leave a value "" to hide it. */
   socials: {
     github: "https://github.com/SR-Pradhan",
@@ -47,13 +47,13 @@ export const about = {
   heading: "About Me",
   sub: "Get to know me better",
   intro:
-    "TODO: two or three sentences about who you are and what you like building. Keep it human — this is the part people actually read.",
-  body: "TODO: a second paragraph. What you're focused on right now, what you're curious about, what kind of work you want more of.",
+    "I'm a Computer Science & Engineering student focused on AI Engineering, with a strong backend foundation in Java and Spring Boot. I'm building toward becoming an AI Engineer who can design, develop, and deploy practical AI-powered products, not just experiment with models.",
+  body: "Right now, I'm deepening my skills in AI engineering, LLMs, AI APIs, intelligent workflows, and backend system design while continuing to strengthen my DSA and software engineering fundamentals. I'm particularly interested in building production-oriented AI applications where strong backend architecture and AI capabilities work together to solve real problems.",
   stats: [
-    { value: "3+", label: "Years Writing Code" },
-    { value: "15+", label: "Projects Shipped" },
-    { value: "5+", label: "Open Source Contribs" },
-    { value: "8.5", label: "CGPA" },
+    { value: "9.51", label: "CGPA" },
+    { value: "1", label: "Industry Internship" },
+    { value: "8+", label: "Projects Built" },
+    { value: "5+", label: "Years Writing Code" },
   ],
 };
 
