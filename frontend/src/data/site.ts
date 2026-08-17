@@ -178,50 +178,104 @@ export const projects: Project[] = [
   },
 ];
 
+/**
+ * `icon` is a simple-icons slug. Items without one render as plain text —
+ * that's deliberate for concepts (RAG, OOP, Leadership) that have no brand
+ * mark, and for products simple-icons doesn't carry (OpenAI, Groq,
+ * ChromaDB, Pinecone, RAGAS).
+ */
 export const skills = [
   {
     category: "Languages",
     items: [
-      { name: "TypeScript", icon: "typescript" },
-      { name: "JavaScript", icon: "javascript" },
       { name: "Python", icon: "python" },
       { name: "Java", icon: "openjdk" },
-      { name: "HTML5", icon: "html5" },
-      { name: "CSS3", icon: "css" },
+      { name: "TypeScript", icon: "typescript" },
+      { name: "JavaScript", icon: "javascript" },
+      { name: "SQL" },
     ],
   },
   {
-    category: "Frameworks & Libraries",
+    category: "AI Engineering",
+    // spans the full width — it's the category the whole site is aimed at
+    featured: true,
+    items: [
+      { name: "LLM APIs (Groq, OpenAI)" },
+      { name: "Prompt Engineering" },
+      { name: "RAG" },
+      { name: "Embeddings" },
+      { name: "LangChain", icon: "langchain" },
+      { name: "LangGraph", icon: "langgraph" },
+      { name: "AI Agents" },
+      { name: "Multi-Agent Systems" },
+      { name: "RAGAS" },
+    ],
+  },
+  {
+    category: "Backend",
+    items: [
+      { name: "FastAPI", icon: "fastapi" },
+      { name: "Spring Boot", icon: "springboot" },
+      { name: "Spring Security", icon: "springsecurity" },
+      { name: "REST APIs" },
+      { name: "JWT Auth", icon: "jsonwebtokens" },
+      { name: "Alembic" },
+    ],
+  },
+  {
+    category: "Frontend",
     items: [
       { name: "React", icon: "react" },
-      { name: "Next.js", icon: "nextdotjs" },
-      { name: "Node.js", icon: "nodedotjs" },
-      { name: "Express", icon: "express" },
+      { name: "TypeScript", icon: "typescript" },
+      { name: "Vite", icon: "vite" },
       { name: "Tailwind CSS", icon: "tailwindcss" },
-      { name: "Motion", icon: "framer" },
-      { name: "FastAPI", icon: "fastapi" },
     ],
   },
   {
     category: "Databases",
     items: [
       { name: "PostgreSQL", icon: "postgresql" },
-      { name: "MongoDB", icon: "mongodb" },
-      { name: "Redis", icon: "redis" },
-      { name: "Prisma", icon: "prisma" },
-      { name: "Supabase", icon: "supabase" },
+      { name: "MySQL", icon: "mysql" },
+      { name: "ChromaDB" },
+      { name: "Pinecone" },
+    ],
+  },
+  {
+    category: "Computer Vision",
+    items: [
+      { name: "OpenCV", icon: "opencv" },
+      { name: "dlib", icon: "dlib" },
     ],
   },
   {
     category: "Tools & Platforms",
     items: [
       { name: "Git", icon: "git" },
+      { name: "GitHub Actions", icon: "githubactions" },
+      { name: "Maven", icon: "apachemaven" },
       { name: "Docker", icon: "docker" },
-      { name: "AWS", icon: "amazonwebservices" },
       { name: "Vercel", icon: "vercel" },
-      { name: "Linux", icon: "linux" },
-      { name: "Figma", icon: "figma" },
-      { name: "GraphQL", icon: "graphql" },
+      { name: "Render", icon: "render" },
+      { name: "Hugging Face", icon: "huggingface" },
+    ],
+  },
+  {
+    category: "Core CS",
+    items: [
+      { name: "OOP" },
+      { name: "DBMS" },
+      { name: "Operating Systems" },
+      { name: "Computer Networks" },
+      { name: "DSA" },
+    ],
+  },
+  {
+    category: "Soft Skills",
+    items: [
+      { name: "Problem Solving" },
+      { name: "Technical Communication" },
+      { name: "Team Collaboration" },
+      { name: "Leadership" },
     ],
   },
 ];
