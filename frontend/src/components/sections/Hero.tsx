@@ -113,7 +113,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="flex justify-center md:-translate-y-14 md:justify-end md:pr-0 lg:-mr-14"
+          className="flex justify-center md:-translate-y-10 md:justify-end md:pr-0 lg:-mr-8"
         >
           <TechOrbit />
         </motion.div>

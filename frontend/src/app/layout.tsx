@@ -41,7 +41,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="flex min-h-full flex-col">{children}</body>
+      {/* suppressHydrationWarning: browser extensions (Grammarly and friends)
+          inject attributes onto body after SSR, which React reports as a
+          mismatch. Nothing to do with our markup. */}
+      <body className="flex min-h-full flex-col" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }
