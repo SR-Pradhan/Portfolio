@@ -8,8 +8,10 @@
 
 export const site = {
   name: "Sruti Ranjan Pradhan",
-  /** Short form used for the logo and the hero greeting. */
-  shortName: "SR",
+  /** Used for the nav logo and the hero greeting. */
+  shortName: "Sruti Ranjan",
+  /** Initials — for tight spaces like the orbit core, where the full name won't fit. */
+  initials: "SR",
   /** Primary title — used in the page <title> and OG tags. */
   role: "AI Engineer",
   /** Cycled through by the hero headline, in this order. */

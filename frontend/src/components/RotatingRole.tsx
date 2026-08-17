@@ -64,6 +64,10 @@ export default function RotatingRole({ roles }: { roles: string[] }) {
     );
   }
 
+  // the accent full stop lands once the word is complete, rather than
+  // trailing along mid-word
+  const complete = !deleting && text === roles[index];
+
   return (
     <>
       {/* full role list for screen readers and crawlers, since the visible
@@ -71,6 +75,7 @@ export default function RotatingRole({ roles }: { roles: string[] }) {
       <span className="sr-only">{roles.join(", ")}</span>
       <span aria-hidden>
         {text}
+        {complete && <span className="text-accent">.</span>}
         <span className="caret-blink font-normal text-accent">|</span>
       </span>
     </>
