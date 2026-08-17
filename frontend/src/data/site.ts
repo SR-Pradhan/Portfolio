@@ -128,8 +128,14 @@ export const projects: Project[] = [
     title: "Solvix",
     blurb:
       "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders — no manual logging required.",
+    // Long version, kept for interviews: the backend sleeps when idle, so
+    // reminders and plan generation run on an external cron rather than an
+    // in-process timer; topic scoring treats Codeforces and LeetCode
+    // differently since only one records failed attempts; repeated wrong
+    // submissions collapse into a single attempt so retry-spam doesn't
+    // distort the score.
     hardPart:
-      "Making a stateless, free-tier-hosted API behave like a scheduled service: the backend sleeps when idle, so reminders and daily plan generation run via an external GitHub Actions cron rather than an in-process timer. The topic-weakness scoring also had to treat Codeforces and LeetCode differently, since only one records failed attempts — and repeated wrong submissions get deduplicated into a single attempt so retry-spam doesn't distort the score.",
+      "Free-tier hosting sleeps when idle, so daily plans and reminders run on an external GitHub Actions cron instead of an in-process timer.",
     tags: [
       "FastAPI",
       "async SQLAlchemy",
@@ -151,7 +157,7 @@ export const projects: Project[] = [
     blurb:
       "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue — triggering an audio alert when eyes stay closed past a threshold.",
     hardPart:
-      "Isolating a reliable signal from noisy real-time video. The EAR threshold and consecutive-frame count had to be tuned carefully enough to catch genuine drowsiness without false-triggering on normal blinks, while still running fast enough on a live webcam feed to be useful in real time.",
+      "Tuning the EAR threshold and frame count to catch real drowsiness without firing on ordinary blinks, while staying fast enough for live video.",
     tags: ["Python", "OpenCV", "dlib", "imutils", "SciPy", "Streamlit", "pygame"],
     code: "https://github.com/SR-Pradhan/real-time-drowsiness-detection",
   },
@@ -160,7 +166,7 @@ export const projects: Project[] = [
     blurb:
       "A Spring Boot authentication system implementing user registration, login, and role-based access control (USER/ADMIN), with BCrypt password encryption and session-managed protected routes.",
     hardPart:
-      "Structuring authentication and authorization correctly with Spring Security — getting role-based access control, encrypted password storage, and session handling to work together within a clean Controller → Service → Repository architecture, rather than bolting security on as an afterthought.",
+      "Designing role-based access, BCrypt storage, and session handling into the Spring Security layer from the start, rather than bolting security on afterwards.",
     tags: ["Java", "Spring Boot", "Spring Security", "Thymeleaf", "MySQL", "Maven"],
     code: "https://github.com/SR-Pradhan/secure-auth-system",
   },
