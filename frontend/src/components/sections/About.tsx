@@ -6,14 +6,16 @@ import Section from "../Section";
 export default function About() {
   return (
     <Section id="about" title={about.heading} sub={about.sub}>
-      <div className="grid items-start gap-12 md:grid-cols-2">
+      {/* photo column deliberately narrower than the text: a 5:6 frame at half
+          the page width runs ~630px tall and pushes the stats off screen */}
+      <div className="grid items-center gap-12 md:grid-cols-[0.8fr_1.2fr]">
         <Reveal>
-          <div className="relative aspect-[5/6] overflow-hidden rounded-3xl border border-border bg-surface">
+          <div className="relative mx-auto aspect-[5/6] w-full max-w-sm overflow-hidden rounded-3xl border border-border bg-surface">
             <Image
               src={site.avatar}
               alt={site.name}
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 100vw, 40vw"
               className="object-cover"
               priority={false}
             />
