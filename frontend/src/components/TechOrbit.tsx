@@ -9,15 +9,19 @@ type Ring = {
   reverse?: boolean;
 };
 
-/** Outer ring turns slowly; inner ring turns faster the other way. */
+/**
+ * Outer ring turns slowly; inner ring turns faster the other way.
+ * Mirrors the Skills section: AI and backend on the outside where they read
+ * first, language and data foundations on the inside.
+ */
 const RINGS: Ring[] = [
   {
-    icons: ["react", "nextdotjs", "typescript", "nodedotjs", "tailwindcss", "docker"],
+    icons: ["python", "langchain", "huggingface", "fastapi", "springboot", "react"],
     radius: 148,
     seconds: 34,
   },
   {
-    icons: ["python", "postgresql", "git"],
+    icons: ["openjdk", "postgresql", "opencv"],
     radius: 88,
     seconds: 22,
     reverse: true,
