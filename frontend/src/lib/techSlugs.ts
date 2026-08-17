@@ -86,6 +86,12 @@ const EMOJIS: Record<string, string> = {
   "groq llm": "🤖",
   pygame: "🎮",
   imutils: "🛠️",
+  leadership: "🧭",
+  "event management": "📅",
+  "team management": "👥",
+  "technical coordination": "⚙️",
+  "hackathon organization": "🏆",
+  "community building": "🌱",
 };
 
 export function techEmoji(tag: string): string | undefined {

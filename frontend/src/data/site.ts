@@ -326,6 +326,26 @@ export const experience: Job[] = [
       { label: "Company Website", href: "https://www.dimts.in/" },
     ],
   },
+  {
+    role: "President",
+    company: "Cybernautics Tech Club, GD Goenka University",
+    location: "Gurugram, Haryana, India",
+    period: "2024 – 2025",
+    points: [
+      "Led the Cybernautics Tech Club, coordinating technical initiatives, workshops and student-focused technology activities.",
+      "Organised and led SyntaxSprint\u201925, a technical hackathon with 100+ participants, owning event planning, coordination and execution.",
+      "Collaborated with student teams and club members to promote hands-on learning, coding and participation in technical events.",
+      "Managed a student technical community and coordinated with faculty and organisers to execute club activities effectively.",
+    ],
+    stack: [
+      "Leadership",
+      "Event Management",
+      "Team Management",
+      "Technical Coordination",
+      "Hackathon Organization",
+      "Community Building",
+    ],
+  },
 ];
 
 export type Achievement = {
