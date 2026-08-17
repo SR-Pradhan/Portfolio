@@ -15,8 +15,8 @@ export default function Nav({ active }: { active: string }) {
   return (
     <div className="fixed inset-x-0 top-11 z-40 flex justify-center px-4">
       {/* hugs its content on desktop rather than stretching across the page */}
-      <nav className="w-full max-w-5xl rounded-2xl border border-border bg-surface/80 shadow-lg backdrop-blur-xl md:w-auto md:rounded-full">
-        <div className="flex items-center gap-2 px-4 py-2 md:gap-4 md:px-5">
+      <nav className="w-full max-w-full rounded-2xl border border-border bg-surface/80 shadow-lg backdrop-blur-xl md:w-auto md:rounded-full">
+        <div className="flex items-center gap-2 px-4 py-2 md:gap-4 md:px-6">
           <a href="#home" className="text-lg font-bold tracking-tight">
             {site.shortName}
             <span className="text-accent">.</span>
@@ -41,7 +41,7 @@ export default function Nav({ active }: { active: string }) {
             })}
           </div>
 
-          <div className="ml-auto flex items-center gap-3 md:ml-0">
+          <div className="ml-auto flex shrink-0 items-center gap-3 md:ml-0">
             {/* an action, not a section — so it gets a button, not link styling */}
             <a
               href={site.resumeUrl}
