@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { FileDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { nav, site } from "@/data/site";
 import ThemeToggle from "./ThemeToggle";
@@ -42,12 +42,14 @@ export default function Nav({ active }: { active: string }) {
           </div>
 
           <div className="ml-auto flex items-center gap-3 md:ml-0">
+            {/* an action, not a section — so it gets a button, not link styling */}
             <a
               href={site.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="hidden text-sm font-medium text-accent transition hover:opacity-80 sm:inline-block"
+              className="hidden items-center gap-1.5 rounded-full border border-accent/50 px-3.5 py-1.5 text-sm font-medium text-accent transition hover:bg-accent hover:text-white sm:inline-flex"
             >
+              <FileDown size={14} />
               Resume
             </a>
             <ThemeToggle />
@@ -85,8 +87,9 @@ export default function Nav({ active }: { active: string }) {
               href={site.resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="block rounded-lg px-3 py-2.5 text-sm font-medium text-accent"
+              className="mt-2 flex items-center justify-center gap-2 rounded-lg border border-accent/50 px-3 py-2.5 text-sm font-medium text-accent"
             >
+              <FileDown size={14} />
               Resume
             </a>
           </div>
