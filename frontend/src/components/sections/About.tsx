@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { about, site } from "@/data/site";
 import Highlighted from "../Highlighted";
+import PhotoCarousel from "../PhotoCarousel";
 import Reveal from "../Reveal";
 import Section from "../Section";
 
@@ -11,16 +11,7 @@ export default function About() {
           the page width runs ~630px tall and pushes the stats off screen */}
       <div className="grid items-center gap-10 md:grid-cols-[0.7fr_1.3fr]">
         <Reveal>
-          <div className="relative mx-auto aspect-[5/6] w-full max-w-[300px] overflow-hidden rounded-3xl border border-border bg-surface">
-            <Image
-              src={site.avatar}
-              alt={site.name}
-              fill
-              sizes="(max-width: 768px) 100vw, 40vw"
-              className="object-cover"
-              priority={false}
-            />
-          </div>
+          <PhotoCarousel photos={about.photos} alt={site.name} />
         </Reveal>
 
         <Reveal delay={0.1}>

@@ -21,7 +21,6 @@ export const site = {
   location: "Gurugram, India",
   email: "pradhansr2003@gmail.com",
   resumeUrl: "/resume.pdf", // TODO: drop resume.pdf into /public
-  avatar: "/avatar.webp", // cut-out portrait, transparent background
   /** Order here is the order they render. Leave a value "" to hide it. */
   socials: {
     github: "https://github.com/SR-Pradhan",
@@ -65,6 +64,16 @@ export const about = {
     "backend system design",
     "DSA",
     "production-oriented AI applications",
+  ],
+  /**
+   * About-section photo frame. One entry renders as a plain image; two or
+   * more turn it into an auto-advancing carousel with dots and swipe.
+   * Add files to /public and list them here, in display order.
+   */
+  photos: [
+    { src: "/avatar.webp", alt: "Sruti Ranjan Pradhan" },
+    // { src: "/photo-hackathon.webp", alt: "Presenting at ..." },
+    // { src: "/photo-team.webp", alt: "With the team at ..." },
   ],
   stats: [
     { value: "9.51", label: "CGPA" },
