@@ -109,9 +109,14 @@ export const education: Education[] = [
 
 export type Project = {
   title: string;
+  /** What it does. */
   blurb: string;
+  /** The technically interesting problem — rendered as its own labelled block. */
+  hardPart?: string;
   tags: string[];
   demo?: string;
+  /** Caveat shown beside the demo link, e.g. free-tier cold starts. */
+  demoNote?: string;
   code?: string;
   npm?: string;
   /** Renders a dimmed teaser card instead of a real one. */
@@ -120,25 +125,44 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Project One",
+    title: "Solvix",
     blurb:
-      "TODO: one or two lines on what it does and, more importantly, what was hard about it. Numbers help — users, latency, scale.",
-    tags: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind"],
-    demo: "#",
-    code: "#",
+      "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders — no manual logging required.",
+    hardPart:
+      "Making a stateless, free-tier-hosted API behave like a scheduled service: the backend sleeps when idle, so reminders and daily plan generation run via an external GitHub Actions cron rather than an in-process timer. The topic-weakness scoring also had to treat Codeforces and LeetCode differently, since only one records failed attempts — and repeated wrong submissions get deduplicated into a single attempt so retry-spam doesn't distort the score.",
+    tags: [
+      "FastAPI",
+      "async SQLAlchemy",
+      "Alembic",
+      "PostgreSQL",
+      "JWT",
+      "React",
+      "TypeScript",
+      "Vite",
+      "Recharts",
+      "Groq LLM",
+    ],
+    code: "https://github.com/SR-Pradhan/Solvix",
+    demo: "https://solvix-roan.vercel.app",
+    demoNote: "API cold-starts after idle — first request ~50s",
   },
   {
-    title: "Project Two",
-    blurb: "TODO: what it does and the interesting technical bit.",
-    tags: ["React", "Node.js", "Redis"],
-    demo: "#",
-    code: "#",
+    title: "Real-Time Drowsiness Detection",
+    blurb:
+      "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue — triggering an audio alert when eyes stay closed past a threshold.",
+    hardPart:
+      "Isolating a reliable signal from noisy real-time video. The EAR threshold and consecutive-frame count had to be tuned carefully enough to catch genuine drowsiness without false-triggering on normal blinks, while still running fast enough on a live webcam feed to be useful in real time.",
+    tags: ["Python", "OpenCV", "dlib", "imutils", "SciPy", "Streamlit", "pygame"],
+    code: "https://github.com/SR-Pradhan/real-time-drowsiness-detection",
   },
   {
-    title: "Project Three",
-    blurb: "TODO: what it does and the interesting technical bit.",
-    tags: ["Python", "FastAPI", "Docker"],
-    code: "#",
+    title: "Secure Auth System",
+    blurb:
+      "A Spring Boot authentication system implementing user registration, login, and role-based access control (USER/ADMIN), with BCrypt password encryption and session-managed protected routes.",
+    hardPart:
+      "Structuring authentication and authorization correctly with Spring Security — getting role-based access control, encrypted password storage, and session handling to work together within a clean Controller → Service → Repository architecture, rather than bolting security on as an afterthought.",
+    tags: ["Java", "Spring Boot", "Spring Security", "Thymeleaf", "MySQL", "Maven"],
+    code: "https://github.com/SR-Pradhan/secure-auth-system",
   },
   {
     title: "Coming Soon",

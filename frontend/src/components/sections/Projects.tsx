@@ -27,6 +27,11 @@ function LinkRow({ project }: { project: Project }) {
           {label}
         </a>
       ))}
+      {project.demoNote && (
+        <span className="w-full font-mono text-[11px] text-muted/70">
+          {project.demoNote}
+        </span>
+      )}
     </div>
   );
 }
@@ -69,9 +74,20 @@ export default function Projects() {
                   </span>
                 </div>
 
-                <p className="relative mt-3 flex-1 leading-relaxed text-muted">
-                  {p.blurb}
-                </p>
+                <p className="relative mt-3 leading-relaxed text-muted">{p.blurb}</p>
+
+                {p.hardPart && (
+                  <div className="relative mt-5 rounded-xl border border-border bg-background/50 p-4">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+                      The hard part
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      {p.hardPart}
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex-1" />
 
                 <ul className="relative mt-6 flex flex-wrap gap-2">
                   {p.tags.map((t) => (
