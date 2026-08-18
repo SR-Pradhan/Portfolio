@@ -24,7 +24,20 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([GREETING]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [nudged, setNudged] = useState(true); // assume seen until we check
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Show the tooltip and pulse only to first-time visitors — a widget that
+  // pulses on every page load reads as an ad.
+  useEffect(() => {
+    setNudged(localStorage.getItem("chat-seen") === "1");
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    setNudged(true);
+    localStorage.setItem("chat-seen", "1");
+  }, [open]);
 
   // keep the newest message in view as it streams in
   useEffect(() => {
@@ -100,18 +113,49 @@ export default function Chatbot() {
 
   return (
     <>
-      {/* launcher */}
+      {/* Launcher: a circular icon button, the convention every support widget
+          uses — it reads as a utility rather than a marketing CTA, and takes
+          the same corner space at any viewport width. */}
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Ask about Sruti"}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-accent px-4 py-3 text-sm font-medium text-white shadow-[0_8px_30px_-6px_var(--accent)] transition hover:opacity-90"
+        aria-expanded={open}
+        className="group fixed bottom-6 right-6 z-50 grid size-14 place-items-center rounded-full bg-accent text-white shadow-[0_10px_35px_-8px_var(--accent)] transition-transform hover:scale-105 active:scale-95"
       >
-        {open ? <X size={18} /> : <MessageCircle size={18} />}
-        <span className="hidden sm:inline">{open ? "Close" : "Ask about me"}</span>
+        {/* one-shot ring on first paint, drawing the eye without nagging */}
+        {!open && !nudged && (
+          <span
+            aria-hidden
+            className="absolute inset-0 rounded-full border-2 border-accent motion-safe:animate-[unlock-pulse_2s_ease-out_infinite]"
+          />
+        )}
+        <MessageCircle
+          size={22}
+          className={`absolute transition-all duration-200 ${
+            open ? "scale-50 opacity-0" : "scale-100 opacity-100"
+          }`}
+        />
+        <X
+          size={22}
+          className={`absolute transition-all duration-200 ${
+            open ? "scale-100 opacity-100" : "scale-50 opacity-0"
+          }`}
+        />
       </button>
 
+      {/* Tooltip, not a permanent label — says what the button is once, then
+          gets out of the way for good. */}
+      {!open && !nudged && (
+        <span
+          aria-hidden
+          className="pointer-events-none fixed bottom-[4.6rem] right-6 z-50 hidden animate-[fade-in_0.4s_ease-out_both] rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-muted shadow-lg sm:block"
+        >
+          Ask me about {site.shortName}
+        </span>
+      )}
+
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 flex h-[28rem] w-[calc(100vw-3rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl">
+        <div className="fixed bottom-24 right-6 z-50 flex h-[30rem] animate-[fade-in_0.2s_ease-out_both] w-[calc(100vw-3rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl">
           <header className="flex items-center gap-2 border-b border-border px-4 py-3">
             <span className="size-2 rounded-full bg-accent" />
             <p className="text-sm font-medium">Ask about {site.shortName}</p>

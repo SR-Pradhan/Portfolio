@@ -381,7 +381,7 @@ export const achievements: Achievement[] = [
     org: "Host Organisation", // TODO
     detail: "TODO: which track, out of how many teams, what you built.",
     year: "2025",
-    photo: "/proof-placeholder.svg", // TODO: swap for the real photo
+    photo: "/proof-placeholder.webp", // TODO: swap for the real photo
     hint: "🤫 Please don't hover your mouse onto this",
     reveal: "Aha! You discovered the win! 🎉",
   },
@@ -390,7 +390,7 @@ export const achievements: Achievement[] = [
     org: "Host Organisation", // TODO
     detail: "TODO: what you built and why it placed.",
     year: "2025",
-    photo: "/proof-placeholder.svg", // TODO
+    photo: "/proof-placeholder.webp", // TODO
     hint: "🤫 nothing to see here",
     reveal: "Caught me. Second place! 🥈",
   },
