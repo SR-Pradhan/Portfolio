@@ -26,7 +26,7 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sruti-ranjan.vercel.app",
   location: "Gurugram, India",
   email: "pradhansr2003@gmail.com",
-  resumeUrl: "/resume.pdf", // TODO: drop resume.pdf into /public
+  resumeUrl: "/resume.pdf",
   /** Order here is the order they render. Leave a value "" to hide it. */
   socials: {
     github: "https://github.com/SR-Pradhan",
