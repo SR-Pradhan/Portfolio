@@ -141,7 +141,7 @@ export const projects: Project[] = [
   {
     title: "Solvix",
     blurb:
-      "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders — no manual logging required.",
+      "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders. No manual logging required.",
     // Long version, kept for interviews: the backend sleeps when idle, so
     // reminders and plan generation run on an external cron rather than an
     // in-process timer; topic scoring treats Codeforces and LeetCode
@@ -164,12 +164,12 @@ export const projects: Project[] = [
     ],
     code: "https://github.com/SR-Pradhan/Solvix",
     demo: "https://solvix-roan.vercel.app",
-    demoNote: "API cold-starts after idle — first request ~50s",
+    demoNote: "API cold-starts after idle (first request ~50s)",
   },
   {
     title: "Real-Time Drowsiness Detection",
     blurb:
-      "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue — triggering an audio alert when eyes stay closed past a threshold.",
+      "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue, triggering an audio alert when eyes stay closed past a threshold.",
     hardPart:
       "Tuning the EAR threshold and frame count to catch real drowsiness without firing on ordinary blinks, while staying fast enough for live video.",
     tags: ["Python", "OpenCV", "dlib", "imutils", "SciPy", "Streamlit", "pygame"],
@@ -382,10 +382,10 @@ export type Achievement = {
 
 export const achievements: Achievement[] = [
   {
-    title: "4th of 130 teams — Nexify\u201925",
+    title: "4th of 130 teams at Nexify\u201925",
     org: "ZENITH, Sushant University",
     detail:
-      "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch \u2014 turning our scope into the presentation the judges actually scored.",
+      "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch, turning our scope into the presentation the judges actually scored.",
     year: "2025",
     photos: ["/proof/nexify/1.webp", "/proof/nexify/2.webp"],
     hint: "\ud83e\udd2b 130 teams. Don\u2019t look.",
@@ -395,17 +395,17 @@ export const achievements: Achievement[] = [
     title: "Organised SyntaxSprint\u201925",
     org: "Cybernautics Tech Club, GD Goenka University",
     detail:
-      "Ran a pan-India hackathon end to end \u2014 planning through run-of-show on the day \u2014 for 100+ participants.",
+      "Ran a pan-India hackathon for 100+ participants, from planning through run-of-show on the day.",
     year: "2025",
     photos: ["/proof/syntaxsprint/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
     hint: "\ud83e\udd2b Nothing happening here.",
     reveal: "100+ participants, one weekend. \ud83d\ude80",
   },
   {
-    title: "2nd Prize \u2014 1st Pay-Check Challenge",
+    title: "2nd Prize at the 1st Pay-Check Challenge",
     org: "Sunstone",
     detail:
-      "Fresh Fuel, a Shopify storefront concept \u2014 I handled wireframing, the SRS, branding and product listings. Best E-commerce Website, \u20b93,000.",
+      "Fresh Fuel, a Shopify storefront concept. I handled wireframing, the SRS, branding and product listings. Best E-commerce Website, \u20b93,000.",
     year: "2025", // TODO: confirm the year
     photos: ["/proof/paycheck/1.webp"],
     hint: "\ud83e\udd2b Seriously, move along.",
@@ -415,7 +415,7 @@ export const achievements: Achievement[] = [
     title: "Organised Python Workshop 1.0 & 2.0",
     org: "Sunstone",
     detail:
-      "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students \u2014 the same material pitched at very different levels of prior experience.",
+      "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students, pitching the same material at very different levels of prior experience.",
     year: "2024",
     photos: ["/proof/python-workshop/1.webp", "/proof/python-workshop/2.webp"],
     hint: "\ud83e\udd2b Definitely nothing here.",
@@ -427,7 +427,7 @@ export const achievements: Achievement[] = [
     // No photos: the proof is the profiles themselves, which are linked in the
     // hero and the footer. The card renders fine without any.
     detail:
-      "Consistent DSA practice across three platforms \u2014 the habit behind the problem-solving the rest of this page is built on.",
+      "Consistent DSA practice across three platforms. It\u2019s the habit behind the problem-solving the rest of this page is built on.",
     year: "Ongoing",
     hint: "\ud83e\udd2b Okay, fine, one more.",
     reveal: "200+ and counting. \ud83d\udcaa",

@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   // makes every relative URL below (OG image, canonical) absolute
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.role}`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} | ${site.role}`,
+    template: `%s | ${site.name}`,
   },
   description: site.tagline,
   applicationName: site.name,
@@ -42,13 +42,13 @@ export const metadata: Metadata = {
     type: "profile",
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — ${site.role}`,
+    title: `${site.name} | ${site.role}`,
     description: site.tagline,
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.role}`,
+    title: `${site.name} | ${site.role}`,
     description: site.tagline,
   },
   robots: {

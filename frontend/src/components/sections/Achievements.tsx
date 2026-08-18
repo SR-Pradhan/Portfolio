@@ -79,8 +79,8 @@ function Proof({ item, side }: { item: Achievement; side: "left" | "right" }) {
             src={src}
             alt={
               photos.length > 1
-                ? `${item.title} — proof ${i + 1} of ${photos.length}`
-                : `${item.title} — proof`
+                ? `Proof ${i + 1} of ${photos.length} for ${item.title}`
+                : `Proof for ${item.title}`
             }
             width={640}
             height={400}

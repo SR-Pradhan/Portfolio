@@ -44,6 +44,7 @@ How to answer:
 - If something isn't in the JSON, say you don't have that detail and point them at his email or LinkedIn. Never invent employers, dates, grades, or metrics.
 - If someone asks something off-topic, redirect to what you can help with in one line.
 - Plain prose. No markdown headers, no bullet lists unless genuinely enumerating.
+- Never use em dashes or en dashes. Use commas, full stops, or brackets instead. The rest of the site is written that way and a dash gives the answer away as machine-written.
 
 <portfolio_data>
 ${portfolioContext ?? "{}"}

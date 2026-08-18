@@ -12,6 +12,22 @@ import { Fragment, type ReactNode } from "react";
  * right failure mode for a chat bubble.
  */
 
+/**
+ * Strips the dashes the model reaches for regardless of what the system prompt
+ * says. Done here rather than in the stream because this sees the whole
+ * accumulated message, so a dash split across two SSE deltas still matches.
+ *
+ * An en dash between digits is a range and becomes a hyphen; everywhere else a
+ * dash is prose punctuation and becomes a comma, which is how the rest of the
+ * site is written.
+ */
+function normalizeDashes(text: string): string {
+  return text
+    .replace(/\u2011/g, "-") // non-breaking hyphen, e.g. "AI\u2011powered"
+    .replace(/(\d)\s*[\u2013\u2014]\s*(\d)/g, "$1-$2")
+    .replace(/\s*[\u2013\u2014]\s*/g, ", ");
+}
+
 /** Splits on **bold** spans and returns them as <strong>. */
 function inline(text: string): ReactNode[] {
   return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) => {
@@ -27,7 +43,7 @@ function inline(text: string): ReactNode[] {
 }
 
 export default function ChatMessage({ content }: { content: string }) {
-  const lines = content.split("\n");
+  const lines = normalizeDashes(content).split("\n");
   const blocks: ReactNode[] = [];
   let bullets: string[] = [];
 

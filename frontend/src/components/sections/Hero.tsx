@@ -27,7 +27,7 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             className="mb-5 font-mono text-sm text-accent"
           >
-            Hi, I&apos;m {site.shortName} —
+            Hi, I&apos;m {site.shortName}
           </motion.p>
 
           <motion.h1

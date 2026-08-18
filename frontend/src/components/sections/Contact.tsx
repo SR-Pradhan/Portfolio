@@ -126,7 +126,7 @@ export default function Contact() {
 
             {status === "sent" && (
               <p className="mt-4 text-center text-sm text-accent">
-                Message sent — I&apos;ll get back to you soon.
+                Message sent. I&apos;ll get back to you soon.
               </p>
             )}
             {status === "error" && (

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T02:54:25.639Z",
+  "generatedAt": "2026-08-18T03:03:06.930Z",
   "identity": {
     "name": "Sruti Ranjan Pradhan",
     "roles": [
@@ -136,7 +136,7 @@
   "projects": [
     {
       "title": "Solvix",
-      "what": "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders — no manual logging required.",
+      "what": "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders. No manual logging required.",
       "hardPart": "Free-tier hosting sleeps when idle, so daily plans and reminders run on an external GitHub Actions cron instead of an in-process timer.",
       "tech": [
         "FastAPI",
@@ -155,7 +155,7 @@
     },
     {
       "title": "Real-Time Drowsiness Detection",
-      "what": "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue — triggering an audio alert when eyes stay closed past a threshold.",
+      "what": "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue, triggering an audio alert when eyes stay closed past a threshold.",
       "hardPart": "Tuning the EAR threshold and frame count to catch real drowsiness without firing on ordinary blinks, while staying fast enough for live video.",
       "tech": [
         "Python",
@@ -250,34 +250,34 @@
   ],
   "achievements": [
     {
-      "title": "4th of 130 teams — Nexify’25",
+      "title": "4th of 130 teams at Nexify’25",
       "org": "ZENITH, Sushant University",
       "year": "2025",
-      "detail": "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch — turning our scope into the presentation the judges actually scored."
+      "detail": "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch, turning our scope into the presentation the judges actually scored."
     },
     {
       "title": "Organised SyntaxSprint’25",
       "org": "Cybernautics Tech Club, GD Goenka University",
       "year": "2025",
-      "detail": "Ran a pan-India hackathon end to end — planning through run-of-show on the day — for 100+ participants."
+      "detail": "Ran a pan-India hackathon for 100+ participants, from planning through run-of-show on the day."
     },
     {
-      "title": "2nd Prize — 1st Pay-Check Challenge",
+      "title": "2nd Prize at the 1st Pay-Check Challenge",
       "org": "Sunstone",
       "year": "2025",
-      "detail": "Fresh Fuel, a Shopify storefront concept — I handled wireframing, the SRS, branding and product listings. Best E-commerce Website, ₹3,000."
+      "detail": "Fresh Fuel, a Shopify storefront concept. I handled wireframing, the SRS, branding and product listings. Best E-commerce Website, ₹3,000."
     },
     {
       "title": "Organised Python Workshop 1.0 & 2.0",
       "org": "Sunstone",
       "year": "2024",
-      "detail": "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students — the same material pitched at very different levels of prior experience."
+      "detail": "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students, pitching the same material at very different levels of prior experience."
     },
     {
       "title": "200+ Coding Problems Solved",
       "org": "LeetCode · GeeksforGeeks · HackerRank",
       "year": "Ongoing",
-      "detail": "Consistent DSA practice across three platforms — the habit behind the problem-solving the rest of this page is built on."
+      "detail": "Consistent DSA practice across three platforms. It’s the habit behind the problem-solving the rest of this page is built on."
     }
   ],
   "certifications": [
