@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T03:47:43.168Z",
+  "generatedAt": "2026-08-18T03:53:26.244Z",
   "identity": {
     "name": "Sruti Ranjan Pradhan",
     "roles": [
@@ -44,11 +44,10 @@
     {
       "category": "Languages",
       "items": [
-        "Python",
         "Java",
-        "TypeScript",
-        "JavaScript",
-        "SQL"
+        "Python",
+        "SQL",
+        "JavaScript"
       ]
     },
     {
@@ -72,8 +71,7 @@
         "Spring Boot",
         "Spring Security",
         "REST APIs",
-        "JWT Auth",
-        "Alembic"
+        "JWT Auth"
       ]
     },
     {
@@ -106,6 +104,7 @@
       "items": [
         "Git",
         "GitHub Actions",
+        "Postman",
         "Maven",
         "Docker",
         "Vercel",

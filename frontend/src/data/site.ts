@@ -201,11 +201,10 @@ export const skills = [
   {
     category: "Languages",
     items: [
-      { name: "Python", icon: "python" },
       { name: "Java", icon: "java" },
-      { name: "TypeScript", icon: "typescript" },
-      { name: "JavaScript", icon: "javascript" },
+      { name: "Python", icon: "python" },
       { name: "SQL", emoji: "🗃️" },
+      { name: "JavaScript", icon: "javascript" },
     ],
   },
   {
@@ -232,7 +231,6 @@ export const skills = [
       { name: "Spring Security", icon: "springsecurity" },
       { name: "REST APIs", emoji: "🔌" },
       { name: "JWT Auth", icon: "jsonwebtokens" },
-      { name: "Alembic", emoji: "🧱" },
     ],
   },
   {
@@ -265,6 +263,7 @@ export const skills = [
     items: [
       { name: "Git", icon: "git" },
       { name: "GitHub Actions", icon: "githubactions" },
+      { name: "Postman", icon: "postman" },
       { name: "Maven", icon: "apachemaven" },
       { name: "Docker", icon: "docker" },
       { name: "Vercel", icon: "vercel" },
