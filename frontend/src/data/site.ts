@@ -387,7 +387,14 @@ export const achievements: Achievement[] = [
     detail:
       "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch, turning our scope into the presentation the judges actually scored.",
     year: "2025",
-    photos: ["/proof/nexify/1.webp", "/proof/nexify/2.webp"],
+    photos: [
+      "/proof/nexify/1.webp",
+      "/proof/nexify/2.webp",
+      // Last on purpose: this is a *participation* certificate, so it backs the
+      // dates and the organiser rather than the placement. Leading with it
+      // would undercut the 4th-of-130 claim in the heading.
+      "/proof/nexify/3.webp",
+    ],
     hint: "\ud83e\udd2b 130 teams. Don\u2019t look.",
     reveal: "4th place. \ud83c\udfc6",
   },
