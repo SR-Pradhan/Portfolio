@@ -90,6 +90,10 @@ export function Linkedin({ size = 20, className }: IconProps) {
  *
  * Stroked rather than filled so it stays legible at the 16px used in skill
  * chips, where a filled silhouette turns into a blob.
+ *
+ * The saucer is the widest element and is centred on x=12 on purpose. Without
+ * it the cup body sits left of centre and the handle sticks out right, and the
+ * whole mark reads as tilted inside the orbit's square chip.
  */
 export function Java({ size = 20, className }: IconProps) {
   return (
@@ -107,8 +111,8 @@ export function Java({ size = 20, className }: IconProps) {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M10.2 2.6c1.7 1.4-1.7 2.3 0 3.7" />
-        <path d="M13.9 3.4c1.4 1.1-1.4 1.9 0 3" />
+        <path d="M8.8 3.2c1.6 1.3-1.6 2.2 0 3.5" />
+        <path d="M12.2 3.2c1.6 1.3-1.6 2.2 0 3.5" />
       </g>
       <g
         stroke="#5382A1"
@@ -116,9 +120,9 @@ export function Java({ size = 20, className }: IconProps) {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M5.6 9.8h10.2v4.9a3.6 3.6 0 0 1-3.6 3.6H9.2a3.6 3.6 0 0 1-3.6-3.6z" />
-        <path d="M15.8 11.2h1.3a2.3 2.3 0 0 1 0 4.6h-1.3" />
-        <path d="M4.6 20.9h12.2" />
+        <path d="M6 10h9v4.8a3.6 3.6 0 0 1-3.6 3.6H9.6A3.6 3.6 0 0 1 6 14.8z" />
+        <path d="M15 11.4h1.4a2.4 2.4 0 0 1 0 4.8H15" />
+        <path d="M4.2 21h15.6" />
       </g>
     </svg>
   );

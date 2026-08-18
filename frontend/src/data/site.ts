@@ -433,15 +433,14 @@ export const achievements: Achievement[] = [
     reveal: "Two editions, three degree programmes. \ud83d\udc0d",
   },
   {
-    title: "200+ Coding Problems Solved",
+    title: "250+ Coding Problems Solved",
     org: "LeetCode \u00b7 GeeksforGeeks \u00b7 HackerRank",
-    // No photos: the proof is the profiles themselves, which are linked in the
-    // hero and the footer. The card renders fine without any.
+    photos: ["/proof/dsa/1.webp"],
     detail:
       "Consistent DSA practice across three platforms. It\u2019s the habit behind the problem-solving the rest of this page is built on.",
     year: "Ongoing",
     hint: "\ud83e\udd2b Okay, fine, one more.",
-    reveal: "200+ and counting. \ud83d\udcaa",
+    reveal: "250+ and counting. \ud83d\udcaa",
   },
 ];
 
