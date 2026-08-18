@@ -1,9 +1,12 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import Anthropic from "@anthropic-ai/sdk";
 
 const here = dirname(fileURLToPath(import.meta.url));
+
+/** Groq exposes an OpenAI-compatible chat-completions endpoint. */
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const MODEL = "llama-3.3-70b-versatile";
 
 /**
  * The bot's knowledge base, generated from the frontend's site.ts by
@@ -20,13 +23,11 @@ function loadContext(): string | null {
 const portfolioContext = loadContext();
 
 /**
- * The API key is optional on purpose: without it the chat endpoint answers
- * with a polite fallback instead of failing, so the site runs locally and in
- * preview deploys with no account and no spend. Same pattern as the mailer.
+ * The key is optional on purpose: without it the chat endpoint answers with a
+ * polite fallback instead of failing, so the site runs locally and in preview
+ * deploys with nothing configured. Same pattern as the mailer.
  */
-export const chatEnabled = Boolean(process.env.ANTHROPIC_API_KEY && portfolioContext);
-
-const client = new Anthropic(); // reads ANTHROPIC_API_KEY from the environment
+export const chatEnabled = Boolean(process.env.GROQ_API_KEY && portfolioContext);
 
 const SYSTEM_PROMPT = `You are the assistant on Sruti Ranjan Pradhan's portfolio website. Visitors are usually recruiters, hiring managers, or engineers deciding whether to reach out.
 
@@ -49,35 +50,53 @@ export type ChatMessage = { role: "user" | "assistant"; content: string };
 /**
  * Streams a reply, yielding text deltas as they arrive.
  *
- * Effort is `low` with thinking left on (the default). A portfolio FAQ needs
- * fast turnaround, and low effort is the cheap lever — disabling thinking
- * outright is the more expensive one and can leak internal tags into the
- * visible answer.
+ * Groq's stream is OpenAI-format SSE: `data: {json}` blocks ending with
+ * `data: [DONE]`. Network chunks can split mid-event, so the buffer is only
+ * drained on a complete blank-line separator.
  */
 export async function* streamReply(messages: ChatMessage[]) {
-  const stream = client.messages.stream({
-    model: "claude-opus-5",
-    max_tokens: 1024,
-    output_config: { effort: "low" },
-    system: [
-      {
-        type: "text",
-        text: SYSTEM_PROMPT,
-        // the system prompt is byte-identical on every request, so it caches
-        cache_control: { type: "ephemeral" },
-      },
-    ],
-    messages,
+  const res = await fetch(GROQ_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 512,
+      temperature: 0.6,
+      stream: true,
+      messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
+    }),
   });
 
-  for await (const event of stream) {
-    if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-      yield event.delta.text;
-    }
+  if (!res.ok || !res.body) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`Groq responded ${res.status}: ${detail.slice(0, 200)}`);
   }
 
-  const final = await stream.finalMessage();
-  if (final.stop_reason === "refusal") {
-    yield " …I can't help with that one, but ask me anything about Sruti's work.";
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    const parts = buffer.split("\n\n");
+    buffer = parts.pop() ?? "";
+
+    for (const part of parts) {
+      const line = part.replace(/^data: /, "").trim();
+      if (!line || line === "[DONE]") continue;
+      try {
+        const json = JSON.parse(line);
+        const delta: string | undefined = json.choices?.[0]?.delta?.content;
+        if (delta) yield delta;
+      } catch {
+        // a malformed frame shouldn't kill the whole stream
+      }
+    }
   }
 }
