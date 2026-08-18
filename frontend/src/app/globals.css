@@ -268,3 +268,26 @@ body {
     transition: none;
   }
 }
+
+/* ── Timeline rail fade ───────────────────────────────────────────────
+   Rails end in a hard cut otherwise, which looks severed next to the soft
+   gradients everywhere else. A mask fades the track, the drawn line and the
+   glow head together — doing it with a gradient background instead would
+   only fade one of the three. */
+
+.rail-fade {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 7%,
+    #000 93%,
+    transparent 100%
+  );
+}

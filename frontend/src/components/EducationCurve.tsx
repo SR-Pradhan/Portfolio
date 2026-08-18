@@ -114,9 +114,16 @@ export default function EducationCurve() {
       >
         <defs>
           <linearGradient id="edu-line" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.15" />
-            <stop offset="35%" stopColor="var(--accent)" stopOpacity="1" />
-            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.9" />
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0" />
+            <stop offset="14%" stopColor="var(--accent)" stopOpacity="1" />
+            <stop offset="86%" stopColor="var(--accent)" stopOpacity="1" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="edu-route" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0" />
+            <stop offset="14%" stopColor="var(--accent)" stopOpacity="0.3" />
+            <stop offset="86%" stopColor="var(--accent)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
           </linearGradient>
           <filter id="edu-glow" x="-60%" y="-10%" width="220%" height="120%">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -132,12 +139,11 @@ export default function EducationCurve() {
           ref={pathRef}
           d={PATH}
           fill="none"
-          stroke="var(--accent)"
           strokeWidth="2"
           strokeDasharray="1 11"
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"
-          opacity="0.28"
+          stroke="url(#edu-route)"
         />
 
         {/* the drawn line: pathLength animates 0 -> 1 with scroll */}

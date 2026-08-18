@@ -37,7 +37,7 @@ export default function ScrollRail({ className = "" }: { className?: string }) {
     <div
       ref={ref}
       aria-hidden
-      className={`pointer-events-none absolute inset-y-0 w-px ${className}`}
+      className={`rail-fade pointer-events-none absolute inset-y-0 w-px ${className}`}
     >
       <span className="absolute inset-0 bg-border" />
 
