@@ -159,10 +159,12 @@ export default function EducationCurve() {
         <span
           key={i}
           style={{ left: node.x, top: node.top }}
-          className={`absolute size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-background transition-all duration-500 ${
+          // unlit uses muted, not border: border-token on the near-black page
+          // is invisible, which reads as a missing dot rather than a dim one
+          className={`absolute size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-surface transition-all duration-500 ${
             i < lit
-              ? "border-accent shadow-[0_0_12px_2px_var(--accent)]"
-              : "border-border"
+              ? "border-accent bg-background shadow-[0_0_12px_2px_var(--accent)]"
+              : "border-muted/70"
           }`}
         />
       ))}
