@@ -86,24 +86,34 @@ export const about = {
 export type Education = {
   degree: string;
   school: string;
+  location?: string;
   period: string;
   grade?: string;
   detail?: string;
 };
 
+/** Reverse chronological: most recent first. */
 export const education: Education[] = [
   {
-    degree: "B.Tech, Computer Science",
-    school: "Your University", // TODO
-    period: "2021 — 2025",
-    grade: "CGPA 8.5 / 10.0",
-    detail: "TODO: relevant coursework, a thesis, a club you ran, anything notable.",
+    degree: "B.Tech — Computer Science and Engineering",
+    school: "GD Goenka University",
+    location: "Gurugram, Haryana, India",
+    period: "2023 – Present",
+    grade: "CGPA 9.51",
   },
   {
-    degree: "Senior Secondary (XII), Science",
-    school: "Your School", // TODO
-    period: "2019 — 2021",
-    grade: "92%",
+    degree: "Class XII — CHSE",
+    school: "FM Higher Secondary School",
+    location: "Balasore, Odisha",
+    period: "2021",
+    // TODO: add a percentage or grade if you want one shown
+  },
+  {
+    degree: "Class X — BSE",
+    school: "SR Bidyapitha",
+    location: "Bhograi, Balasore, Odisha",
+    period: "2019",
+    // TODO: add a percentage or grade if you want one shown
   },
 ];
 

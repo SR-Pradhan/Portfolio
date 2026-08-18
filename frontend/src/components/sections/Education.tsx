@@ -1,6 +1,7 @@
 import { GraduationCap } from "lucide-react";
 import { education } from "@/data/site";
 import Reveal from "../Reveal";
+import SpotlightCard from "../SpotlightCard";
 import Section from "../Section";
 
 export default function Education() {
@@ -9,7 +10,8 @@ export default function Education() {
       <div className="grid gap-5 md:grid-cols-2">
         {education.map((e, i) => (
           <Reveal key={i} delay={(i % 2) * 0.08}>
-            <article className="flex h-full flex-col rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-accent/60">
+            <SpotlightCard>
+              <div className="relative z-10 flex h-full flex-col p-7">
               <div className="flex items-start gap-4">
                 <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
                   <GraduationCap size={18} />
@@ -17,6 +19,9 @@ export default function Education() {
                 <div className="min-w-0">
                   <h3 className="font-semibold tracking-tight">{e.degree}</h3>
                   <p className="mt-1 text-sm text-accent">{e.school}</p>
+                  {e.location && (
+                    <p className="mt-0.5 text-xs text-muted">{e.location}</p>
+                  )}
                 </div>
               </div>
 
@@ -35,7 +40,8 @@ export default function Education() {
               {e.detail && (
                 <p className="mt-4 text-sm leading-relaxed text-muted">{e.detail}</p>
               )}
-            </article>
+              </div>
+            </SpotlightCard>
           </Reveal>
         ))}
       </div>
