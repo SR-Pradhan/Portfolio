@@ -1,25 +1,43 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "motion/react";
-import { useRef } from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+} from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /** The serpentine both paths follow. Kept in one place so they can't drift. */
 const PATH = "M80 0 C 8 170, 152 330, 80 500 C 8 670, 152 830, 80 1000";
+const VB_W = 160;
+const VB_H = 1000;
+
+type Node = { x: number; top: number; at: number };
 
 /**
  * The Education timeline's connector.
  *
- * Two stacked copies of the same curve: a faint dotted "route" showing where
- * the line goes, and a solid accent line that draws itself along that route
- * as you scroll the section — so the timeline builds as you read down it.
+ * Three parts: a faint dotted "route" showing where the line goes, a solid
+ * accent line that draws along it as you scroll, and a node per card sitting
+ * ON the curve.
  *
- * `preserveAspectRatio="none"` lets the curve stretch to whatever height the
- * cards end up being, and `vector-effect="non-scaling-stroke"` stops that
- * stretch from smearing the round dashes into ovals.
+ * That last part is why this measures rather than guesses. The curve swings
+ * left and right of centre, so a node pinned to `left-1/2` only touches the
+ * line where it happens to cross the middle — everywhere else it floats off
+ * to one side. Instead each card's vertical centre is measured, and the
+ * path's own x at that height is found with getPointAtLength.
+ *
+ * `preserveAspectRatio="none"` lets the curve stretch to the cards' real
+ * height, and `vector-effect="non-scaling-stroke"` stops that stretch from
+ * smearing the round dashes into ovals.
  */
 export default function EducationCurve() {
-  // useScroll wants an HTMLElement, so the ref lives on a wrapper div
+  // useScroll wants an HTMLElement, so the ref lives on the wrapper
   const ref = useRef<HTMLDivElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [lit, setLit] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -31,6 +49,58 @@ export default function EducationCurve() {
     damping: 26,
     restDelta: 0.001,
   });
+
+  // a node lights up once the drawn line reaches it
+  useMotionValueEvent(drawn, "change", (v) => {
+    setLit(nodes.filter((n) => v >= n.at - 0.02).length);
+  });
+
+  /** Walk the path for its x at a given viewBox y. y increases monotonically. */
+  const xAtY = useCallback((path: SVGPathElement, targetY: number) => {
+    const total = path.getTotalLength();
+    let lo = 0;
+    let hi = total;
+    for (let i = 0; i < 24; i++) {
+      const mid = (lo + hi) / 2;
+      if (path.getPointAtLength(mid).y < targetY) lo = mid;
+      else hi = mid;
+    }
+    return path.getPointAtLength((lo + hi) / 2).x;
+  }, []);
+
+  const measure = useCallback(() => {
+    const wrap = ref.current;
+    const path = pathRef.current;
+    const container = wrap?.parentElement;
+    if (!wrap || !path || !container) return;
+
+    const height = container.offsetHeight;
+    if (!height) return;
+
+    const rows = Array.from(
+      container.querySelectorAll<HTMLElement>("[data-edu-row]"),
+    );
+
+    setNodes(
+      rows.map((row) => {
+        const centre = row.offsetTop + row.offsetHeight / 2;
+        const fraction = centre / height;
+        return { x: xAtY(path, fraction * VB_H), top: centre, at: fraction };
+      }),
+    );
+  }, [xAtY]);
+
+  useEffect(() => {
+    measure();
+    const container = ref.current?.parentElement;
+    if (!container || typeof ResizeObserver === "undefined") return;
+
+    // card heights change with the viewport, so re-measure when they do
+    const observer = new ResizeObserver(measure);
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [measure]);
+
   return (
     <div
       ref={ref}
@@ -39,7 +109,7 @@ export default function EducationCurve() {
     >
       <svg
         className="h-full w-full"
-        viewBox="0 0 160 1000"
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
         preserveAspectRatio="none"
       >
         <defs>
@@ -57,8 +127,9 @@ export default function EducationCurve() {
           </filter>
         </defs>
 
-        {/* the route: always visible, faint */}
+        {/* the route: always visible, faint. also the path we measure. */}
         <path
+          ref={pathRef}
           d={PATH}
           fill="none"
           stroke="var(--accent)"
@@ -81,6 +152,20 @@ export default function EducationCurve() {
           style={{ pathLength: drawn }}
         />
       </svg>
+
+      {/* Nodes are HTML, not SVG circles: the viewBox is stretched vertically,
+          which would squash a circle into an ellipse. */}
+      {nodes.map((node, i) => (
+        <span
+          key={i}
+          style={{ left: node.x, top: node.top }}
+          className={`absolute size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-background transition-all duration-500 ${
+            i < lit
+              ? "border-accent shadow-[0_0_12px_2px_var(--accent)]"
+              : "border-border"
+          }`}
+        />
+      ))}
     </div>
   );
 }

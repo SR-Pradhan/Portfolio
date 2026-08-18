@@ -2,6 +2,7 @@ import Image from "next/image";
 import { achievements, type Achievement } from "@/data/site";
 import Padlock from "../Padlock";
 import Reveal from "../Reveal";
+import ScrollRail from "../ScrollRail";
 import Section from "../Section";
 
 function Card({ item }: { item: Achievement }) {
@@ -80,11 +81,9 @@ export default function Achievements() {
       sub="Hover a card to unlock the proof"
     >
       <div className="relative">
-        {/* centre rail, desktop only */}
-        <span
-          aria-hidden
-          className="absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-border to-transparent md:block"
-        />
+        {/* centre rail, desktop only — same scroll-drawn behaviour as the
+            Experience and Education timelines */}
+        <ScrollRail className="left-1/2 hidden -translate-x-1/2 md:block" />
 
         <div className="space-y-10 md:space-y-16">
           {achievements.map((item, i) => {

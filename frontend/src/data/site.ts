@@ -95,25 +95,23 @@ export type Education = {
 /** Reverse chronological: most recent first. */
 export const education: Education[] = [
   {
-    degree: "B.Tech — Computer Science and Engineering",
+    degree: "B.Tech, Computer Science and Engineering",
     school: "GD Goenka University",
-    location: "Gurugram, Haryana, India",
+    location: "Gurugram, Haryana",
     period: "2023 – Present",
     grade: "CGPA 9.51",
   },
   {
-    degree: "Class XII — CHSE",
+    degree: "Class XII, CHSE",
     school: "FM Higher Secondary School",
     location: "Balasore, Odisha",
     period: "2021",
-    // TODO: add a percentage or grade if you want one shown
   },
   {
-    degree: "Class X — BSE",
+    degree: "Class X, BSE",
     school: "SR Bidyapitha",
     location: "Bhograi, Balasore, Odisha",
     period: "2019",
-    // TODO: add a percentage or grade if you want one shown
   },
 ];
 

@@ -7,7 +7,11 @@ import SpotlightCard from "../SpotlightCard";
 
 export default function Education() {
   return (
-    <Section id="education" title="Education" sub="The formal part of the story">
+    <Section
+      id="education"
+      title="Education"
+      sub="The formal part of the story"
+    >
       <div className="relative">
         <EducationCurve />
 
@@ -16,13 +20,12 @@ export default function Education() {
             const left = i % 2 === 0;
             return (
               <Reveal key={i} delay={0.05}>
-                <div className="relative md:grid md:grid-cols-2 md:gap-16">
-                  {/* node on the rail, level with its card */}
-                  <span
-                    aria-hidden
-                    className="absolute left-1/2 top-1/2 hidden size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-background shadow-[0_0_12px_2px_var(--accent)] md:block"
-                  />
-
+                {/* data-edu-row: EducationCurve measures these to place its
+                    nodes on the curve rather than at the centre line */}
+                <div
+                  data-edu-row
+                  className="relative md:grid md:grid-cols-2 md:gap-16"
+                >
                   <div className={left ? "" : "md:col-start-2"}>
                     <SpotlightCard>
                       <div className="relative z-10 flex h-full flex-col p-7">
@@ -31,10 +34,16 @@ export default function Education() {
                             <GraduationCap size={18} />
                           </span>
                           <div className="min-w-0">
-                            <h3 className="font-semibold tracking-tight">{e.degree}</h3>
-                            <p className="mt-1 text-sm text-accent">{e.school}</p>
+                            <h3 className="font-semibold tracking-tight">
+                              {e.degree}
+                            </h3>
+                            <p className="mt-1 text-sm text-accent">
+                              {e.school}
+                            </p>
                             {e.location && (
-                              <p className="mt-0.5 text-xs text-muted">{e.location}</p>
+                              <p className="mt-0.5 text-xs text-muted">
+                                {e.location}
+                              </p>
                             )}
                           </div>
                         </div>
