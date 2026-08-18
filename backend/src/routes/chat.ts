@@ -69,9 +69,14 @@ router.post("/", async (req, res) => {
     return res.end();
   }
 
-  // stop generating if the visitor closes the tab mid-answer
+  // Stop generating if the visitor closes the tab mid-answer.
+  //
+  // This must listen on `res`, not `req`: on modern Node the request is a
+  // readable stream that emits "close" as soon as its *body* has been read,
+  // which is immediately — listening there aborts every stream before the
+  // first token. `res` closes when the connection actually goes away.
   let aborted = false;
-  req.on("close", () => {
+  res.on("close", () => {
     aborted = true;
   });
 

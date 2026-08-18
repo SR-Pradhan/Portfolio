@@ -6,7 +6,11 @@ const here = dirname(fileURLToPath(import.meta.url));
 
 /** Groq exposes an OpenAI-compatible chat-completions endpoint. */
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const MODEL = "llama-3.3-70b-versatile";
+/**
+ * Model IDs vary by Groq account — check `GET /openai/v1/models` with your key
+ * if this 404s. Overridable without a code change.
+ */
+const MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-120b";
 
 /**
  * The bot's knowledge base, generated from the frontend's site.ts by
@@ -63,7 +67,11 @@ export async function* streamReply(messages: ChatMessage[]) {
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: 512,
+      // gpt-oss models reason before answering, and that reasoning is billed
+      // against the same budget — too small a cap gets spent thinking and the
+      // visitor sees nothing. Keep effort low so most of it goes to the answer.
+      max_tokens: 1024,
+      reasoning_effort: "low",
       temperature: 0.6,
       stream: true,
       messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
@@ -92,8 +100,11 @@ export async function* streamReply(messages: ChatMessage[]) {
       if (!line || line === "[DONE]") continue;
       try {
         const json = JSON.parse(line);
-        const delta: string | undefined = json.choices?.[0]?.delta?.content;
-        if (delta) yield delta;
+        const delta = json.choices?.[0]?.delta;
+        // `reasoning` is the model's internal analysis — never show it to
+        // visitors. Only `content` is the answer.
+        const text: string | undefined = delta?.content;
+        if (text) yield text;
       } catch {
         // a malformed frame shouldn't kill the whole stream
       }
