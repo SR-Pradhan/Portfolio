@@ -474,6 +474,26 @@ export const certifications: Certification[] = [
   },
 ];
 
+/**
+ * Trailing tile in the Projects grid.
+ *
+ * It also does layout work: with an odd number of projects the two-column grid
+ * leaves a visible hole, and this fills it. Delete the export and the tile if
+ * the grid ever comes out even and the note isn't wanted.
+ */
+export const projectsMore = {
+  label: "More in the works",
+  detail: "New builds land here as they ship. Everything else lives on GitHub.",
+  cta: "Browse GitHub",
+};
+
+/** Trailing tile in the Certifications track. Set `show: false` when nothing is pending. */
+export const certificationsMore = {
+  show: true,
+  label: "More in progress",
+  detail: "Currently working towards further certifications.",
+};
+
 export const contact = {
   heading: "Say hi, don't be shy",
   sub: "Got a role, a project, or just want to talk shop? My inbox is open.",

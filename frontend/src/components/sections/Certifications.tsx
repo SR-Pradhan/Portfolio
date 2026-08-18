@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowUpRight, BadgeCheck } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, Hourglass } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef } from "react";
-import { certifications } from "@/data/site";
+import { certifications, certificationsMore } from "@/data/site";
 import Reveal from "../Reveal";
 import Section from "../Section";
 import TechIcon from "../TechIcon";
@@ -77,6 +77,22 @@ export default function Certifications() {
                 </Card>
               );
             })}
+
+            {/* Dashed, and last in the track: says the list is still growing
+                without inventing a credential that doesn't exist yet. */}
+            {certificationsMore.show && (
+              <div className="flex w-72 shrink-0 flex-col rounded-2xl border border-dashed border-border p-6 sm:w-80">
+                <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-border text-muted">
+                  <Hourglass size={18} />
+                </span>
+                <h3 className="mt-5 font-semibold leading-snug tracking-tight text-muted">
+                  {certificationsMore.label}
+                </h3>
+                <p className="mt-1 flex-1 text-sm text-muted">
+                  {certificationsMore.detail}
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
       </Reveal>

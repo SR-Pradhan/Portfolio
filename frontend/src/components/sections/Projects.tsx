@@ -1,6 +1,6 @@
-import { ArrowUpRight, Package } from "lucide-react";
+import { ArrowUpRight, Package, Plus } from "lucide-react";
 import { Github } from "@/components/BrandIcons";
-import { projects, type Project } from "@/data/site";
+import { projects, type Project, projectsMore, site } from "@/data/site";
 import { techEmoji, techSlug } from "@/lib/techSlugs";
 import Reveal from "../Reveal";
 import Section from "../Section";
@@ -130,6 +130,34 @@ export default function Projects() {
             </Reveal>
           ),
         )}
+
+        {/* Dashed rather than solid so it reads as a placeholder, not a project.
+            Fills the empty cell an odd project count leaves in a 2-col grid. */}
+        <Reveal delay={0.05}>
+          <a
+            href={site.socials.github}
+            target="_blank"
+            rel="noreferrer"
+            className="group flex h-full min-h-[14rem] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border p-8 text-center transition-colors hover:border-accent/60"
+          >
+            <span className="grid size-11 place-items-center rounded-xl border border-border text-muted transition-colors group-hover:border-accent group-hover:text-accent">
+              <Plus size={18} />
+            </span>
+            <span className="font-semibold tracking-tight">
+              {projectsMore.label}
+            </span>
+            <span className="max-w-xs text-sm leading-relaxed text-muted">
+              {projectsMore.detail}
+            </span>
+            <span className="mt-1 flex items-center gap-1 font-mono text-xs text-accent">
+              {projectsMore.cta}
+              <ArrowUpRight
+                size={13}
+                className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </span>
+          </a>
+        </Reveal>
       </div>
     </Section>
   );
