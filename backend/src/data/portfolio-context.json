@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T03:59:25.813Z",
+  "generatedAt": "2026-08-18T04:10:25.970Z",
   "identity": {
     "name": "Sruti Ranjan Pradhan",
     "roles": [
@@ -281,19 +281,14 @@
   ],
   "certifications": [
     {
-      "title": "API Fundamentals Student Expert",
-      "issuer": "Postman",
-      "year": "2025"
+      "title": "Python Course for Beginners: Mastering the Essentials",
+      "issuer": "Scaler",
+      "year": "2026"
     },
     {
-      "title": "Certification Name",
-      "issuer": "Coursera",
-      "year": "2024"
-    },
-    {
-      "title": "Certification Name",
-      "issuer": "freeCodeCamp",
-      "year": "2024"
+      "title": "Programming For Beginners: Master the C Language",
+      "issuer": "Udemy",
+      "year": "2023"
     }
   ]
 }

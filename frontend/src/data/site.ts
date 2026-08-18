@@ -447,45 +447,33 @@ export type Certification = {
   title: string;
   issuer: string;
   year: string;
-  /** simple-icons slug for the issuer, e.g. "postman", "coursera", "google". */
+  /** simple-icons slug for the issuer, e.g. "udemy", "coursera". */
   icon?: string;
   url?: string;
+  /** Scan of the certificate. Opens full-size when the card is clicked. */
+  image?: string;
 };
 
 export const certifications: Certification[] = [
   {
-    title: "API Fundamentals Student Expert", // TODO
-    issuer: "Postman", // TODO
-    year: "2025",
-    icon: "postman",
-    url: "", // optional — links the row to the credential
+    title: "Python Course for Beginners: Mastering the Essentials",
+    issuer: "Scaler",
+    year: "2026",
+    // Scaler has no simple-icons mark, so this falls back to the badge glyph
+    image: "/certificates/python-scaler/1-20cf0aa6.webp",
   },
   {
-    title: "Certification Name", // TODO
-    issuer: "Coursera", // TODO
-    year: "2024",
-    icon: "coursera",
-  },
-  {
-    title: "Certification Name", // TODO
-    issuer: "freeCodeCamp", // TODO
-    year: "2024",
-    icon: "freecodecamp",
+    title: "Programming For Beginners: Master the C Language",
+    issuer: "Udemy",
+    year: "2023",
+    icon: "udemy",
+    image: "/certificates/c-language/1-2cae510e.webp",
   },
 ];
 
-/**
- * Trailing tile in the Projects grid.
- *
- * It also does layout work: with an odd number of projects the two-column grid
- * leaves a visible hole, and this fills it. Delete the export and the tile if
- * the grid ever comes out even and the note isn't wanted.
- */
-export const projectsMore = {
-  label: "More in the works",
-  detail: "New builds land here as they ship. Everything else lives on GitHub.",
-  cta: "Browse GitHub",
-};
+/** Quiet link under the Projects grid. The "Coming Soon" card already says more
+ *  is on the way, so this only needs to point at the rest of the work. */
+export const projectsMore = { cta: "See more on GitHub" };
 
 /** Trailing tile in the Certifications track. Set `show: false` when nothing is pending. */
 export const certificationsMore = {

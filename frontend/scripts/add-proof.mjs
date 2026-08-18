@@ -30,7 +30,7 @@ const [slug, ...sources] = process.argv.slice(2);
 
 if (!slug || sources.length === 0) {
   console.error("usage: node scripts/add-proof.mjs <slug> <photo> [photo...]");
-  console.error("  slug: nexify | syntaxsprint | paycheck | python-workshop");
+  console.error("  slug: an achievement slug (nexify), or a path under public/ (certificates/c-language)");
   process.exit(1);
 }
 
@@ -41,7 +41,12 @@ if (sources.length > 3) {
   process.exit(1);
 }
 
-const dest = path.join(process.cwd(), "public", "proof", slug);
+// A bare name is an achievement slug; anything containing a slash is a path
+// under public/, so the same hashing works for certificates.
+const dest = slug.includes("/")
+  ? path.join(process.cwd(), "public", slug)
+  : path.join(process.cwd(), "public", "proof", slug);
+const urlBase = slug.includes("/") ? `/${slug}` : `/proof/${slug}`;
 await mkdir(dest, { recursive: true });
 
 // check every source before writing anything, so a typo in the last argument
@@ -78,9 +83,9 @@ for (const [i, src] of sources.entries()) {
   }
 
   console.log(
-    `  /proof/${slug}/${name}  ${info.width}x${info.height}  ${Math.round(data.length / 1024)}KB`,
+    `  ${urlBase}/${name}  ${info.width}x${info.height}  ${Math.round(data.length / 1024)}KB`,
   );
-  written.push(`"/proof/${slug}/${name}"`);
+  written.push(`"${urlBase}/${name}"`);
 }
 
 console.log("\nNow set this in src/data/site.ts:");

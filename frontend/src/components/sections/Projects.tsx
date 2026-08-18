@@ -1,4 +1,4 @@
-import { ArrowUpRight, Package, Plus } from "lucide-react";
+import { ArrowUpRight, Package } from "lucide-react";
 import { Github } from "@/components/BrandIcons";
 import { projects, type Project, projectsMore, site } from "@/data/site";
 import { techEmoji, techSlug } from "@/lib/techSlugs";
@@ -131,34 +131,27 @@ export default function Projects() {
           ),
         )}
 
-        {/* Dashed rather than solid so it reads as a placeholder, not a project.
-            Fills the empty cell an odd project count leaves in a 2-col grid. */}
-        <Reveal delay={0.05}>
+      </div>
+
+      {/* Deliberately a plain link, not a card. The grid already carries a
+          "Coming Soon" tile saying more is on the way, and a second large
+          placeholder would say it twice. */}
+      <Reveal delay={0.05}>
+        <div className="mt-10 flex justify-center">
           <a
             href={site.socials.github}
             target="_blank"
             rel="noreferrer"
-            className="group flex h-full min-h-[14rem] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border p-8 text-center transition-colors hover:border-accent/60"
+            className="group flex items-center gap-1.5 font-mono text-sm text-muted transition-colors hover:text-accent"
           >
-            <span className="grid size-11 place-items-center rounded-xl border border-border text-muted transition-colors group-hover:border-accent group-hover:text-accent">
-              <Plus size={18} />
-            </span>
-            <span className="font-semibold tracking-tight">
-              {projectsMore.label}
-            </span>
-            <span className="max-w-xs text-sm leading-relaxed text-muted">
-              {projectsMore.detail}
-            </span>
-            <span className="mt-1 flex items-center gap-1 font-mono text-xs text-accent">
-              {projectsMore.cta}
-              <ArrowUpRight
-                size={13}
-                className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </span>
+            {projectsMore.cta}
+            <ArrowUpRight
+              size={14}
+              className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
           </a>
-        </Reveal>
-      </div>
+        </div>
+      </Reveal>
     </Section>
   );
 }

@@ -2,14 +2,17 @@
 
 import { ArrowUpRight, BadgeCheck, Hourglass } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { certifications, certificationsMore } from "@/data/site";
+import ProofLightbox from "../ProofLightbox";
 import Reveal from "../Reveal";
 import Section from "../Section";
 import TechIcon from "../TechIcon";
 
 export default function Certifications() {
   const trackRef = useRef<HTMLDivElement>(null);
+  // the certificate scan being viewed, if any
+  const [open, setOpen] = useState<{ image: string; title: string } | null>(null);
   const reduced = useReducedMotion();
 
   // 0 when the section first enters the viewport, 1 once it has left the top
@@ -40,7 +43,9 @@ export default function Certifications() {
             className="mx-auto flex w-max gap-6"
           >
             {certifications.map((c, i) => {
-              const Card = c.url ? "a" : "div";
+              // A credential URL is the strongest proof, so it wins the click.
+              // Failing that, the scan is what lets someone verify the claim.
+              const Card = c.url ? "a" : c.image ? "button" : "div";
               return (
                 <Card
                   // index key: the list is static and never reorders, and
@@ -48,8 +53,15 @@ export default function Certifications() {
                   key={i}
                   {...(c.url
                     ? { href: c.url, target: "_blank", rel: "noreferrer" }
-                    : {})}
-                  className="group flex w-72 shrink-0 flex-col rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/60 sm:w-80"
+                    : c.image
+                      ? {
+                          onClick: () =>
+                            setOpen({ image: c.image!, title: c.title }),
+                        }
+                      : {})}
+                  className={`group flex w-72 shrink-0 flex-col rounded-2xl border border-border bg-surface p-6 text-left transition-colors hover:border-accent/60 sm:w-80 ${
+                    c.url || c.image ? "cursor-pointer" : ""
+                  }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent-soft">
@@ -59,7 +71,7 @@ export default function Certifications() {
                         <BadgeCheck size={19} className="text-accent" />
                       )}
                     </span>
-                    {c.url && (
+                    {(c.url || c.image) && (
                       <ArrowUpRight
                         size={16}
                         className="text-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
@@ -96,6 +108,16 @@ export default function Certifications() {
           </motion.div>
         </div>
       </Reveal>
+
+      {open && (
+        <ProofLightbox
+          photos={[open.image]}
+          title={open.title}
+          index={0}
+          onIndex={() => {}}
+          onClose={() => setOpen(null)}
+        />
+      )}
     </Section>
   );
 }
