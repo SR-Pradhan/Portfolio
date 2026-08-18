@@ -7,7 +7,7 @@
  */
 const SLUGS: Record<string, string> = {
   // languages
-  java: "openjdk",
+  java: "java",
   python: "python",
   typescript: "typescript",
   javascript: "javascript",

@@ -1,4 +1,5 @@
 import * as simpleIcons from "simple-icons";
+import { Java } from "./BrandIcons";
 
 type SimpleIcon = { path: string; hex: string; title: string };
 
@@ -22,6 +23,9 @@ export default function TechIcon({
   slug?: string;
   size?: number;
 }) {
+  // Java has no simple-icons mark, so it comes from BrandIcons instead
+  if (slug === "java") return <Java size={size} />;
+
   const icon = lookup(slug);
 
   if (!icon) {

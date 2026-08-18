@@ -202,7 +202,7 @@ export const skills = [
     category: "Languages",
     items: [
       { name: "Python", icon: "python" },
-      { name: "Java", icon: "openjdk" },
+      { name: "Java", icon: "java" },
       { name: "TypeScript", icon: "typescript" },
       { name: "JavaScript", icon: "javascript" },
       { name: "SQL", emoji: "🗃️" },

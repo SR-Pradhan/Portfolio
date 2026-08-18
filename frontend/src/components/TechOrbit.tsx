@@ -21,7 +21,7 @@ const RINGS: Ring[] = [
     seconds: 34,
   },
   {
-    icons: ["openjdk", "postgresql", "opencv"],
+    icons: ["java", "postgresql", "opencv"],
     radius: 88,
     seconds: 22,
     reverse: true,
