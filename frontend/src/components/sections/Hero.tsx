@@ -16,7 +16,7 @@ export default function Hero() {
       {/* soft accent glow behind the headline */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/4 top-1/4 -z-10 size-[32rem] -translate-x-1/2 rounded-full bg-accent/15 blur-[120px]"
+        className="pointer-events-none absolute left-1/4 top-1/4 -z-10 size-[32rem] -translate-x-1/2 rounded-full bg-accent/[0.05] blur-[120px] dark:bg-accent/15"
       />
 
       <div className="grid items-center gap-12 md:grid-cols-[1.3fr_1fr]">

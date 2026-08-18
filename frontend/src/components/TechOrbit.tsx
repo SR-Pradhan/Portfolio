@@ -55,8 +55,10 @@ export default function TechOrbit() {
       aria-hidden
       className="relative hidden aspect-square w-full max-w-[360px] items-center justify-center md:flex"
     >
-      {/* soft bloom behind the whole thing */}
-      <span className="absolute size-56 rounded-full bg-accent/20 blur-[90px]" />
+      {/* Soft bloom behind the whole thing. Much weaker on light: the same
+          opacity that reads as a glow against black turns into a lavender
+          stain on white. */}
+      <span className="absolute size-56 rounded-full bg-accent/[0.08] blur-[90px] dark:bg-accent/20" />
 
       {RINGS.map(({ icons, radius, seconds, reverse }) => (
         <div

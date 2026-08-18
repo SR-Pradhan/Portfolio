@@ -72,7 +72,9 @@ export default function Starfield() {
       ctx.clearRect(0, 0, w, h);
 
       const rgb = isDark() ? "255,255,255" : "20,20,30";
-      const base = isDark() ? 0.55 : 0.35;
+      // lower on light: dark specks on white read as dirt long before they
+      // read as stars
+      const base = isDark() ? 0.55 : 0.22;
 
       for (const s of stars) {
         const twinkle = reduced
