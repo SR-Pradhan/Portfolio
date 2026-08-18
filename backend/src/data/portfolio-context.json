@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T02:38:15.525Z",
+  "generatedAt": "2026-08-18T02:45:52.060Z",
   "identity": {
     "name": "Sruti Ranjan Pradhan",
     "roles": [
@@ -266,6 +266,12 @@
       "org": "Best E-commerce Website",
       "year": "2025",
       "detail": "Fresh Fuel, a Shopify storefront concept — I handled wireframing, the SRS, branding and product listings. ₹3,000 prize."
+    },
+    {
+      "title": "Organised Python Workshop 1.0 & 2.0",
+      "org": "GD Goenka University",
+      "year": "2024 – 2025",
+      "detail": "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students — the same material pitched at very different levels of prior experience."
     },
     {
       "title": "200+ Coding Problems Solved",

@@ -412,6 +412,16 @@ export const achievements: Achievement[] = [
     reveal: "Second place, and a cheque. \ud83e\udd48",
   },
   {
+    title: "Organised Python Workshop 1.0 & 2.0",
+    org: "GD Goenka University", // TODO: confirm if this ran under Cybernautics
+    detail:
+      "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students \u2014 the same material pitched at very different levels of prior experience.",
+    year: "2024 \u2013 2025", // TODO: confirm the years
+    photos: ["/proof/python-workshop/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
+    hint: "\ud83e\udd2b Definitely nothing here.",
+    reveal: "Two editions, three degree programmes. \ud83d\udc0d",
+  },
+  {
     title: "200+ Coding Problems Solved",
     org: "LeetCode \u00b7 GeeksforGeeks \u00b7 HackerRank",
     // No photos: the proof is the profiles themselves, which are linked in the
@@ -419,7 +429,7 @@ export const achievements: Achievement[] = [
     detail:
       "Consistent DSA practice across three platforms \u2014 the habit behind the problem-solving the rest of this page is built on.",
     year: "Ongoing",
-    hint: "\ud83e\udd2b Last one. Resist.",
+    hint: "\ud83e\udd2b Okay, fine, one more.",
     reveal: "200+ and counting. \ud83d\udcaa",
   },
 ];
