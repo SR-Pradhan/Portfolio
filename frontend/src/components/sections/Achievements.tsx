@@ -94,7 +94,9 @@ export default function Achievements() {
                 <div className="group relative grid items-center gap-6 md:grid-cols-2 md:gap-12">
                   <span
                     aria-hidden
-                    className="absolute left-1/2 hidden size-2.5 -translate-x-1/2 rounded-full bg-border transition-colors duration-300 group-hover:bg-accent group-hover:shadow-[0_0_12px_2px_var(--accent)] md:block"
+                    // same hollow-ring node as the Experience and Education timelines —
+                    // muted until the row is active, then accent + glow
+                    className="absolute left-1/2 top-1/2 hidden size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-muted/70 bg-surface transition-all duration-300 group-hover:border-accent group-hover:bg-background group-hover:shadow-[0_0_12px_2px_var(--accent)] md:block"
                   />
 
                   <div className={cardLeft ? "md:pr-0" : "md:col-start-2"}>
