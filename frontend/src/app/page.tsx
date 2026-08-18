@@ -1,3 +1,4 @@
+import Chatbot from "@/components/Chatbot";
 import CursorFollower from "@/components/CursorFollower";
 import Footer from "@/components/Footer";
 import SiteChrome from "@/components/SiteChrome";
@@ -30,6 +31,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <Chatbot />
     </>
   );
 }

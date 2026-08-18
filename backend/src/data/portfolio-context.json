@@ -1,0 +1,288 @@
+{
+  "generatedAt": "2026-08-18T01:40:37.287Z",
+  "identity": {
+    "name": "Sruti Ranjan Pradhan",
+    "roles": [
+      "AI Engineer",
+      "Backend Developer",
+      "Problem Solver",
+      "DSA Enthusiast"
+    ],
+    "tagline": "Aspiring AI Engineer with a backend development foundation, solving real-world problems through code.",
+    "location": "Gurugram, India",
+    "email": "pradhansr2003@gmail.com",
+    "socials": {
+      "github": "https://github.com/SR-Pradhan",
+      "linkedin": "https://www.linkedin.com/in/sruti-ranjan/",
+      "leetcode": "https://leetcode.com/u/SR_Pradhan/",
+      "codolio": "https://codolio.com/profile/SR-Pradhan"
+    }
+  },
+  "about": {
+    "intro": "I'm a Computer Science & Engineering student focused on AI Engineering, with a strong backend foundation in Java and Spring Boot. I'm building toward becoming an AI Engineer who can design, develop, and deploy practical AI-powered products, not just experiment with models.",
+    "body": "Right now, I'm deepening my skills in AI engineering, LLMs, AI APIs, intelligent workflows, and backend system design while continuing to strengthen my DSA and software engineering fundamentals. I'm particularly interested in building production-oriented AI applications where strong backend architecture and AI capabilities work together to solve real problems.",
+    "stats": [
+      {
+        "value": "9.51",
+        "label": "CGPA"
+      },
+      {
+        "value": "1",
+        "label": "Industry Internship"
+      },
+      {
+        "value": "8+",
+        "label": "Projects Built"
+      },
+      {
+        "value": "5+",
+        "label": "Years Writing Code"
+      }
+    ]
+  },
+  "skills": [
+    {
+      "category": "Languages",
+      "items": [
+        "Python",
+        "Java",
+        "TypeScript",
+        "JavaScript",
+        "SQL"
+      ]
+    },
+    {
+      "category": "AI Engineering",
+      "items": [
+        "LLM APIs (Groq, OpenAI)",
+        "Prompt Engineering",
+        "RAG",
+        "Embeddings",
+        "LangChain",
+        "LangGraph",
+        "AI Agents",
+        "Multi-Agent Systems",
+        "RAGAS"
+      ]
+    },
+    {
+      "category": "Backend",
+      "items": [
+        "FastAPI",
+        "Spring Boot",
+        "Spring Security",
+        "REST APIs",
+        "JWT Auth",
+        "Alembic"
+      ]
+    },
+    {
+      "category": "Frontend",
+      "items": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "category": "Databases",
+      "items": [
+        "PostgreSQL",
+        "MySQL",
+        "ChromaDB",
+        "Pinecone"
+      ]
+    },
+    {
+      "category": "Computer Vision",
+      "items": [
+        "OpenCV",
+        "dlib"
+      ]
+    },
+    {
+      "category": "Tools & Platforms",
+      "items": [
+        "Git",
+        "GitHub Actions",
+        "Maven",
+        "Docker",
+        "Vercel",
+        "Render",
+        "Hugging Face"
+      ]
+    },
+    {
+      "category": "Core CS",
+      "items": [
+        "OOP",
+        "DBMS",
+        "Operating Systems",
+        "Computer Networks",
+        "DSA"
+      ]
+    },
+    {
+      "category": "Soft Skills",
+      "items": [
+        "Problem Solving",
+        "Technical Communication",
+        "Team Collaboration",
+        "Leadership"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Solvix",
+      "what": "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders — no manual logging required.",
+      "hardPart": "Free-tier hosting sleeps when idle, so daily plans and reminders run on an external GitHub Actions cron instead of an in-process timer.",
+      "tech": [
+        "FastAPI",
+        "async SQLAlchemy",
+        "Alembic",
+        "PostgreSQL",
+        "JWT",
+        "React",
+        "TypeScript",
+        "Vite",
+        "Recharts",
+        "Groq LLM"
+      ],
+      "code": "https://github.com/SR-Pradhan/Solvix",
+      "demo": "https://solvix-roan.vercel.app"
+    },
+    {
+      "title": "Real-Time Drowsiness Detection",
+      "what": "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue — triggering an audio alert when eyes stay closed past a threshold.",
+      "hardPart": "Tuning the EAR threshold and frame count to catch real drowsiness without firing on ordinary blinks, while staying fast enough for live video.",
+      "tech": [
+        "Python",
+        "OpenCV",
+        "dlib",
+        "imutils",
+        "SciPy",
+        "Streamlit",
+        "pygame"
+      ],
+      "code": "https://github.com/SR-Pradhan/real-time-drowsiness-detection"
+    },
+    {
+      "title": "Secure Auth System",
+      "what": "A Spring Boot authentication system implementing user registration, login, and role-based access control (USER/ADMIN), with BCrypt password encryption and session-managed protected routes.",
+      "hardPart": "Designing role-based access, BCrypt storage, and session handling into the Spring Security layer from the start, rather than bolting security on afterwards.",
+      "tech": [
+        "Java",
+        "Spring Boot",
+        "Spring Security",
+        "Thymeleaf",
+        "MySQL",
+        "Maven"
+      ],
+      "code": "https://github.com/SR-Pradhan/secure-auth-system"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Full-Stack Java Developer Intern",
+      "company": "Delhi Integrated Multi-Modal Transit System Ltd. (DIMTS)",
+      "location": "Delhi, India",
+      "period": "June 2025 – August 2025",
+      "highlights": [
+        "Built OnlineQuizWebApp with Java, JSP, Servlets (J2EE), JDBC and SQL Server, following an MVC architecture.",
+        "Implemented dynamic quiz workflows, authentication and real-time evaluation with support for concurrent users.",
+        "Designed and optimised SQL queries for efficient data retrieval, improving application response time.",
+        "Debugged and resolved application-level issues, improving system stability and performance."
+      ],
+      "tech": [
+        "Java",
+        "JSP",
+        "Servlets",
+        "JDBC",
+        "SQL Server",
+        "MVC",
+        "HTML/CSS",
+        "JavaScript"
+      ]
+    },
+    {
+      "role": "President",
+      "company": "Cybernautics Tech Club, GD Goenka University",
+      "location": "Gurugram, Haryana, India",
+      "period": "2024 – 2025",
+      "highlights": [
+        "Led the Cybernautics Tech Club, coordinating technical initiatives, workshops and student-focused technology activities.",
+        "Organised and led SyntaxSprint’25, a technical hackathon with 100+ participants, owning event planning, coordination and execution.",
+        "Collaborated with student teams and club members to promote hands-on learning, coding and participation in technical events.",
+        "Managed a student technical community and coordinated with faculty and organisers to execute club activities effectively."
+      ],
+      "tech": [
+        "Leadership",
+        "Event Management",
+        "Team Management",
+        "Technical Coordination",
+        "Hackathon Organization",
+        "Community Building"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech, Computer Science and Engineering",
+      "school": "GD Goenka University",
+      "location": "Gurugram, Haryana",
+      "period": "2023 – Present",
+      "grade": "CGPA 9.51"
+    },
+    {
+      "degree": "Class XII, CHSE",
+      "school": "FM Higher Secondary School",
+      "location": "Balasore, Odisha",
+      "period": "2021"
+    },
+    {
+      "degree": "Class X, BSE",
+      "school": "SR Bidyapitha",
+      "location": "Bhograi, Balasore, Odisha",
+      "period": "2019"
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Hackathon Winner",
+      "org": "Host Organisation",
+      "year": "2025",
+      "detail": "TODO: which track, out of how many teams, what you built."
+    },
+    {
+      "title": "Runner-up — Some Competition",
+      "org": "Host Organisation",
+      "year": "2025",
+      "detail": "TODO: what you built and why it placed."
+    },
+    {
+      "title": "Open Source Contributor",
+      "org": "Project Name",
+      "year": "2024",
+      "detail": "TODO: merged PRs, a library you maintain, stars."
+    }
+  ],
+  "certifications": [
+    {
+      "title": "API Fundamentals Student Expert",
+      "issuer": "Postman",
+      "year": "2025"
+    },
+    {
+      "title": "Certification Name",
+      "issuer": "Coursera",
+      "year": "2024"
+    },
+    {
+      "title": "Certification Name",
+      "issuer": "freeCodeCamp",
+      "year": "2024"
+    }
+  ]
+}

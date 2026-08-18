@@ -1,6 +1,7 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
+import chatRouter from "./routes/chat.js";
 import contactRouter from "./routes/contact.js";
 
 const app = express();
@@ -28,6 +29,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/contact", contactRouter);
+app.use("/api/chat", chatRouter);
 
 // Fallback error handler — keeps stack traces out of responses.
 app.use(
