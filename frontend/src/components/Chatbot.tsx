@@ -129,11 +129,11 @@ export default function Chatbot() {
           <>
             <span
               aria-hidden
-              className="chat-ping pointer-events-none absolute inset-0 rounded-full bg-accent"
+              className="chat-ping pointer-events-none absolute inset-0 rounded-full border border-accent"
             />
             <span
               aria-hidden
-              className="chat-ping-delayed pointer-events-none absolute inset-0 rounded-full bg-accent"
+              className="chat-ping-delayed pointer-events-none absolute inset-0 rounded-full border border-accent"
             />
           </>
         )}
