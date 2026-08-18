@@ -482,6 +482,19 @@ export const certificationsMore = {
   detail: "Currently working towards further certifications.",
 };
 
+/**
+ * Footer. The motto renders as words separated by accent dots, so keep it to
+ * three or four short words — more and it stops reading as a motto and starts
+ * reading as a sentence someone broke up.
+ *
+ * Verbs stay in the same form ("build", not "built"): a mixed series reads as a
+ * typo rather than a rhythm.
+ */
+export const footer = {
+  credit: "Designed & built by",
+  motto: ["think", "research", "build"],
+};
+
 export const contact = {
   heading: "Say hi, don't be shy",
   sub: "Got a role, a project, or just want to talk shop? My inbox is open.",
