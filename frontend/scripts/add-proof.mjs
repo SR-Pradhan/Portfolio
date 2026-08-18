@@ -13,9 +13,16 @@
  *
  * Originals are never touched. Phone photos are 3-5 MB each; the panel is never
  * wider than ~400px on screen, so the long edge is capped at 1280px.
+ *
+ * Output names carry a content hash — `1-a3f9c2d1.webp`. Next's image optimizer
+ * rejects query strings (`?v=2` returns 400), so the filename is the only thing
+ * that can change when a photo is replaced. Without the hash, swapping a photo
+ * leaves every browser that already loaded the old one showing it indefinitely,
+ * which is exactly the bug this caused during development.
  */
 
-import { mkdir, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readdir, stat, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -48,18 +55,32 @@ for (const src of sources) {
   }
 }
 
+const existing = await readdir(dest).catch(() => []);
 const written = [];
+
 for (const [i, src] of sources.entries()) {
-  const out = path.join(dest, `${i + 1}.webp`);
-  const info = await sharp(src)
+  const { data, info } = await sharp(src)
     .rotate() // honour EXIF orientation, or phone shots land sideways
     .resize({ width: 1280, height: 1280, fit: "inside", withoutEnlargement: true })
     .webp({ quality: 82 })
-    .toFile(out);
+    .toBuffer({ resolveWithObject: true });
+
+  const hash = createHash("sha1").update(data).digest("hex").slice(0, 8);
+  const name = `${i + 1}-${hash}.webp`;
+  await writeFile(path.join(dest, name), data);
+
+  // drop any previous file in this slot, so the folder never accumulates
+  // orphaned hashes
+  for (const old of existing) {
+    if (old.startsWith(`${i + 1}-`) && old !== name) {
+      await unlink(path.join(dest, old)).catch(() => {});
+    }
+  }
+
   console.log(
-    `  /proof/${slug}/${i + 1}.webp  ${info.width}x${info.height}  ${Math.round(info.size / 1024)}KB`,
+    `  /proof/${slug}/${name}  ${info.width}x${info.height}  ${Math.round(data.length / 1024)}KB`,
   );
-  written.push(`"/proof/${slug}/${i + 1}.webp"`);
+  written.push(`"/proof/${slug}/${name}"`);
 }
 
 console.log("\nNow set this in src/data/site.ts:");

@@ -388,12 +388,12 @@ export const achievements: Achievement[] = [
       "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch, turning our scope into the presentation the judges actually scored.",
     year: "2025",
     photos: [
-      "/proof/nexify/1.webp",
-      "/proof/nexify/2.webp",
+      "/proof/nexify/1-739dcd84.webp",
+      "/proof/nexify/2-d220d4c0.webp",
       // Last on purpose: this is a *participation* certificate, so it backs the
       // dates and the organiser rather than the placement. Leading with it
       // would undercut the 4th-of-130 claim in the heading.
-      "/proof/nexify/3.webp",
+      "/proof/nexify/3-8d360a10.webp",
     ],
     hint: "\ud83e\udd2b 130 teams. Don\u2019t look.",
     reveal: "4th place. \ud83c\udfc6",
@@ -404,7 +404,7 @@ export const achievements: Achievement[] = [
     detail:
       "Ran a pan-India hackathon for 100+ participants, from planning through run-of-show on the day.",
     year: "2025",
-    photos: ["/proof/syntaxsprint/1.webp", "/proof/syntaxsprint/2.webp"],
+    photos: ["/proof/syntaxsprint/1-4767b0e7.webp", "/proof/syntaxsprint/2-0ce65112.webp"],
     hint: "\ud83e\udd2b Nothing happening here.",
     reveal: "100+ participants, one weekend. \ud83d\ude80",
   },
@@ -414,7 +414,7 @@ export const achievements: Achievement[] = [
     detail:
       "Fresh Fuel, a Shopify storefront concept. I handled wireframing, the SRS, branding and product listings. Best E-commerce Website, \u20b93,000.",
     year: "2025", // TODO: confirm the year
-    photos: ["/proof/paycheck/1.webp"],
+    photos: ["/proof/paycheck/1-5afb4915.webp"],
     hint: "\ud83e\udd2b Seriously, move along.",
     reveal: "Second place, and a cheque. \ud83e\udd48",
   },
@@ -425,9 +425,9 @@ export const achievements: Achievement[] = [
       "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students, pitching the same material at very different levels of prior experience.",
     year: "2024",
     photos: [
-      "/proof/python-workshop/1.webp",
-      "/proof/python-workshop/2.webp",
-      "/proof/python-workshop/3.webp",
+      "/proof/python-workshop/1-6f8c785d.webp",
+      "/proof/python-workshop/2-e0cceb7b.webp",
+      "/proof/python-workshop/3-2b55a58f.webp",
     ],
     hint: "\ud83e\udd2b Definitely nothing here.",
     reveal: "Two editions, three degree programmes. \ud83d\udc0d",
@@ -435,7 +435,7 @@ export const achievements: Achievement[] = [
   {
     title: "250+ Coding Problems Solved",
     org: "LeetCode \u00b7 GeeksforGeeks \u00b7 HackerRank",
-    photos: ["/proof/dsa/1.webp"],
+    photos: ["/proof/dsa/1-62b3dbb6.webp"],
     detail:
       "Consistent DSA practice across three platforms. It\u2019s the habit behind the problem-solving the rest of this page is built on.",
     year: "Ongoing",

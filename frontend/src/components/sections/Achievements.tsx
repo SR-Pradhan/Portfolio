@@ -98,6 +98,10 @@ function Proof({
 
   return (
     <div
+      // Each fanned card sits 10px lower than the one above it, so the stack's
+      // visual centre drifts below the row's centre. Lifting by half the total
+      // fan puts the group back on the timeline node.
+      style={{ marginTop: -(photos.length - 1) * 5 }}
       className={`proof-stack absolute top-1/2 hidden aspect-[16/10] w-[calc(50%-1.5rem)] max-w-sm -translate-y-1/2 cursor-zoom-in opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block ${
         side === "left" ? "left-0" : "right-0"
       }`}
