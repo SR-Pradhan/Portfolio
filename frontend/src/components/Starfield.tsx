@@ -16,6 +16,12 @@ type Star = {
 };
 
 /**
+ * Global multiplier on drift speed. One knob for the whole field, so tuning it
+ * doesn't mean re-balancing the per-star parallax maths below.
+ */
+const SPEED = 0.55;
+
+/**
  * Slow-drifting starfield painted behind the whole page.
  * Density scales with viewport area, so it looks the same on a laptop
  * and an ultrawide. Honours prefers-reduced-motion by rendering static.
@@ -56,9 +62,10 @@ export default function Starfield() {
           y: Math.random() * h,
           r,
           // bigger stars read as nearer, so they drift faster — cheap parallax.
-          // ~20-60px/sec at 60fps: clearly moving, never distracting.
-          vy: (0.32 + Math.random() * 0.62) * (0.6 + r / 1.65),
-          vx: (Math.random() - 0.5) * 0.08,
+          // ~11-33px/sec at 60fps: noticeable if you look, ignorable if you're
+          // reading. Tune the whole field with SPEED rather than these numbers.
+          vy: (0.32 + Math.random() * 0.62) * (0.6 + r / 1.65) * SPEED,
+          vx: (Math.random() - 0.5) * 0.08 * SPEED,
           phase: Math.random() * Math.PI * 2,
           twinkle: Math.random() * 0.03 + 0.01,
         };
