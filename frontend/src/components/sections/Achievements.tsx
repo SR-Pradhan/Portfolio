@@ -1,11 +1,21 @@
+"use client";
+
+import { Images } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 import { achievements, type Achievement } from "@/data/site";
 import Padlock from "../Padlock";
+import ProofLightbox from "../ProofLightbox";
 import Reveal from "../Reveal";
 import ScrollRail from "../ScrollRail";
 import Section from "../Section";
 
-function Card({ item }: { item: Achievement }) {
+/** The fan tops out at three; more than that stops reading as a stack. */
+const photosOf = (item: Achievement) => item.photos?.slice(0, 3) ?? [];
+
+function Card({ item, onOpen }: { item: Achievement; onOpen: () => void }) {
+  const count = photosOf(item).length;
+
   return (
     <article className="rounded-2xl border border-border bg-surface p-6 transition-colors group-hover:border-accent/60">
       <div className="flex items-start gap-4">
@@ -26,13 +36,31 @@ function Card({ item }: { item: Achievement }) {
       <p className="mt-4 leading-relaxed text-muted">{item.detail}</p>
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-        <span className="rounded-md border border-accent/50 px-3 py-1 font-mono text-xs text-accent">
-          {item.year}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="rounded-md border border-accent/50 px-3 py-1 font-mono text-xs text-accent">
+            {item.year}
+          </span>
+
+          {/*
+            The only affordance saying the photos can be opened. It has to be a
+            real button, and it has to be visible without hovering: on a phone
+            the fan never appears at all, so this is the sole route to the
+            photos there.
+          */}
+          {count > 0 && (
+            <button
+              onClick={onOpen}
+              className="flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 font-mono text-xs text-muted transition hover:border-accent hover:text-accent"
+            >
+              <Images size={13} />
+              {count === 1 ? "View photo" : `View ${count} photos`}
+            </button>
+          )}
+        </div>
 
         {/* hint and payoff are stacked; hover cross-fades between them */}
         {item.hint && (
-          <span className="relative text-right text-xs">
+          <span className="relative hidden text-right text-xs sm:block">
             <span className="block text-muted transition-opacity group-hover:opacity-0">
               {item.hint}
             </span>
@@ -51,25 +79,33 @@ function Card({ item }: { item: Achievement }) {
  * row would be as tall as its image and the section would be mostly empty
  * space. Desktop only; there's no hover on touch.
  *
- * Multiple photos fan out as a stack rather than cycling. A carousel here would
- * be unreachable: the panel only exists while the pointer is on the card, so a
- * timed rotation would hide everything after the first shot from anyone who
- * doesn't hover long enough, and there's nowhere to put controls in a
- * pointer-events-none overlay. The fan shows all of them at once.
+ * The stack fans rather than cycling: a timed rotation inside a hover-only
+ * panel would hide everything after the first shot from anyone who doesn't
+ * hover long enough. The fan is a teaser though — only the top photo is really
+ * legible — so clicking anywhere on it opens the lightbox.
  */
-function Proof({ item, side }: { item: Achievement; side: "left" | "right" }) {
-  const photos = item.photos?.slice(0, 3) ?? [];
+function Proof({
+  item,
+  side,
+  onOpen,
+}: {
+  item: Achievement;
+  side: "left" | "right";
+  onOpen: (index: number) => void;
+}) {
+  const photos = photosOf(item);
   if (!photos.length) return null;
 
   return (
     <div
-      className={`proof-stack pointer-events-none absolute top-1/2 hidden aspect-[16/10] w-[calc(50%-1.5rem)] max-w-sm -translate-y-1/2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block ${
+      className={`proof-stack absolute top-1/2 hidden aspect-[16/10] w-[calc(50%-1.5rem)] max-w-sm -translate-y-1/2 cursor-zoom-in opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block ${
         side === "left" ? "left-0" : "right-0"
       }`}
     >
       {photos.map((src, i) => (
         <div
           key={src}
+          onClick={() => onOpen(i)}
           className="proof-card absolute inset-0 overflow-hidden rounded-2xl border-2 border-accent bg-surface shadow-[0_0_30px_-8px_var(--accent)]"
           // --i drives both the fan angle and the stacking order, so adding a
           // third photo needs no new classes
@@ -91,21 +127,26 @@ function Proof({ item, side }: { item: Achievement; side: "left" | "right" }) {
 
       {/* sits above the whole stack, not inside the top card */}
       <span
-        className="absolute right-3 top-3 rounded bg-accent px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-white"
+        className="pointer-events-none absolute right-3 top-3 rounded bg-accent px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-white"
         style={{ zIndex: photos.length + 1 }}
       >
-        Unlocked
+        {photos.length > 1 ? `Unlocked · ${photos.length}` : "Unlocked"}
       </span>
     </div>
   );
 }
 
 export default function Achievements() {
+  // which achievement's photos are open, and which of them is showing
+  const [open, setOpen] = useState<{ item: Achievement; index: number } | null>(
+    null,
+  );
+
   return (
     <Section
       id="achievements"
       title="Achievements"
-      sub="Hover a card to unlock the proof"
+      sub="Hover a card to unlock the proof, or open the photos"
     >
       <div className="relative">
         {/* centre rail, desktop only — same scroll-drawn behaviour as the
@@ -127,16 +168,30 @@ export default function Achievements() {
                   />
 
                   <div className={cardLeft ? "md:pr-0" : "md:col-start-2"}>
-                    <Card item={item} />
+                    <Card item={item} onOpen={() => setOpen({ item, index: 0 })} />
                   </div>
                   {/* proof sits in the empty half, out of the flow */}
-                  <Proof item={item} side={cardLeft ? "right" : "left"} />
+                  <Proof
+                    item={item}
+                    side={cardLeft ? "right" : "left"}
+                    onOpen={(index) => setOpen({ item, index })}
+                  />
                 </div>
               </Reveal>
             );
           })}
         </div>
       </div>
+
+      {open && (
+        <ProofLightbox
+          photos={photosOf(open.item)}
+          title={open.item.title}
+          index={open.index}
+          onIndex={(index) => setOpen({ item: open.item, index })}
+          onClose={() => setOpen(null)}
+        />
+      )}
     </Section>
   );
 }
