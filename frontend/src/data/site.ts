@@ -387,7 +387,7 @@ export const achievements: Achievement[] = [
     detail:
       "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch \u2014 turning our scope into the presentation the judges actually scored.",
     year: "2025",
-    photos: ["/proof-placeholder.webp"], // TODO: swap for the real photos
+    photos: ["/proof/nexify/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
     hint: "\ud83e\udd2b 130 teams. Don\u2019t look.",
     reveal: "4th place. \ud83c\udfc6",
   },
@@ -397,7 +397,7 @@ export const achievements: Achievement[] = [
     detail:
       "Ran a pan-India hackathon end to end \u2014 planning through run-of-show on the day \u2014 for 100+ participants.",
     year: "2025",
-    photos: ["/proof-placeholder.webp"], // TODO: swap for the real photos
+    photos: ["/proof/syntaxsprint/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
     hint: "\ud83e\udd2b Nothing happening here.",
     reveal: "100+ participants, one weekend. \ud83d\ude80",
   },
@@ -407,7 +407,7 @@ export const achievements: Achievement[] = [
     detail:
       "Fresh Fuel, a Shopify storefront concept \u2014 I handled wireframing, the SRS, branding and product listings. \u20b93,000 prize.",
     year: "2025", // TODO: confirm the year
-    photos: ["/proof-placeholder.webp"], // TODO: swap for the real photos
+    photos: ["/proof/paycheck/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
     hint: "\ud83e\udd2b Seriously, move along.",
     reveal: "Second place, and a cheque. \ud83e\udd48",
   },
