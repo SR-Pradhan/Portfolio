@@ -18,6 +18,12 @@ export const site = {
   roles: ["AI Engineer", "Backend Developer", "Problem Solver", "DSA Enthusiast"],
   tagline:
     "Aspiring AI Engineer with a backend development foundation, solving real-world problems through code.",
+  /**
+   * Canonical origin, used for OG tags, sitemap and JSON-LD.
+   * Set NEXT_PUBLIC_SITE_URL in the deploy environment; the fallback is only
+   * so local builds produce absolute URLs.
+   */
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sruti-ranjan.vercel.app",
   location: "Gurugram, India",
   email: "pradhansr2003@gmail.com",
   resumeUrl: "/resume.pdf", // TODO: drop resume.pdf into /public
