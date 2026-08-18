@@ -3,6 +3,7 @@
 import { MessageCircle, Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
+import ChatMessage from "./ChatMessage";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
@@ -164,9 +165,21 @@ export default function Chatbot() {
 
       {open && (
         <div className="fixed bottom-24 right-6 z-50 flex h-[30rem] animate-[fade-in_0.2s_ease-out_both] w-[calc(100vw-3rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl">
-          <header className="flex items-center gap-2 border-b border-border px-4 py-3">
-            <span className="size-2 rounded-full bg-accent" />
-            <p className="text-sm font-medium">Ask about {site.shortName}</p>
+          <header className="flex items-center gap-3 border-b border-border px-4 py-3">
+            <span className="relative flex size-2">
+              <span className="live-ping absolute inline-flex size-full rounded-full bg-accent" />
+              <span className="relative inline-flex size-2 rounded-full bg-accent" />
+            </span>
+            <div className="min-w-0">
+              <p className="text-sm font-medium leading-none">
+                Ask about {site.shortName}
+              </p>
+              {/* say plainly that this is a bot — visitors shouldn't think
+                  they're messaging him directly and waiting on a reply */}
+              <p className="mt-1 text-[11px] leading-none text-muted">
+                AI assistant · answers from his portfolio
+              </p>
+            </div>
           </header>
 
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -179,7 +192,19 @@ export default function Chatbot() {
                     : "bg-background text-muted"
                 }`}
               >
-                {m.content || <span className="opacity-60">…</span>}
+                {m.content ? (
+                  <ChatMessage content={m.content} />
+                ) : (
+                  <span className="flex gap-1 py-1" aria-label="Thinking">
+                    {[0, 1, 2].map((d) => (
+                      <span
+                        key={d}
+                        className="size-1.5 rounded-full bg-muted motion-safe:animate-bounce"
+                        style={{ animationDelay: `${d * 0.15}s` }}
+                      />
+                    ))}
+                  </span>
+                )}
               </div>
             ))}
 
