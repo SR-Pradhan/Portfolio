@@ -75,9 +75,7 @@ export default function Hero() {
               Get in touch
             </a>
             <a
-              href={site.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
+              href="#resume"
               className="flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium transition hover:border-accent hover:text-accent"
             >
               <FileDown size={16} />

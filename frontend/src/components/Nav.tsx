@@ -9,7 +9,13 @@ import ThemeToggle from "./ThemeToggle";
  * Floating pill nav that sits below the scroll HUD. The section currently
  * in view gets a filled chip so you always know where you are.
  */
-export default function Nav({ active }: { active: string }) {
+export default function Nav({
+  active,
+  resumeReady,
+}: {
+  active: string;
+  resumeReady: boolean;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -44,16 +50,19 @@ export default function Nav({ active }: { active: string }) {
           </div>
 
           <div className="ml-auto flex shrink-0 items-center gap-3 md:ml-0">
-            {/* an action, not a section — so it gets a button, not link styling */}
+            {/* Styled as an action rather than a nav link, but it points at the
+                #resume section rather than straight at the file: the section
+                previews the PDF and offers the download, and a missing file can
+                never turn this into a 404. */}
+            {resumeReady && (
             <a
-              href={site.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
+              href="#resume"
               className="hidden items-center gap-1.5 rounded-full border border-accent/50 px-3.5 py-1.5 text-sm font-medium text-accent transition hover:bg-accent hover:text-white sm:inline-flex"
             >
               <FileDown size={14} />
               Resume
             </a>
+            )}
             <ThemeToggle />
             <button
               className="md:hidden"
@@ -85,15 +94,16 @@ export default function Nav({ active }: { active: string }) {
                 </a>
               );
             })}
-            <a
-              href={site.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-2 flex items-center justify-center gap-2 rounded-lg border border-accent/50 px-3 py-2.5 text-sm font-medium text-accent"
-            >
-              <FileDown size={14} />
-              Resume
-            </a>
+            {resumeReady && (
+              <a
+                href="#resume"
+                onClick={() => setOpen(false)}
+                className="mt-2 flex items-center justify-center gap-2 rounded-lg border border-accent/50 px-3 py-2.5 text-sm font-medium text-accent"
+              >
+                <FileDown size={14} />
+                Resume
+              </a>
+            )}
           </div>
         )}
       </nav>

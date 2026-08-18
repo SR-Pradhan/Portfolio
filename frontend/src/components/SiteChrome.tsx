@@ -10,14 +10,14 @@ import ScrollHUD from "./ScrollHUD";
  * Owns the "which section am I in" state and shares it between the
  * scroll HUD and the pill nav, so they always agree.
  */
-export default function SiteChrome() {
+export default function SiteChrome({ resumeReady }: { resumeReady: boolean }) {
   const ids = useMemo(() => nav.map((n) => n.href.slice(1)), []);
   const active = useActiveSection(ids);
 
   return (
     <>
       <ScrollHUD active={active} />
-      <Nav active={active} />
+      <Nav active={active} resumeReady={resumeReady} />
     </>
   );
 }

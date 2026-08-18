@@ -11,14 +11,22 @@ import Education from "@/components/sections/Education";
 import Experience from "@/components/sections/Experience";
 import Hero from "@/components/sections/Hero";
 import Projects from "@/components/sections/Projects";
+import Resume from "@/components/sections/Resume";
 import Skills from "@/components/sections/Skills";
+import { getResume } from "@/lib/resume";
 
 export default function Home() {
+  // In production a missing PDF hides the section and the nav button outright,
+  // rather than shipping a dead link. In development it stays visible so the
+  // section can be worked on before the file exists.
+  const showResume =
+    getResume().available || process.env.NODE_ENV !== "production";
+
   return (
     <>
       <Starfield />
       <CursorFollower />
-      <SiteChrome />
+      <SiteChrome resumeReady={showResume} />
       <main>
         <Hero />
         <About />
@@ -28,6 +36,7 @@ export default function Home() {
         <Education />
         <Achievements />
         <Certifications />
+        {showResume && <Resume />}
         <Contact />
       </main>
       <Footer />
