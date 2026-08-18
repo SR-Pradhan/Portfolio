@@ -1,9 +1,42 @@
 "use client";
 
-import { MessageCircle, Send, X } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
 import ChatMessage from "./ChatMessage";
+
+/**
+ * Chat bubble mark for the launcher.
+ *
+ * Filled rather than lucide's outline `MessageCircle`: an outline glyph on a
+ * solid colour button reads as thin and unfinished at 22px, which is why every
+ * shipped chat widget (Intercom, Crisp, Drift) uses a filled bubble.
+ *
+ * The three dots are holes, not white circles — one path with `evenodd`, so
+ * whatever colour the button is shows through. Nothing to keep in sync if the
+ * accent changes.
+ */
+function ChatBubble({ className }: { className?: string }) {
+  const dot = (cx: number) =>
+    `M${cx - 1.15} 10.05a1.15 1.15 0 1 0 2.3 0a1.15 1.15 0 1 0-2.3 0Z`;
+
+  return (
+    <svg
+      width={22}
+      height={22}
+      viewBox="0 0 24 24"
+      aria-hidden
+      className={className}
+    >
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d={`M6.5 3.75h11a3.75 3.75 0 0 1 3.75 3.75v5a3.75 3.75 0 0 1-3.75 3.75h-6.4l-3.72 2.98A.85.85 0 0 1 6 18.56V16.2A3.75 3.75 0 0 1 2.75 12.5v-5A3.75 3.75 0 0 1 6.5 3.75Z ${dot(8.4)} ${dot(12)} ${dot(15.6)}`}
+      />
+    </svg>
+  );
+}
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
@@ -138,8 +171,7 @@ export default function Chatbot() {
             />
           </>
         )}
-        <MessageCircle
-          size={22}
+        <ChatBubble
           className={`absolute transition-all duration-200 ${
             open ? "scale-50 opacity-0" : "scale-100 opacity-100"
           }`}
