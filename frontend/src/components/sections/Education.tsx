@@ -1,5 +1,6 @@
 import { GraduationCap } from "lucide-react";
 import { education } from "@/data/site";
+import EducationCurve from "../EducationCurve";
 import Reveal from "../Reveal";
 import Section from "../Section";
 import SpotlightCard from "../SpotlightCard";
@@ -8,31 +9,7 @@ export default function Education() {
   return (
     <Section id="education" title="Education" sub="The formal part of the story">
       <div className="relative">
-        {/*
-          Serpentine connector, desktop only.
-
-          preserveAspectRatio="none" lets the path stretch to whatever height
-          the cards end up being, so it never needs to know the content size.
-          vector-effect="non-scaling-stroke" stops that vertical stretch from
-          smearing the round dashes into ovals.
-        */}
-        <svg
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-1/2 hidden h-full w-[160px] -translate-x-1/2 md:block"
-          viewBox="0 0 160 1000"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M80 0 C 8 170, 152 330, 80 500 C 8 670, 152 830, 80 1000"
-            fill="none"
-            stroke="var(--accent)"
-            strokeWidth="2"
-            strokeDasharray="1 11"
-            strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
-            opacity="0.55"
-          />
-        </svg>
+        <EducationCurve />
 
         <div className="space-y-6 md:space-y-4">
           {education.map((e, i) => {
