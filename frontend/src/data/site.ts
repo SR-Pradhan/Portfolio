@@ -383,11 +383,11 @@ export type Achievement = {
 export const achievements: Achievement[] = [
   {
     title: "4th of 130 teams — Nexify\u201925",
-    org: "Sushant University",
+    org: "ZENITH, Sushant University",
     detail:
       "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch \u2014 turning our scope into the presentation the judges actually scored.",
     year: "2025",
-    photos: ["/proof/nexify/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
+    photos: ["/proof/nexify/1.webp", "/proof/nexify/2.webp"],
     hint: "\ud83e\udd2b 130 teams. Don\u2019t look.",
     reveal: "4th place. \ud83c\udfc6",
   },
@@ -403,21 +403,21 @@ export const achievements: Achievement[] = [
   },
   {
     title: "2nd Prize \u2014 1st Pay-Check Challenge",
-    org: "Best E-commerce Website", // TODO: add the host organisation
+    org: "Sunstone",
     detail:
-      "Fresh Fuel, a Shopify storefront concept \u2014 I handled wireframing, the SRS, branding and product listings. \u20b93,000 prize.",
+      "Fresh Fuel, a Shopify storefront concept \u2014 I handled wireframing, the SRS, branding and product listings. Best E-commerce Website, \u20b93,000.",
     year: "2025", // TODO: confirm the year
-    photos: ["/proof/paycheck/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
+    photos: ["/proof/paycheck/1.webp"],
     hint: "\ud83e\udd2b Seriously, move along.",
     reveal: "Second place, and a cheque. \ud83e\udd48",
   },
   {
     title: "Organised Python Workshop 1.0 & 2.0",
-    org: "GD Goenka University", // TODO: confirm if this ran under Cybernautics
+    org: "Sunstone",
     detail:
       "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students \u2014 the same material pitched at very different levels of prior experience.",
-    year: "2024 \u2013 2025", // TODO: confirm the years
-    photos: ["/proof/python-workshop/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
+    year: "2024",
+    photos: ["/proof/python-workshop/1.webp", "/proof/python-workshop/2.webp"],
     hint: "\ud83e\udd2b Definitely nothing here.",
     reveal: "Two editions, three degree programmes. \ud83d\udc0d",
   },
