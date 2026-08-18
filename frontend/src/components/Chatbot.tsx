@@ -122,12 +122,20 @@ export default function Chatbot() {
         aria-expanded={open}
         className="group fixed bottom-6 right-6 z-50 grid size-14 place-items-center rounded-full bg-accent text-white shadow-[0_10px_35px_-8px_var(--accent)] transition-transform hover:scale-105 active:scale-95"
       >
-        {/* one-shot ring on first paint, drawing the eye without nagging */}
-        {!open && !nudged && (
-          <span
-            aria-hidden
-            className="absolute inset-0 rounded-full border-2 border-accent motion-safe:animate-[unlock-pulse_2s_ease-out_infinite]"
-          />
+        {/* Beacon: two staggered rings pushing outward so the button reads as
+            live. Always on (not just first visit) — it's the only cue that the
+            corner button does something. */}
+        {!open && (
+          <>
+            <span
+              aria-hidden
+              className="chat-ping pointer-events-none absolute inset-0 rounded-full bg-accent"
+            />
+            <span
+              aria-hidden
+              className="chat-ping-delayed pointer-events-none absolute inset-0 rounded-full bg-accent"
+            />
+          </>
         )}
         <MessageCircle
           size={22}

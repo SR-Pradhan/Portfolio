@@ -303,3 +303,38 @@ body {
     transform: translateY(0);
   }
 }
+
+/* ── Chat launcher beacon ─────────────────────────────────────────────
+   Rings expanding out of the button, staggered so one is always mid-flight.
+   Runs continuously — it's what makes the widget read as live rather than
+   as a static button parked in the corner. */
+
+@keyframes chat-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+.chat-ping {
+  animation: chat-ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.chat-ping-delayed {
+  animation: chat-ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation-delay: 1.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-ping,
+  .chat-ping-delayed {
+    animation: none;
+  }
+}
