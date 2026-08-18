@@ -336,3 +336,24 @@ body {
     animation: none;
   }
 }
+
+/* ── Achievement proof stack ──────────────────────────────────────────
+   Cards sit squared-up and slightly small while hidden, then fan down-right as
+   the row is hovered. --i is set per card in Achievements.tsx, so the angle,
+   the offset and the z-order all come from one number. */
+
+.proof-stack .proof-card {
+  transform: scale(0.95);
+  transition: transform 0.35s cubic-bezier(0.16, 0.8, 0.4, 1);
+}
+
+.group:hover .proof-stack .proof-card {
+  transform: rotate(calc(var(--i) * 4deg))
+    translate(calc(var(--i) * 12px), calc(var(--i) * 10px)) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof-stack .proof-card {
+    transition: none;
+  }
+}

@@ -367,8 +367,13 @@ export type Achievement = {
   org: string;
   detail: string;
   year: string;
-  /** Proof shown on the opposite side of the rail when the card is hovered. */
-  photo?: string;
+  /**
+   * Proof shown on the opposite side of the rail when the card is hovered.
+   * Two or three fan out as a stack; the first is the one on top, so lead with
+   * the strongest shot. Beyond three the fan stops reading and just looks
+   * cluttered, so extras are ignored.
+   */
+  photos?: string[];
   /** Teaser shown before hover. */
   hint?: string;
   /** Payoff shown during hover. */
@@ -382,7 +387,7 @@ export const achievements: Achievement[] = [
     detail:
       "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch \u2014 turning our scope into the presentation the judges actually scored.",
     year: "2025",
-    photo: "/proof-placeholder.webp", // TODO: swap for the real photo
+    photos: ["/proof-placeholder.webp"], // TODO: swap for the real photos
     hint: "\ud83e\udd2b 130 teams. Don\u2019t look.",
     reveal: "4th place. \ud83c\udfc6",
   },
@@ -392,7 +397,7 @@ export const achievements: Achievement[] = [
     detail:
       "Ran a pan-India hackathon end to end \u2014 planning through run-of-show on the day \u2014 for 100+ participants.",
     year: "2025",
-    photo: "/proof-placeholder.webp", // TODO: swap for the real photo
+    photos: ["/proof-placeholder.webp"], // TODO: swap for the real photos
     hint: "\ud83e\udd2b Nothing happening here.",
     reveal: "100+ participants, one weekend. \ud83d\ude80",
   },
@@ -402,15 +407,15 @@ export const achievements: Achievement[] = [
     detail:
       "Fresh Fuel, a Shopify storefront concept \u2014 I handled wireframing, the SRS, branding and product listings. \u20b93,000 prize.",
     year: "2025", // TODO: confirm the year
-    photo: "/proof-placeholder.webp", // TODO: swap for the real photo
+    photos: ["/proof-placeholder.webp"], // TODO: swap for the real photos
     hint: "\ud83e\udd2b Seriously, move along.",
     reveal: "Second place, and a cheque. \ud83e\udd48",
   },
   {
     title: "200+ Coding Problems Solved",
     org: "LeetCode \u00b7 GeeksforGeeks \u00b7 HackerRank",
-    // No photo: the proof is the profiles themselves, which are linked in the
-    // hero and the footer. The card renders fine without one.
+    // No photos: the proof is the profiles themselves, which are linked in the
+    // hero and the footer. The card renders fine without any.
     detail:
       "Consistent DSA practice across three platforms \u2014 the habit behind the problem-solving the rest of this page is built on.",
     year: "Ongoing",

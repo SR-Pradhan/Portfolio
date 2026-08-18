@@ -47,28 +47,55 @@ function Card({ item }: { item: Achievement }) {
 }
 
 /**
- * Absolutely positioned so a hidden proof contributes no height — otherwise
- * every row would be as tall as its image and the section would be mostly
- * empty space. Desktop only; there's no hover on touch.
+ * Absolutely positioned so hidden proof contributes no height — otherwise every
+ * row would be as tall as its image and the section would be mostly empty
+ * space. Desktop only; there's no hover on touch.
+ *
+ * Multiple photos fan out as a stack rather than cycling. A carousel here would
+ * be unreachable: the panel only exists while the pointer is on the card, so a
+ * timed rotation would hide everything after the first shot from anyone who
+ * doesn't hover long enough, and there's nowhere to put controls in a
+ * pointer-events-none overlay. The fan shows all of them at once.
  */
 function Proof({ item, side }: { item: Achievement; side: "left" | "right" }) {
-  if (!item.photo) return null;
+  const photos = item.photos?.slice(0, 3) ?? [];
+  if (!photos.length) return null;
+
   return (
     <div
-      className={`pointer-events-none absolute top-1/2 hidden aspect-[16/10] w-[calc(50%-1.5rem)] max-w-sm -translate-y-1/2 scale-95 overflow-hidden rounded-2xl border-2 border-accent opacity-0 shadow-[0_0_30px_-8px_var(--accent)] transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 md:block ${
+      className={`proof-stack pointer-events-none absolute top-1/2 hidden aspect-[16/10] w-[calc(50%-1.5rem)] max-w-sm -translate-y-1/2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block ${
         side === "left" ? "left-0" : "right-0"
       }`}
     >
-      <span className="absolute right-3 top-3 z-10 rounded bg-accent px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-white">
+      {photos.map((src, i) => (
+        <div
+          key={src}
+          className="proof-card absolute inset-0 overflow-hidden rounded-2xl border-2 border-accent bg-surface shadow-[0_0_30px_-8px_var(--accent)]"
+          // --i drives both the fan angle and the stacking order, so adding a
+          // third photo needs no new classes
+          style={{ zIndex: photos.length - i, ["--i" as string]: i }}
+        >
+          <Image
+            src={src}
+            alt={
+              photos.length > 1
+                ? `${item.title} — proof ${i + 1} of ${photos.length}`
+                : `${item.title} — proof`
+            }
+            width={640}
+            height={400}
+            className="size-full object-cover"
+          />
+        </div>
+      ))}
+
+      {/* sits above the whole stack, not inside the top card */}
+      <span
+        className="absolute right-3 top-3 rounded bg-accent px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-white"
+        style={{ zIndex: photos.length + 1 }}
+      >
         Unlocked
       </span>
-      <Image
-        src={item.photo}
-        alt={`${item.title} — proof`}
-        width={640}
-        height={400}
-        className="size-full object-cover"
-      />
     </div>
   );
 }
