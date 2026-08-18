@@ -377,30 +377,45 @@ export type Achievement = {
 
 export const achievements: Achievement[] = [
   {
-    title: "Hackathon Winner",
-    org: "Host Organisation", // TODO
-    detail: "TODO: which track, out of how many teams, what you built.",
+    title: "4th of 130 teams — Nexify\u201925",
+    org: "Sushant University",
+    detail:
+      "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch \u2014 turning our scope into the presentation the judges actually scored.",
     year: "2025",
     photo: "/proof-placeholder.webp", // TODO: swap for the real photo
-    hint: "🤫 Please don't hover your mouse onto this",
-    reveal: "Aha! You discovered the win! 🎉",
+    hint: "\ud83e\udd2b 130 teams. Don\u2019t look.",
+    reveal: "4th place. \ud83c\udfc6",
   },
   {
-    title: "Runner-up — Some Competition",
-    org: "Host Organisation", // TODO
-    detail: "TODO: what you built and why it placed.",
+    title: "Organised SyntaxSprint\u201925",
+    org: "Cybernautics Tech Club, GD Goenka University",
+    detail:
+      "Ran a pan-India hackathon end to end \u2014 planning through run-of-show on the day \u2014 for 100+ participants.",
     year: "2025",
-    photo: "/proof-placeholder.webp", // TODO
-    hint: "🤫 nothing to see here",
-    reveal: "Caught me. Second place! 🥈",
+    photo: "/proof-placeholder.webp", // TODO: swap for the real photo
+    hint: "\ud83e\udd2b Nothing happening here.",
+    reveal: "100+ participants, one weekend. \ud83d\ude80",
   },
   {
-    title: "Open Source Contributor",
-    org: "Project Name", // TODO
-    detail: "TODO: merged PRs, a library you maintain, stars.",
-    year: "2024",
-    hint: "🤫 seriously, don't",
-    reveal: "Fine, you found it 🙌",
+    title: "2nd Prize \u2014 1st Pay-Check Challenge",
+    org: "Best E-commerce Website", // TODO: add the host organisation
+    detail:
+      "Fresh Fuel, a Shopify storefront concept \u2014 I handled wireframing, the SRS, branding and product listings. \u20b93,000 prize.",
+    year: "2025", // TODO: confirm the year
+    photo: "/proof-placeholder.webp", // TODO: swap for the real photo
+    hint: "\ud83e\udd2b Seriously, move along.",
+    reveal: "Second place, and a cheque. \ud83e\udd48",
+  },
+  {
+    title: "200+ Coding Problems Solved",
+    org: "LeetCode \u00b7 GeeksforGeeks \u00b7 HackerRank",
+    // No photo: the proof is the profiles themselves, which are linked in the
+    // hero and the footer. The card renders fine without one.
+    detail:
+      "Consistent DSA practice across three platforms \u2014 the habit behind the problem-solving the rest of this page is built on.",
+    year: "Ongoing",
+    hint: "\ud83e\udd2b Last one. Resist.",
+    reveal: "200+ and counting. \ud83d\udcaa",
   },
 ];
 

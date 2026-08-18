@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T01:40:37.287Z",
+  "generatedAt": "2026-08-18T02:33:47.070Z",
   "identity": {
     "name": "Sruti Ranjan Pradhan",
     "roles": [
@@ -250,22 +250,28 @@
   ],
   "achievements": [
     {
-      "title": "Hackathon Winner",
-      "org": "Host Organisation",
+      "title": "4th of 130 teams — Nexify’25",
+      "org": "Sushant University",
       "year": "2025",
-      "detail": "TODO: which track, out of how many teams, what you built."
+      "detail": "Built DoCure.ai, an AI-powered health assistant, with a four-person team. I owned the pitch — turning our scope into the presentation the judges actually scored."
     },
     {
-      "title": "Runner-up — Some Competition",
-      "org": "Host Organisation",
+      "title": "Organised SyntaxSprint’25",
+      "org": "Cybernautics Tech Club, GD Goenka University",
       "year": "2025",
-      "detail": "TODO: what you built and why it placed."
+      "detail": "Ran a pan-India hackathon end to end — planning through run-of-show on the day — for 100+ participants."
     },
     {
-      "title": "Open Source Contributor",
-      "org": "Project Name",
-      "year": "2024",
-      "detail": "TODO: merged PRs, a library you maintain, stars."
+      "title": "2nd Prize — 1st Pay-Check Challenge",
+      "org": "Best E-commerce Website",
+      "year": "2025",
+      "detail": "Fresh Fuel, a Shopify storefront concept — I handled wireframing, the SRS, branding and product listings. ₹3,000 prize."
+    },
+    {
+      "title": "200+ Coding Problems Solved",
+      "org": "LeetCode · GeeksforGeeks · HackerRank",
+      "year": "Ongoing",
+      "detail": "Consistent DSA practice across three platforms — the habit behind the problem-solving the rest of this page is built on."
     }
   ],
   "certifications": [
