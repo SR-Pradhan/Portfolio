@@ -25,9 +25,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-5 font-mono text-base text-accent"
+            className="mb-5 font-mono text-sm text-accent"
           >
-            Hi, I&apos;m {site.name}
+            Hi, I&apos;m {site.shortName}
           </motion.p>
 
           <motion.h1
@@ -68,13 +68,13 @@ export default function Hero() {
             }}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
-            
+            <a
               href="#contact"
               className="rounded-full bg-accent px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
             >
               Get in touch
             </a>
-            
+            <a
               href={site.resumeUrl}
               target="_blank"
               rel="noreferrer"
@@ -96,7 +96,7 @@ export default function Hero() {
             className="mt-8 flex items-center gap-3"
           >
             {socialLinks.map(({ href, icon: Icon, label }) => (
-              
+              <a
                 key={label}
                 href={href}
                 target="_blank"
