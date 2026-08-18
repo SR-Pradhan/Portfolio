@@ -397,7 +397,7 @@ export const achievements: Achievement[] = [
     detail:
       "Ran a pan-India hackathon for 100+ participants, from planning through run-of-show on the day.",
     year: "2025",
-    photos: ["/proof/syntaxsprint/1.webp"], // TODO: real photo; add 2.webp, 3.webp here
+    photos: ["/proof/syntaxsprint/1.webp", "/proof/syntaxsprint/2.webp"],
     hint: "\ud83e\udd2b Nothing happening here.",
     reveal: "100+ participants, one weekend. \ud83d\ude80",
   },
@@ -417,7 +417,11 @@ export const achievements: Achievement[] = [
     detail:
       "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students, pitching the same material at very different levels of prior experience.",
     year: "2024",
-    photos: ["/proof/python-workshop/1.webp", "/proof/python-workshop/2.webp"],
+    photos: [
+      "/proof/python-workshop/1.webp",
+      "/proof/python-workshop/2.webp",
+      "/proof/python-workshop/3.webp",
+    ],
     hint: "\ud83e\udd2b Definitely nothing here.",
     reveal: "Two editions, three degree programmes. \ud83d\udc0d",
   },
