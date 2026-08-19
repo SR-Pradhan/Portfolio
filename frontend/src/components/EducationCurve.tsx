@@ -6,7 +6,7 @@ import {
   useScroll,
   useSpring,
 } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 /** The serpentine both paths follow. Kept in one place so they can't drift. */
 const PATH = "M80 0 C 8 170, 152 330, 80 500 C 8 670, 152 830, 80 1000";
@@ -90,22 +90,37 @@ export default function EducationCurve() {
     );
   }, [xAtY]);
 
-  useEffect(() => {
-    measure();
+  useLayoutEffect(() => {
+    let frame1 = 0;
+    let frame2 = 0;
+
+    // wait a full layout+paint cycle before trusting offsetTop/offsetHeight
+    const scheduleMeasure = () => {
+      cancelAnimationFrame(frame1);
+      cancelAnimationFrame(frame2);
+      frame1 = requestAnimationFrame(() => {
+        frame2 = requestAnimationFrame(measure);
+      });
+    };
+
+    scheduleMeasure();
+
     const container = ref.current?.parentElement;
     if (!container || typeof ResizeObserver === "undefined") return;
 
-    // card heights change with the viewport, so re-measure when they do
-    const observer = new ResizeObserver(measure);
+    // re-measure on container resize AND on any individual row resize
+    // (e.g. text reflow from late-loading fonts changes a row's height
+    // without necessarily changing the container's own height first)
+    const observer = new ResizeObserver(scheduleMeasure);
     observer.observe(container);
-
-    // fonts loading late shifts row heights after our first measure
-    document.fonts?.ready.then(measure);
-    window.addEventListener("load", measure);
+    container
+      .querySelectorAll<HTMLElement>("[data-edu-row]")
+      .forEach((row) => observer.observe(row));
 
     return () => {
+      cancelAnimationFrame(frame1);
+      cancelAnimationFrame(frame2);
       observer.disconnect();
-      window.removeEventListener("load", measure);
     };
   }, [measure]);
 
