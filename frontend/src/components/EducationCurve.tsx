@@ -98,7 +98,15 @@ export default function EducationCurve() {
     // card heights change with the viewport, so re-measure when they do
     const observer = new ResizeObserver(measure);
     observer.observe(container);
-    return () => observer.disconnect();
+
+    // fonts loading late shifts row heights after our first measure
+    document.fonts?.ready.then(measure);
+    window.addEventListener("load", measure);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("load", measure);
+    };
   }, [measure]);
 
   return (
