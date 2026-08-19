@@ -4,7 +4,7 @@ Personal portfolio for **Sruti Ranjan Pradhan**, an aspiring AI Engineer with a 
 development foundation. A single-page site with an AI assistant that answers questions
 about my work, backed by a small Express API.
 
-**Live:** [portfolio-omega-jade-83.vercel.app](https://portfolio-omega-jade-83.vercel.app)
+**Live:** [srutiranjanpradhan.online](srutiranjanpradhan.online)
 
 ---
 
