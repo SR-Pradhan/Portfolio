@@ -6,7 +6,7 @@ import {
   useScroll,
   useSpring,
 } from "motion/react";
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /** The serpentine both paths follow. Kept in one place so they can't drift. */
 const PATH = "M80 0 C 8 170, 152 330, 80 500 C 8 670, 152 830, 80 1000";
@@ -51,9 +51,25 @@ export default function EducationCurve() {
   });
 
   // a node lights up once the drawn line reaches it
-  useMotionValueEvent(drawn, "change", (v) => {
-    setLit(nodes.filter((n) => v >= n.at - 0.02).length);
-  });
+  const relight = useCallback(
+    (v: number) => setLit(nodes.filter((n) => v >= n.at - 0.02).length),
+    [nodes],
+  );
+
+  useMotionValueEvent(drawn, "change", relight);
+
+  /**
+   * Also recompute when the nodes themselves change.
+   *
+   * Measuring finishes a frame or two after mount, and the scroll spring only
+   * emits while it is actually moving. Land partway down the page, or measure
+   * after the spring has settled, and the only `lit` value ever computed was
+   * the one from the empty node list — so the line draws past nodes that never
+   * light up.
+   */
+  useEffect(() => {
+    relight(drawn.get());
+  }, [relight, drawn]);
 
   /** Walk the path for its x at a given viewBox y. y increases monotonically. */
   const xAtY = useCallback((path: SVGPathElement, targetY: number) => {
@@ -190,10 +206,13 @@ export default function EducationCurve() {
           style={{ left: node.x, top: node.top }}
           // unlit uses muted, not border: border-token on the near-black page
           // is invisible, which reads as a missing dot rather than a dim one
+          // The unlit ring sits on a starfield, so a dim grey circle reads as a
+          // stray star rather than a node. The background-coloured outer ring
+          // punches a clean hole around it.
           className={`absolute z-20 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-surface transition-all duration-500 ${
             i < lit
-              ? "border-accent bg-background shadow-[0_0_12px_2px_var(--accent)]"
-              : "border-muted/70"
+              ? "border-accent bg-background shadow-[0_0_12px_2px_var(--accent),0_0_0_5px_var(--background)]"
+              : "border-muted shadow-[0_0_0_5px_var(--background)]"
           }`}
         />
       ))}
