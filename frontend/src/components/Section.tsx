@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
-import Reveal from "./Reveal";
+import AnimatedHeading from "./AnimatedHeading";
 
 /**
- * Shared shell for every page section: id anchor, max width, and a
- * centred header — title with an accent full stop, subtitle beneath.
+ * Shared shell for every page section: id anchor, max width, and a centred
+ * header. The header is its own client component because it animates per word
+ * on scroll; everything else here stays a server component.
  */
 export default function Section({
   id,
@@ -20,15 +21,7 @@ export default function Section({
 }) {
   return (
     <section id={id} className={`mx-auto max-w-6xl px-6 py-20 md:py-24 ${className}`}>
-      {title && (
-        <Reveal className="mb-12 text-center">
-          <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">
-            {title}
-            <span className="text-accent">.</span>
-          </h2>
-          {sub && <p className="mt-4 text-lg text-muted">{sub}</p>}
-        </Reveal>
-      )}
+      {title && <AnimatedHeading title={title} sub={sub} />}
       {children}
     </section>
   );
