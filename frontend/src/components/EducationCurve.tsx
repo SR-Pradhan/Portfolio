@@ -41,8 +41,10 @@ export default function EducationCurve() {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    // draws while the section travels through the middle of the viewport
-    offset: ["start 0.85", "end 0.45"],
+    // Finishes while the section is still comfortably in view. With the old
+    // "end 0.45" the line only completed once the section was most of the way
+    // off the top, so the last node lit after you had stopped looking at it.
+    offset: ["start 0.85", "end 0.65"],
   });
   const drawn = useSpring(scrollYProgress, {
     stiffness: 90,
@@ -71,8 +73,18 @@ export default function EducationCurve() {
     relight(drawn.get());
   }, [relight, drawn]);
 
-  /** Walk the path for its x at a given viewBox y. y increases monotonically. */
-  const xAtY = useCallback((path: SVGPathElement, targetY: number) => {
+  /**
+   * Walk the path for the point at a given viewBox y. y increases
+   * monotonically, so a binary search on arc length converges.
+   *
+   * Returns the arc-length fraction as well as x, and that distinction matters:
+   * `pathLength` animates along the *curve*, not down the page. This serpentine
+   * travels further per vertical pixel where it swings sideways, so a node
+   * three quarters of the way down the section sits past three quarters of the
+   * line's length. Comparing the draw progress against a height fraction lights
+   * the lower nodes late, or not at all before the scroll range ends.
+   */
+  const pointAtY = useCallback((path: SVGPathElement, targetY: number) => {
     const total = path.getTotalLength();
     let lo = 0;
     let hi = total;
@@ -81,7 +93,8 @@ export default function EducationCurve() {
       if (path.getPointAtLength(mid).y < targetY) lo = mid;
       else hi = mid;
     }
-    return path.getPointAtLength((lo + hi) / 2).x;
+    const len = (lo + hi) / 2;
+    return { x: path.getPointAtLength(len).x, at: total ? len / total : 0 };
   }, []);
 
   /**
@@ -124,10 +137,11 @@ export default function EducationCurve() {
       rows.map((row) => {
         const centre = topWithin(row, container) + row.offsetHeight / 2;
         const fraction = centre / height;
-        return { x: xAtY(path, fraction * VB_H), top: centre, at: fraction };
+        const { x, at } = pointAtY(path, fraction * VB_H);
+        return { x, top: centre, at };
       }),
     );
-  }, [xAtY, topWithin]);
+  }, [pointAtY, topWithin]);
 
   useLayoutEffect(() => {
     let frame1 = 0;
