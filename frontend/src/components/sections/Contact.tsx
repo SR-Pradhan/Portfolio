@@ -48,12 +48,6 @@ export default function Contact() {
 
           <ul className="mt-10 space-y-5 text-sm">
             <li className="flex items-center gap-3">
-              <Mail size={18} className="text-accent" />
-              <a href={`mailto:${site.email}`} className="hover:text-accent">
-                {site.email}
-              </a>
-            </li>
-            <li className="flex items-center gap-3">
               <Phone size={18} className="text-accent" />
               {/* strip spaces: a tel: href with them is invalid and some
                   dialers drop the call */}
@@ -62,6 +56,12 @@ export default function Contact() {
                 className="hover:text-accent"
               >
                 {site.phone}
+              </a>
+            </li>
+            <li className="flex items-center gap-3">
+              <Mail size={18} className="text-accent" />
+              <a href={`mailto:${site.email}`} className="hover:text-accent">
+                {site.email}
               </a>
             </li>
             <li className="flex items-center gap-3">
