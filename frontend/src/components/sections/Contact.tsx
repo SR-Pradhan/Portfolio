@@ -53,14 +53,17 @@ export default function Contact() {
                   dialers drop the call */}
               <a
                 href={`tel:${site.phone.replace(/\s/g, "")}`}
-                className="hover:text-accent"
+                className="transition-colors hover:text-accent"
               >
                 {site.phone}
               </a>
             </li>
             <li className="flex items-center gap-3">
               <Mail size={18} className="text-accent" />
-              <a href={`mailto:${site.email}`} className="hover:text-accent">
+              <a
+                href={`mailto:${site.email}`}
+                className="transition-colors hover:text-accent"
+              >
                 {site.email}
               </a>
             </li>
@@ -82,7 +85,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noreferrer"
                 title={`Directions to ${site.location}`}
-                className="text-muted transition-colors hover:text-accent"
+                className="transition-colors hover:text-accent"
               >
                 {site.location}
               </a>
