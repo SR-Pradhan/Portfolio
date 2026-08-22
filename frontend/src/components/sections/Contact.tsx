@@ -66,7 +66,26 @@ export default function Contact() {
             </li>
             <li className="flex items-center gap-3">
               <MapPin size={18} className="text-accent" />
-              <span className="text-muted">{site.location}</span>
+              {/*
+                Google Maps directions with a destination but no origin: Maps
+                fills the origin with the visitor's own location and shows the
+                route and distance. Doing it this way means the site never asks
+                for a geolocation permission itself, which is a prompt nobody
+                expects from a portfolio.
+
+                The destination stays the city, not a street address. It answers
+                "where is he, and how far is that from me" without publishing
+                where he actually lives.
+              */}
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.location)}`}
+                target="_blank"
+                rel="noreferrer"
+                title={`Directions to ${site.location}`}
+                className="text-muted transition-colors hover:text-accent"
+              >
+                {site.location}
+              </a>
             </li>
           </ul>
 
