@@ -84,6 +84,29 @@ export default function EducationCurve() {
     return path.getPointAtLength((lo + hi) / 2).x;
   }, []);
 
+  /**
+   * Distance from `container`'s top to `el`'s top.
+   *
+   * NOT `el.offsetTop`: that is measured from the nearest *positioned*
+   * ancestor, and every row is wrapped in a `Reveal` motion div. Each row
+   * therefore reports its offset inside its own wrapper, which is ~0, and all
+   * the nodes pile up at the same height near the top of the section looking
+   * like a single dot.
+   *
+   * Summing the offsetParent chain is immune to that, and unlike
+   * getBoundingClientRect it is pure layout, so Reveal's entrance transform
+   * cannot skew it mid-animation.
+   */
+  const topWithin = useCallback((el: HTMLElement, container: HTMLElement) => {
+    let y = 0;
+    let node: HTMLElement | null = el;
+    while (node && node !== container) {
+      y += node.offsetTop;
+      node = node.offsetParent as HTMLElement | null;
+    }
+    return y;
+  }, []);
+
   const measure = useCallback(() => {
     const wrap = ref.current;
     const path = pathRef.current;
@@ -99,12 +122,12 @@ export default function EducationCurve() {
 
     setNodes(
       rows.map((row) => {
-        const centre = row.offsetTop + row.offsetHeight / 2;
+        const centre = topWithin(row, container) + row.offsetHeight / 2;
         const fraction = centre / height;
         return { x: xAtY(path, fraction * VB_H), top: centre, at: fraction };
       }),
     );
-  }, [xAtY]);
+  }, [xAtY, topWithin]);
 
   useLayoutEffect(() => {
     let frame1 = 0;
