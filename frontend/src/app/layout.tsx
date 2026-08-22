@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { education, site, skills } from "@/data/site";
 import "./globals.css";
@@ -56,6 +56,21 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
+};
+
+/**
+ * Paints the mobile browser chrome to match the page, per theme. Without it
+ * Chrome and Safari on Android/iOS draw their own grey bar above a near-black
+ * site, which reads as a rendering fault rather than a design choice.
+ *
+ * Values track the `--background` tokens in globals.css and have to move with
+ * them.
+ */
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fcfcfd" },
+    { media: "(prefers-color-scheme: dark)", color: "#08080b" },
+  ],
 };
 
 /**

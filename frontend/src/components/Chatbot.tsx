@@ -67,11 +67,7 @@ export default function Chatbot() {
     setNudged(localStorage.getItem("chat-seen") === "1");
   }, []);
 
-  useEffect(() => {
-    if (!open) return;
-    setNudged(true);
-    localStorage.setItem("chat-seen", "1");
-  }, [open]);
+
 
   // keep the newest message in view as it streams in
   useEffect(() => {
@@ -94,6 +90,19 @@ export default function Chatbot() {
         // drop the local greeting — the server has its own system prompt
         body: JSON.stringify({ messages: history.slice(1) }),
       });
+      /*
+        Errors come back as JSON, not SSE: the rate limiter returns 429 and
+        validation returns 400, both with a plain body. Feeding those to the
+        SSE parser below finds no "\n\n" separator, so nothing is ever emitted
+        and the bubble sits on its typing dots forever. Check the status first
+        and surface the server's own message.
+      */
+      if (!res.ok) {
+        const body = (await res.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        throw new Error(body?.error ?? `Request failed (${res.status})`);
+      }
       if (!res.body) throw new Error("No response body");
 
       // Server-Sent Events arrive as `data: {...}` blocks separated by a blank
@@ -131,12 +140,30 @@ export default function Chatbot() {
           }
         }
       }
-    } catch {
+      // A stream that closed without ever emitting text would otherwise leave
+      // the typing dots running. Nothing else clears them.
+      setMessages((prev) => {
+        const next = [...prev];
+        if (next[next.length - 1]?.content) return prev;
+        next[next.length - 1] = {
+          role: "assistant",
+          content: `Sorry, I didn't get a reply. You can email ${site.email} instead.`,
+        };
+        return next;
+      });
+    } catch (err) {
+      // Prefer the server's message ("Too many messages. Try again later.")
+      // over a generic one: a rate-limited visitor should be told to wait
+      // rather than be told the site is broken.
+      const reason =
+        err instanceof Error && err.message
+          ? err.message
+          : "Sorry, I couldn't reach the server.";
       setMessages((prev) => {
         const next = [...prev];
         next[next.length - 1] = {
           role: "assistant",
-          content: `Sorry, I couldn't reach the server. You can email ${site.email} instead.`,
+          content: `${reason} You can email ${site.email} instead.`,
         };
         return next;
       });
@@ -151,7 +178,13 @@ export default function Chatbot() {
           uses — it reads as a utility rather than a marketing CTA, and takes
           the same corner space at any viewport width. */}
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setOpen((v) => !v);
+          // opening the panel is what "seen" means, so record it here rather
+          // than in an effect watching `open`
+          setNudged(true);
+          localStorage.setItem("chat-seen", "1");
+        }}
         aria-label={open ? "Close chat" : "Ask about Sruti"}
         aria-expanded={open}
         className="group fixed bottom-6 right-6 z-50 grid size-14 place-items-center rounded-full bg-accent text-white shadow-[0_10px_35px_-8px_var(--accent)] transition-transform hover:scale-105 active:scale-95"
