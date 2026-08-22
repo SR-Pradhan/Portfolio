@@ -26,6 +26,8 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sruti-ranjan.vercel.app",
   location: "Gurugram, India",
   email: "pradhansr2003@gmail.com",
+  /** Display form. `tel:` links strip the spaces at the call site. */
+  phone: "+91 8249809895",
   resumeUrl: "/resume.pdf",
   /** Order here is the order they render. Leave a value "" to hide it. */
   socials: {

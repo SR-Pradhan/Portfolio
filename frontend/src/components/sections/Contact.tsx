@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Phone, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { contact, site } from "@/data/site";
 import { socialLinks } from "@/lib/socials";
@@ -51,6 +51,17 @@ export default function Contact() {
               <Mail size={18} className="text-accent" />
               <a href={`mailto:${site.email}`} className="hover:text-accent">
                 {site.email}
+              </a>
+            </li>
+            <li className="flex items-center gap-3">
+              <Phone size={18} className="text-accent" />
+              {/* strip spaces: a tel: href with them is invalid and some
+                  dialers drop the call */}
+              <a
+                href={`tel:${site.phone.replace(/\s/g, "")}`}
+                className="hover:text-accent"
+              >
+                {site.phone}
               </a>
             </li>
             <li className="flex items-center gap-3">

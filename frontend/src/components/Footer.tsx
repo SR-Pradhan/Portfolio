@@ -16,8 +16,8 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 py-14 text-center">
         {/* Wordmark. The trailing accent dot is the site's own idiom — the nav
             logo and every section heading end the same way. */}
-        <p className="font-mono text-2xl font-bold uppercase tracking-[0.2em] text-foreground sm:text-3xl">
-          {site.name.split(" ").slice(0, 2).join(" ")}
+        <p className="font-mono text-4xl font-bold uppercase tracking-[0.2em] text-foreground sm:text-5xl">
+          {site.initials}
           <span className="text-accent">.</span>
         </p>
 
@@ -34,8 +34,14 @@ export default function Footer() {
 
         {/* Text labels, not the icon row used in the hero and contact section.
             Same links, different form, so the footer isn't a third copy. */}
-        <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-xs uppercase tracking-[0.16em]">
-          {socialLinks.map(({ href, label }, i) => (
+        <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-xs uppercase tracking-[0.14em]">
+          {[
+            ...socialLinks,
+            {
+              href: `tel:${site.phone.replace(/\s/g, "")}`,
+              label: site.phone,
+            },
+          ].map(({ href, label }, i) => (
             <span key={label} className="flex items-center gap-3">
               {i > 0 && (
                 <span aria-hidden className="size-1 rounded-full bg-border" />

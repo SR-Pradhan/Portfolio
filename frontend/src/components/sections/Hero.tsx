@@ -25,9 +25,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-5 font-mono text-sm text-accent"
+            className="mb-5 font-mono text-base text-accent sm:text-lg"
           >
-            Hi, I&apos;m {site.shortName}
+            Hi, I&apos;m <span className="font-medium">{site.name}</span>
           </motion.p>
 
           <motion.h1
