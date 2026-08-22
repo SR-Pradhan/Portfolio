@@ -17,7 +17,6 @@ const BRAND = {
   github: "group-hover:text-foreground",
   linkedin: "group-hover:text-[#0A66C2]",
   leetcode: "group-hover:text-[#FFA116]",
-  gmail: "group-hover:text-[#EA4335]",
 } as const;
 
 export function Github({ size = 20, className }: IconProps) {
@@ -130,22 +129,36 @@ export function Java({ size = 20, className }: IconProps) {
 }
 
 /**
- * Gmail. Path from simple-icons, inlined here rather than routed through
- * `TechIcon` because that component paints marks in their brand colour always,
- * and the social row wants the same muted-until-hover behaviour as its
- * neighbours.
+ * Gmail, the real multicolour mark (Google's 2020 icon, five paths).
+ *
+ * simple-icons only publishes monochrome silhouettes, so the version this
+ * replaced was the Gmail "M" in one flat colour, which is not the logo anyone
+ * recognises.
+ *
+ * Desaturated at rest and full colour on hover, the same treatment the Codolio
+ * owl gets. A `filter` rather than a colour swap, because five separate fills
+ * cannot be driven by `currentColor`.
+ *
+ * The viewBox is Google's own (52 42 88 66); leave it alone or the paths shift
+ * out of frame.
  */
 export function Gmail({ size = 20, className }: IconProps) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
+      viewBox="52 42 88 66"
       aria-hidden
-      className={`transition-colors duration-200 ${BRAND.gmail} ${className ?? ""}`}
+      className={`grayscale transition duration-200 group-hover:grayscale-0 ${className ?? ""}`}
     >
-      <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" />
+      <path fill="#4285f4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6" />
+      <path fill="#34a853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15" />
+      <path fill="#fbbc04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2" />
+      <path fill="#ea4335" d="M72 74V48l24 18 24-18v26L96 92" />
+      <path
+        fill="#c5221f"
+        d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.45-14.4-.22-14.4 7.2"
+      />
     </svg>
   );
 }
