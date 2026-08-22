@@ -17,6 +17,7 @@ const BRAND = {
   github: "group-hover:text-foreground",
   linkedin: "group-hover:text-[#0A66C2]",
   leetcode: "group-hover:text-[#FFA116]",
+  gmail: "group-hover:text-[#EA4335]",
 } as const;
 
 export function Github({ size = 20, className }: IconProps) {
@@ -124,6 +125,27 @@ export function Java({ size = 20, className }: IconProps) {
         <path d="M15 11.4h1.4a2.4 2.4 0 0 1 0 4.8H15" />
         <path d="M4.2 21h15.6" />
       </g>
+    </svg>
+  );
+}
+
+/**
+ * Gmail. Path from simple-icons, inlined here rather than routed through
+ * `TechIcon` because that component paints marks in their brand colour always,
+ * and the social row wants the same muted-until-hover behaviour as its
+ * neighbours.
+ */
+export function Gmail({ size = 20, className }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+      className={`transition-colors duration-200 ${BRAND.gmail} ${className ?? ""}`}
+    >
+      <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" />
     </svg>
   );
 }

@@ -1,5 +1,4 @@
-import { Mail } from "lucide-react";
-import { Codolio, Github, Leetcode, Linkedin } from "@/components/BrandIcons";
+import { Codolio, Github, Gmail, Leetcode, Linkedin } from "@/components/BrandIcons";
 import { site } from "@/data/site";
 
 /**
@@ -12,5 +11,5 @@ export const socialLinks = [
   { href: site.socials.linkedin, icon: Linkedin, label: "LinkedIn" },
   { href: site.socials.leetcode, icon: Leetcode, label: "LeetCode" },
   { href: site.socials.codolio, icon: Codolio, label: "Codolio" },
-  { href: `mailto:${site.email}`, icon: Mail, label: "Email" },
+  { href: `mailto:${site.email}`, icon: Gmail, label: "Email" },
 ].filter((s) => s.href);
