@@ -18,7 +18,9 @@ export default function Footer() {
             logo and every section heading end the same way. */}
         <p className="font-mono text-4xl font-bold uppercase tracking-[0.2em] text-foreground sm:text-5xl">
           {site.initials}
-          <span className="text-accent">.</span>
+          {/* tracking adds 0.2em after every character, including the final R,
+              which leaves the dot floating. Pull it back by exactly that. */}
+          <span className="-ml-[0.2em] text-accent">.</span>
         </p>
 
         <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-muted">
