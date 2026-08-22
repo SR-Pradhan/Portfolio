@@ -25,13 +25,14 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-5 font-mono text-lg text-accent sm:text-xl"
+            className="mb-5 font-mono text-lg text-muted sm:text-xl"
           >
-            {/* the greeting stays accent and light; the name carries the weight
-                and the foreground colour, so the eye lands on it rather than on
-                "Hi, I'm" */}
+            {/* Three tiers, three treatments: muted for the throwaway words,
+                accent for the name, white for the headline below. The name was
+                white before, which made it read as a shrunken copy of the H1
+                rather than as its own line. */}
             Hi, I&apos;m{" "}
-            <span className="font-semibold text-foreground">{site.name}</span>
+            <span className="font-semibold text-accent">{site.name}</span>
           </motion.p>
 
           <motion.h1
