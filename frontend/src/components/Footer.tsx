@@ -1,5 +1,5 @@
 import { footer, site } from "@/data/site";
-import { socialLinks } from "@/lib/socials";
+import { opensInNewTab, socialLinks } from "@/lib/socials";
 
 /**
  * Centred and stacked rather than a single justified row: a footer is the last
@@ -50,8 +50,9 @@ export default function Footer() {
               )}
               <a
                 href={href}
-                target="_blank"
-                rel="noreferrer"
+                {...(opensInNewTab(href)
+                  ? { target: "_blank", rel: "noreferrer" }
+                  : {})}
                 className="text-muted transition-colors hover:text-accent"
               >
                 {label}

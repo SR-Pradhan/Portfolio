@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { ArrowDown, FileDown } from "lucide-react";
 import { site } from "@/data/site";
-import { socialLinks } from "@/lib/socials";
+import { opensInNewTab, socialLinks } from "@/lib/socials";
 import RotatingRole from "@/components/RotatingRole";
 import TechOrbit from "@/components/TechOrbit";
 
@@ -104,8 +104,9 @@ export default function Hero() {
               <a
                 key={label}
                 href={href}
-                target="_blank"
-                rel="noreferrer"
+                {...(opensInNewTab(href)
+                  ? { target: "_blank", rel: "noreferrer" }
+                  : {})}
                 aria-label={label}
                 title={label}
                 className="group grid size-11 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"

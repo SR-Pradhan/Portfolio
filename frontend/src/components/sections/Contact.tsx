@@ -3,7 +3,7 @@
 import { Mail, MapPin, Phone, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { contact, site } from "@/data/site";
-import { socialLinks } from "@/lib/socials";
+import { opensInNewTab, socialLinks } from "@/lib/socials";
 import Reveal from "../Reveal";
 import Section from "../Section";
 
@@ -97,8 +97,9 @@ export default function Contact() {
               <a
                 key={label}
                 href={href}
-                target="_blank"
-                rel="noreferrer"
+                {...(opensInNewTab(href)
+                  ? { target: "_blank", rel: "noreferrer" }
+                  : {})}
                 aria-label={label}
                 title={label}
                 className="group grid size-10 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
