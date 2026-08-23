@@ -82,6 +82,22 @@ html:not(.dark) body::before {
     );
 }
 
+/* The texture light mode gets in place of the starfield. A fine dot grid on
+   `body` rather than the fixed wash above, so it scrolls with the page and
+   reads as paper the content sits on. Very low contrast on purpose: at this
+   size it should register as tone, not as a visible pattern.
+
+   Dark mode is untouched, so `body` stays transparent there and the starfield
+   canvas behind it still shows through. */
+html:not(.dark) body {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(16 16 30 / 0.055) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+}
+
 /* Cards need elevation on light and don't on dark. Against near-white a
    border alone reads as an outline drawn on the page rather than as a surface
    sitting above it. Kept very soft: two stacked shadows, the near one for the

@@ -39,8 +39,9 @@ export default function Starfield() {
     let stars: Star[] = [];
     let frame = 0;
     let raf = 0;
+    let timer = 0;
 
-    /** Stars are white on dark, near-black on light. */
+    /** Stars only exist on the dark theme; see draw(). */
     const isDark = () => document.documentElement.classList.contains("dark");
 
     function resize() {
@@ -78,10 +79,23 @@ export default function Starfield() {
       const h = window.innerHeight;
       ctx.clearRect(0, 0, w, h);
 
-      const rgb = isDark() ? "255,255,255" : "20,20,30";
-      // lower on light: dark specks on white read as dirt long before they
-      // read as stars
-      const base = isDark() ? 0.55 : 0.22;
+      /*
+        Stars are a dark-theme idea. On white the same field is dark specks
+        drifting across the page, which reads as dust on the screen rather than
+        as a night sky. Light mode gets a static dot grid from CSS instead, so
+        this bails out entirely rather than drawing a washed-out version.
+
+        It keeps polling so a theme toggle picks straight back up, but on a
+        timer rather than a frame: spinning rAF at 60fps to clear an empty
+        canvas costs battery for nothing.
+      */
+      if (!isDark()) {
+        timer = window.setTimeout(draw, 250);
+        return;
+      }
+
+      const rgb = "255,255,255";
+      const base = 0.55;
 
       for (const s of stars) {
         const twinkle = reduced
@@ -114,6 +128,7 @@ export default function Starfield() {
     window.addEventListener("resize", resize);
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(timer);
       window.removeEventListener("resize", resize);
     };
   }, []);
