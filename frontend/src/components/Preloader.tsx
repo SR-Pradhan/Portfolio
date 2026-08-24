@@ -120,10 +120,13 @@ export default function Preloader() {
     if (document.readyState === "complete") markLoaded();
     window.addEventListener("load", markLoaded);
 
-    // A floor on total display time. Under 700ms a curtain reads as a flicker
-    // or a rendering fault; the reveal needs long enough to register as one.
+    // A floor on total display time. On a warm cache every signal lands inside
+    // a couple of hundred milliseconds, and a curtain that fast reads as a
+    // flicker — the monogram, the log and the wipe are gone before the eye
+    // resolves any of them. This is the minimum the sequence needs to be read
+    // as a deliberate intro rather than a rendering fault.
     const start = performance.now();
-    const MIN_MS = 700;
+    const MIN_MS = 2400;
 
     let current = 0;
     let raf = 0;
@@ -131,11 +134,18 @@ export default function Preloader() {
 
     const tick = () => {
       const elapsed = performance.now() - start;
-      const allowed = ceiling === 100 && elapsed < MIN_MS ? 99 : ceiling;
+
+      // Two ceilings, and the lower one wins. `ceiling` is what the load has
+      // actually achieved; the pace cap is how far the display is allowed to
+      // have travelled by now. Capping on time rather than parking the bar at
+      // 99% keeps the ring visibly drawing for the whole run instead of
+      // snapping full and waiting out the floor.
+      const paced = 100 * Math.min(1, elapsed / MIN_MS);
+      const allowed = Math.min(ceiling, paced);
 
       // Ease toward the ceiling: fast while far away, slow as it closes in,
       // so the bar always keeps moving instead of stepping between signals.
-      current += Math.max((allowed - current) * 0.08, allowed > current ? 0.25 : 0);
+      current += Math.max((allowed - current) * 0.12, allowed > current ? 0.15 : 0);
       if (current > allowed) current = allowed;
 
       const shown = Math.min(100, Math.round(current));
@@ -238,7 +248,7 @@ export default function Preloader() {
               would drop the whole log in at once. The per-index delay keeps it
               cascading without misreporting any of the timings. */}
           {logs.map((line, i) => (
-            <li key={line.id} style={{ animationDelay: `${i * 90}ms` }}>
+            <li key={line.id} style={{ animationDelay: `${i * 260}ms` }}>
               <span className="preloader-log-mark">▸</span>
               <span className="preloader-log-text">{line.text}</span>
               <span className="preloader-log-ms">{line.ms}ms</span>
