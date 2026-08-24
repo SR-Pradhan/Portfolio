@@ -60,13 +60,37 @@ export default function GitHubHeatmap() {
 
   useEffect(() => {
     const abort = new AbortController();
-    fetch(`${API_URL}/api/github/contributions`, { signal: abort.signal })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d: { enabled?: boolean; contributions?: Contributions } | null) => {
-        if (d?.enabled && d.contributions) setData(d.contributions);
-      })
-      .catch(() => {});
-    return () => abort.abort();
+    let timer: ReturnType<typeof setTimeout>;
+
+    /**
+     * One fetch is not enough against a free tier that sleeps.
+     *
+     * A cold Render instance can take the better part of a minute to answer
+     * its first request, and the calendar is fetched exactly once on mount —
+     * so a single failure used to hide this section for the whole visit, with
+     * nothing on screen to say why. Three tries, backing off, covers a cold
+     * start without hammering a backend that is genuinely down.
+     */
+    const load = (attempt = 0) => {
+      fetch(`${API_URL}/api/github/contributions`, { signal: abort.signal })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d: { enabled?: boolean; contributions?: Contributions } | null) => {
+          if (d?.enabled && d.contributions) return setData(d.contributions);
+          // `enabled: false` is a settled answer (no token) — don't retry it.
+          if (d && d.enabled === false) return;
+          throw new Error("no contributions in response");
+        })
+        .catch(() => {
+          if (abort.signal.aborted || attempt >= 2) return;
+          timer = setTimeout(() => load(attempt + 1), 4000 * (attempt + 1));
+        });
+    };
+    load();
+
+    return () => {
+      clearTimeout(timer);
+      abort.abort();
+    };
   }, []);
 
   if (!data) return null;
