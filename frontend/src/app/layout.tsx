@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Preloader from "@/components/Preloader";
 import { education, site, skills } from "@/data/site";
 import "./globals.css";
 
@@ -104,6 +105,23 @@ const themeScript = `
 }catch(e){document.documentElement.classList.add('dark')}})();
 `;
 
+/**
+ * Decides the curtain's fate before it is ever painted.
+ *
+ * Two jobs. It skips the curtain outright on a repeat visit in the same tab —
+ * a returning visitor has already seen the intro and only wants the page. And
+ * it arms a hard timeout that tears the curtain down regardless, so a failed
+ * hydration or a hung asset can never leave the site behind a full-screen
+ * overlay.
+ */
+const preloaderScript = `
+(function(){var d=document.documentElement;try{
+  if(sessionStorage.getItem('seen-intro'))d.classList.add('preloaded');
+  else sessionStorage.setItem('seen-intro','1');
+}catch(e){}
+setTimeout(function(){d.classList.remove('preloading');d.classList.add('preloaded')},6000)})();
+`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -113,6 +131,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: preloaderScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
@@ -122,6 +141,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           inject attributes onto body after SSR, which React reports as a
           mismatch. Nothing to do with our markup. */}
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
+        <Preloader />
         {children}
       </body>
     </html>

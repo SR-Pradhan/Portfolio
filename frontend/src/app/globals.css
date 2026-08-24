@@ -415,3 +415,232 @@ html:not(.dark) .bg-surface {
     transition: none;
   }
 }
+
+/* ── Preloader ────────────────────────────────────────────────────────
+   Plain CSS rather than utilities because this markup has to look finished
+   in the server HTML, before Tailwind's runtime-free classes are joined by
+   any JavaScript — and because the exit is a two-panel wipe that needs
+   coordinated transitions across four elements.
+
+   Colours come from the theme tokens, so the curtain is already in the right
+   mode: the inline theme script in layout.tsx runs above this. */
+
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  color: var(--foreground);
+}
+
+/* The two halves that part on exit. They carry the background, so the content
+   above can fade out on its own timing. */
+.preloader-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%; /* the half-pixel overlap stops a hairline seam mid-screen */
+  background: var(--background);
+  transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.preloader-panel-top {
+  top: 0;
+}
+
+.preloader-panel-bottom {
+  bottom: 0;
+}
+
+.preloader-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.preloader-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* A conic sweep masked into a 2px ring: one accent arc chasing a faint track,
+   which reads as work in progress without the spinner cliché. */
+.preloader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--accent) 12%, transparent) 140deg,
+    var(--accent) 320deg,
+    transparent 360deg
+  );
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
+  animation: preloader-spin 1.4s linear infinite;
+}
+
+/* The glow under the monogram — the same light source the hero uses, so the
+   curtain and the page it opens onto belong to one design. */
+.preloader-mark::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    transparent 70%
+  );
+  filter: blur(6px);
+  animation: preloader-breathe 2.6s ease-in-out infinite;
+}
+
+.preloader-initials {
+  position: relative;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding-left: 0.08em; /* optical centring against the tracking above */
+}
+
+.preloader-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.preloader-role {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+  padding-left: 0.28em;
+}
+
+.preloader-bar {
+  position: relative;
+  width: min(16rem, 60vw);
+  height: 2px;
+  margin-top: 1.25rem;
+  border-radius: 9999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.preloader-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 45%, transparent),
+    var(--accent)
+  );
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.preloader-meta {
+  display: flex;
+  justify-content: space-between;
+  width: min(16rem, 60vw);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.preloader-percent {
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Exit: content drops out first, then the panels part on the leading edge of
+   the page underneath. */
+#preloader.is-leaving {
+  pointer-events: none;
+}
+
+#preloader.is-leaving .preloader-content {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+#preloader.is-leaving .preloader-panel-top {
+  transform: translateY(-100%);
+}
+
+#preloader.is-leaving .preloader-panel-bottom {
+  transform: translateY(100%);
+}
+
+/* Held by the component while the curtain is up, so the page behind can't be
+   scrolled by a stray wheel event. */
+html.preloading,
+html.preloading body {
+  overflow: hidden;
+}
+
+/* Set by the inline script on a repeat visit in the same tab, and as the hard
+   timeout fallback if the component never hydrates. Either way the curtain
+   must not be able to trap the page. */
+html.preloaded #preloader {
+  display: none;
+}
+
+@keyframes preloader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes preloader-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-ring {
+    animation: none;
+    background: conic-gradient(
+      from 0deg,
+      color-mix(in srgb, var(--accent) 30%, transparent),
+      var(--accent)
+    );
+  }
+
+  .preloader-mark::before {
+    animation: none;
+  }
+
+  /* A wipe is the motion this component is; with reduced motion it becomes a
+     plain fade instead. */
+  .preloader-panel {
+    transition: opacity 0.3s ease;
+  }
+
+  #preloader.is-leaving .preloader-panel-top,
+  #preloader.is-leaving .preloader-panel-bottom {
+    transform: none;
+    opacity: 0;
+  }
+}
