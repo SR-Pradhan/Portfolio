@@ -10,6 +10,11 @@ about my work, backed by a small Express API.
 
 ## What's in it
 
+- **First-paint curtain** that fills the gap before the page is ready: a progress ring,
+  a boot log and corner readouts driven by the Performance API — real TTFB, real
+  resource count, real bytes transferred — so nothing on it is invented. It leaves on a
+  skewed wipe, shows once per tab, and an inline script tears it down after a hard
+  timeout so a failed hydration can never trap the page behind it.
 - **Scroll HUD** across the top that tracks how much of the page you've covered
 - **AI chatbot** that answers questions about my background, streamed token by token
   over Server-Sent Events. Its knowledge base is generated from the site's own content,
