@@ -417,10 +417,10 @@ html:not(.dark) .bg-surface {
 }
 
 /* ── Preloader ────────────────────────────────────────────────────────
-   Plain CSS rather than utilities because this markup has to look finished
-   in the server HTML, before Tailwind's runtime-free classes are joined by
-   any JavaScript — and because the exit is a two-panel wipe that needs
-   coordinated transitions across four elements.
+   Plain CSS rather than utilities because this markup has to look finished in
+   the server HTML, before Tailwind's classes are joined by any JavaScript —
+   and because the exit is a skewed wipe that needs several elements moving on
+   one shared transition.
 
    Colours come from the theme tokens, so the curtain is already in the right
    mode: the inline theme script in layout.tsx runs above this. */
@@ -432,36 +432,156 @@ html:not(.dark) .bg-surface {
   display: grid;
   place-items: center;
   color: var(--foreground);
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
-/* The two halves that part on exit. They carry the background, so the content
-   above can fade out on its own timing. */
+/* The curtain. Skewed a few degrees so its trailing edge is a diagonal, and
+   oversized so the skew never exposes a corner of the page underneath. */
 .preloader-panel {
   position: absolute;
-  left: 0;
-  right: 0;
-  height: 50.5%; /* the half-pixel overlap stops a hairline seam mid-screen */
+  inset: -25% -35%;
   background: var(--background);
-  transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+  transform: skewX(-8deg);
+  transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-.preloader-panel-top {
-  top: 0;
+/* The lit edge that rides the curtain out — it starts just off the right of
+   the screen and sweeps left as the page is revealed behind it. */
+.preloader-seam {
+  position: absolute;
+  top: -25%;
+  bottom: -25%;
+  right: -35%;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--accent) 18%,
+    var(--accent) 82%,
+    transparent
+  );
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--accent) 70%, transparent),
+    0 0 60px color-mix(in srgb, var(--accent) 35%, transparent);
+  opacity: 0;
+  transform: skewX(-8deg);
+  transition:
+    transform 0.95s cubic-bezier(0.76, 0, 0.24, 1),
+    opacity 0.2s ease;
 }
 
-.preloader-panel-bottom {
-  bottom: 0;
+/* Blueprint tone behind the mark. Faint enough to register as texture rather
+   than as a visible grid, and masked to a soft oval so it has no hard edge. */
+.preloader-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--foreground) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--foreground) 7%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 64px 64px;
+  mask: radial-gradient(closest-side at 50% 50%, #000, transparent 78%);
+  -webkit-mask: radial-gradient(closest-side at 50% 50%, #000, transparent 78%);
+  opacity: 0.9;
+  transition: opacity 0.35s ease;
 }
+
+/* ── Corner readouts ─────────────────────────────────────────────────── */
+
+.preloader-hud {
+  position: absolute;
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  animation: preloader-fade-in 0.5s 0.1s ease both;
+}
+
+.preloader-hud-key {
+  color: color-mix(in srgb, var(--muted) 55%, transparent);
+  margin-right: 0.35em;
+}
+
+.preloader-hud-stage {
+  margin-right: 0.6em;
+}
+
+.preloader-percent {
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.preloader-hud-tl {
+  top: 1.5rem;
+  left: 1.5rem;
+}
+.preloader-hud-tr {
+  top: 1.5rem;
+  right: 1.5rem;
+}
+.preloader-hud-bl {
+  bottom: 1.5rem;
+  left: 1.5rem;
+}
+.preloader-hud-br {
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+/* Crosshair ticks in each corner — the detail that makes the readouts look
+   mounted to the frame rather than floated in it. */
+.preloader-hud::before {
+  content: "";
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
+}
+
+.preloader-hud-tl::before {
+  top: -0.85rem;
+  left: -0.85rem;
+  border-right: 0;
+  border-bottom: 0;
+}
+.preloader-hud-tr::before {
+  top: -0.85rem;
+  right: -0.85rem;
+  border-left: 0;
+  border-bottom: 0;
+}
+.preloader-hud-bl::before {
+  bottom: -0.85rem;
+  left: -0.85rem;
+  border-right: 0;
+  border-top: 0;
+}
+.preloader-hud-br::before {
+  bottom: -0.85rem;
+  right: -0.85rem;
+  border-left: 0;
+  border-top: 0;
+}
+
+/* ── Centre mark ─────────────────────────────────────────────────────── */
 
 .preloader-content {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   transition:
-    opacity 0.35s ease,
-    transform 0.35s ease;
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .preloader-mark {
@@ -470,25 +590,7 @@ html:not(.dark) .bg-surface {
   place-items: center;
   width: 5.5rem;
   height: 5.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/* A conic sweep masked into a 2px ring: one accent arc chasing a faint track,
-   which reads as work in progress without the spinner cliché. */
-.preloader-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    color-mix(in srgb, var(--accent) 12%, transparent) 140deg,
-    var(--accent) 320deg,
-    transparent 360deg
-  );
-  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
-  animation: preloader-spin 1.4s linear infinite;
+  margin-bottom: 0.75rem;
 }
 
 /* The glow under the monogram — the same light source the hero uses, so the
@@ -500,92 +602,136 @@ html:not(.dark) .bg-surface {
   border-radius: 9999px;
   background: radial-gradient(
     closest-side,
-    color-mix(in srgb, var(--accent) 22%, transparent),
+    color-mix(in srgb, var(--accent) 20%, transparent),
     transparent 70%
   );
   filter: blur(6px);
   animation: preloader-breathe 2.6s ease-in-out infinite;
 }
 
+/* Rotated so the arc starts at twelve o'clock; the dash offset is set from
+   the measured progress in the component, so this ring is the progress bar. */
+.preloader-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.preloader-ring-track,
+.preloader-ring-arc {
+  fill: none;
+  stroke-width: 2;
+}
+
+.preloader-ring-track {
+  stroke: var(--border);
+}
+
+.preloader-ring-arc {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 60%, transparent));
+  /* short, so the arc keeps up with the number instead of lagging behind it */
+  transition: stroke-dashoffset 0.12s linear;
+}
+
 .preloader-initials {
   position: relative;
-  font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   padding-left: 0.08em; /* optical centring against the tracking above */
 }
 
+/* ── Name and label ──────────────────────────────────────────────────── */
+
 .preloader-name {
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0.01em;
+  display: flex;
+}
+
+/* Per-letter stagger, driven by an inline animation-delay. Pure CSS, so the
+   entrance is already playing in the server HTML — it doesn't wait for React. */
+.preloader-letter {
+  display: inline-block;
+  white-space: pre;
+  animation: preloader-letter-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .preloader-role {
-  font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.28em;
   color: var(--muted);
   padding-left: 0.28em;
+  animation: preloader-fade-in 0.6s 0.35s ease both;
 }
 
-.preloader-bar {
-  position: relative;
-  width: min(16rem, 60vw);
-  height: 2px;
-  margin-top: 1.25rem;
-  border-radius: 9999px;
-  background: var(--border);
-  overflow: hidden;
-}
+/* ── Boot log ────────────────────────────────────────────────────────── */
 
-.preloader-fill {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--accent) 45%, transparent),
-    var(--accent)
-  );
-  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 55%, transparent);
-}
-
-.preloader-meta {
+.preloader-log {
+  margin-top: 1.5rem;
   display: flex;
-  justify-content: space-between;
-  width: min(16rem, 60vw);
-  font-family: var(--font-mono), ui-monospace, monospace;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: min(20rem, 72vw);
   font-size: 0.625rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--muted);
+  /* holds the block's height so the centred mark doesn't jump as lines land */
+  min-height: 3.6rem;
 }
 
-.preloader-percent {
+.preloader-log li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  animation: preloader-log-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.preloader-log-mark {
+  color: var(--accent);
+}
+
+.preloader-log-text {
+  flex: 1;
+  text-transform: uppercase;
+  /* the dotted leader that ties the label to its timing */
+  border-bottom: 1px dotted color-mix(in srgb, var(--muted) 30%, transparent);
+  padding-bottom: 0.15rem;
+}
+
+.preloader-log-ms {
   color: var(--foreground);
   font-variant-numeric: tabular-nums;
 }
 
-/* Exit: content drops out first, then the panels part on the leading edge of
-   the page underneath. */
+/* ── Exit ────────────────────────────────────────────────────────────── */
+
 #preloader.is-leaving {
   pointer-events: none;
 }
 
-#preloader.is-leaving .preloader-content {
+/* Everything on the glass clears first, then the curtain moves — otherwise
+   the readouts would slide off with it and read as a slipping layer. */
+#preloader.is-leaving .preloader-content,
+#preloader.is-leaving .preloader-hud,
+#preloader.is-leaving .preloader-grid {
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateY(-6px);
 }
 
-#preloader.is-leaving .preloader-panel-top {
-  transform: translateY(-100%);
+#preloader.is-leaving .preloader-panel,
+#preloader.is-leaving .preloader-seam {
+  transform: skewX(-8deg) translateX(-150%);
 }
 
-#preloader.is-leaving .preloader-panel-bottom {
-  transform: translateY(100%);
+#preloader.is-leaving .preloader-seam {
+  opacity: 1;
 }
 
 /* Held by the component while the curtain is up, so the page behind can't be
@@ -602,45 +748,84 @@ html.preloaded #preloader {
   display: none;
 }
 
-@keyframes preloader-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes preloader-breathe {
   0%,
   100% {
-    opacity: 0.55;
+    opacity: 0.5;
   }
   50% {
     opacity: 1;
   }
 }
 
+@keyframes preloader-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes preloader-letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes preloader-log-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Narrow screens: the corner grid would crowd a 360px-wide phone, so only the
+   two readouts that carry the load state survive. */
+@media (max-width: 30rem) {
+  .preloader-hud-tr,
+  .preloader-hud-bl {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .preloader-ring {
+  .preloader-mark::before,
+  .preloader-letter,
+  .preloader-log li,
+  .preloader-hud,
+  .preloader-role {
     animation: none;
-    background: conic-gradient(
-      from 0deg,
-      color-mix(in srgb, var(--accent) 30%, transparent),
-      var(--accent)
-    );
   }
 
-  .preloader-mark::before {
-    animation: none;
+  .preloader-letter,
+  .preloader-log li {
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
   /* A wipe is the motion this component is; with reduced motion it becomes a
      plain fade instead. */
-  .preloader-panel {
+  .preloader-panel,
+  .preloader-seam {
     transition: opacity 0.3s ease;
   }
 
-  #preloader.is-leaving .preloader-panel-top,
-  #preloader.is-leaving .preloader-panel-bottom {
-    transform: none;
+  #preloader.is-leaving .preloader-panel,
+  #preloader.is-leaving .preloader-seam {
+    transform: skewX(-8deg);
     opacity: 0;
   }
 }
