@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T17:25:37.651Z",
+  "generatedAt": "2026-08-24T16:48:18.604Z",
   "identity": {
     "name": "Sruti Ranjan Pradhan",
     "roles": [
@@ -137,6 +137,18 @@
       "title": "Solvix",
       "what": "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders. No manual logging required.",
       "hardPart": "Free-tier hosting sleeps when idle, so daily plans and reminders run on an external GitHub Actions cron instead of an in-process timer.",
+      "notes": [
+        "The backend sleeps when idle, so reminders and plan generation run on an external cron rather than an in-process timer.",
+        "Topic scoring treats Codeforces and LeetCode differently, since only one of them records failed attempts.",
+        "Repeated wrong submissions collapse into a single attempt, so retry-spam doesn't distort the score."
+      ],
+      "flow": [
+        "GitHub Actions cron",
+        "FastAPI",
+        "PostgreSQL",
+        "Groq LLM",
+        "Daily plan"
+      ],
       "tech": [
         "FastAPI",
         "async SQLAlchemy",
@@ -156,6 +168,13 @@
       "title": "Real-Time Drowsiness Detection",
       "what": "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue, triggering an audio alert when eyes stay closed past a threshold.",
       "hardPart": "Tuning the EAR threshold and frame count to catch real drowsiness without firing on ordinary blinks, while staying fast enough for live video.",
+      "flow": [
+        "Webcam frame",
+        "dlib landmarks",
+        "Eye Aspect Ratio",
+        "Threshold + frame count",
+        "pygame alert"
+      ],
       "tech": [
         "Python",
         "OpenCV",
@@ -171,6 +190,13 @@
       "title": "Secure Auth System",
       "what": "A Spring Boot authentication system implementing user registration, login, and role-based access control (USER/ADMIN), with BCrypt password encryption and session-managed protected routes.",
       "hardPart": "Designing role-based access, BCrypt storage, and session handling into the Spring Security layer from the start, rather than bolting security on afterwards.",
+      "flow": [
+        "Login form",
+        "Spring Security filter",
+        "BCrypt check",
+        "Session + role",
+        "Guarded route"
+      ],
       "tech": [
         "Java",
         "Spring Boot",

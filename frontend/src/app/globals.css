@@ -829,3 +829,37 @@ html.preloaded #preloader {
     opacity: 0;
   }
 }
+
+/* ── Command palette ──────────────────────────────────────────────────
+   The panel drops in from slightly above and slightly small. Anything more
+   than this is too much for something that opens on a keystroke and is
+   expected to be usable the moment it appears. */
+
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.palette-panel {
+  animation: palette-in 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .palette-panel {
+    animation: none;
+  }
+}
+
+/* Reduced motion: the drawer still opens, it just arrives at its height
+   instead of travelling there. */
+@media (prefers-reduced-motion: reduce) {
+  .case-study {
+    transition: none;
+  }
+}

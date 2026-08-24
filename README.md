@@ -16,6 +16,16 @@ about my work, backed by a small Express API.
   skewed wipe, shows once per tab, and an inline script tears it down after a hard
   timeout so a failed hydration can never trap the page behind it.
 - **Scroll HUD** across the top that tracks how much of the page you've covered
+- **⌘K command palette** — fuzzy jump to any section, open a repo, copy the email,
+  take the résumé, flip the theme or open the assistant. The only route through the
+  whole site that never needs a mouse.
+- **Live project stats** pulled from the GitHub API through the backend: last push,
+  language split, stars and forks when there are any. Cached for 30 minutes upstream
+  and shared across visitors, so the cards stay current without burning the rate limit.
+- **Case-study drawers** on each project — the request path as a small diagram, plus
+  the decisions worth explaining in an interview.
+- **API status strip** in the footer that reports real reachability and round-trip
+  time, including when the free-tier backend is waking from idle
 - **AI chatbot** that answers questions about my background, streamed token by token
   over Server-Sent Events. Its knowledge base is generated from the site's own content,
   so it can't invent an employer or a grade.
@@ -116,7 +126,9 @@ invalidates a replaced image. The script prints the line to paste into `site.ts`
 Backend first, since the frontend build needs its URL.
 
 **Backend** on Render: root directory `backend`, build `npm install && npm run build`,
-start `npm start`. Set `GROQ_API_KEY` and `ALLOWED_ORIGINS`.
+start `npm start`. Set `GROQ_API_KEY` and `ALLOWED_ORIGINS`. `GITHUB_TOKEN` is optional
+— the project-card stats work without it, on GitHub's 60-requests-per-hour anonymous
+allowance.
 
 **Frontend** on Vercel: root directory `frontend`. Set `NEXT_PUBLIC_API_URL` to the
 backend URL and `NEXT_PUBLIC_SITE_URL` to the site's own origin.
@@ -136,6 +148,12 @@ not just an environment edit.
   surface.
 - Rate limits are in-memory and per-IP: 5 contact messages and 30 chat messages per
   hour. Fine for one instance; a multi-instance deployment would need shared state.
+- `/api/github` takes no parameters. The repositories it will report on come from
+  `site.ts` by way of the generated context file, so there is nothing for a caller to
+  point at an arbitrary URL.
+- Everything that depends on the API degrades to the pre-existing UI: no stats on the
+  cards, and the footer says the API is unreachable. A sleeping backend never costs a
+  visitor the content.
 
 ---
 

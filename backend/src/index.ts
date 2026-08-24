@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import chatRouter from "./routes/chat.js";
 import contactRouter from "./routes/contact.js";
+import githubRouter from "./routes/github.js";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -30,6 +31,7 @@ app.get("/health", (_req, res) => {
 
 app.use("/api/contact", contactRouter);
 app.use("/api/chat", chatRouter);
+app.use("/api/github", githubRouter);
 
 // Fallback error handler — keeps stack traces out of responses.
 app.use(

@@ -135,6 +135,15 @@ export type Project = {
   demoNote?: string;
   code?: string;
   npm?: string;
+  /**
+   * The deep dive behind the card, opened by "Case study".
+   *
+   * `notes` is the long version — the decisions worth explaining in an
+   * interview. `flow` is the request path, rendered as a small diagram; keep
+   * it to four or five steps, since it is a shape to grasp at a glance rather
+   * than an architecture document.
+   */
+  caseStudy?: { notes?: string[]; flow?: string[] };
   /** Renders a dimmed teaser card instead of a real one. */
   comingSoon?: boolean;
 };
@@ -144,12 +153,6 @@ export const projects: Project[] = [
     title: "Solvix",
     blurb:
       "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders. No manual logging required.",
-    // Long version, kept for interviews: the backend sleeps when idle, so
-    // reminders and plan generation run on an external cron rather than an
-    // in-process timer; topic scoring treats Codeforces and LeetCode
-    // differently since only one records failed attempts; repeated wrong
-    // submissions collapse into a single attempt so retry-spam doesn't
-    // distort the score.
     hardPart:
       "Free-tier hosting sleeps when idle, so daily plans and reminders run on an external GitHub Actions cron instead of an in-process timer.",
     tags: [
@@ -164,6 +167,14 @@ export const projects: Project[] = [
       "Recharts",
       "Groq LLM",
     ],
+    caseStudy: {
+      notes: [
+        "The backend sleeps when idle, so reminders and plan generation run on an external cron rather than an in-process timer.",
+        "Topic scoring treats Codeforces and LeetCode differently, since only one of them records failed attempts.",
+        "Repeated wrong submissions collapse into a single attempt, so retry-spam doesn't distort the score.",
+      ],
+      flow: ["GitHub Actions cron", "FastAPI", "PostgreSQL", "Groq LLM", "Daily plan"],
+    },
     code: "https://github.com/SR-Pradhan/Solvix",
     demo: "https://solvix-roan.vercel.app",
     demoNote: "API cold-starts after idle (first request ~50s)",
@@ -175,6 +186,10 @@ export const projects: Project[] = [
     hardPart:
       "Tuning the EAR threshold and frame count to catch real drowsiness without firing on ordinary blinks, while staying fast enough for live video.",
     tags: ["Python", "OpenCV", "dlib", "imutils", "SciPy", "Streamlit", "pygame"],
+    caseStudy: {
+      // TODO: add `notes` — the decisions you'd talk through in an interview.
+      flow: ["Webcam frame", "dlib landmarks", "Eye Aspect Ratio", "Threshold + frame count", "pygame alert"],
+    },
     code: "https://github.com/SR-Pradhan/real-time-drowsiness-detection",
   },
   {
@@ -184,6 +199,10 @@ export const projects: Project[] = [
     hardPart:
       "Designing role-based access, BCrypt storage, and session handling into the Spring Security layer from the start, rather than bolting security on afterwards.",
     tags: ["Java", "Spring Boot", "Spring Security", "Thymeleaf", "MySQL", "Maven"],
+    caseStudy: {
+      // TODO: add `notes` — the decisions you'd talk through in an interview.
+      flow: ["Login form", "Spring Security filter", "BCrypt check", "Session + role", "Guarded route"],
+    },
     code: "https://github.com/SR-Pradhan/secure-auth-system",
   },
   {

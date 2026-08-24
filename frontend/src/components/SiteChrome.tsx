@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { nav } from "@/data/site";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import CommandPalette from "./CommandPalette";
 import Nav from "./Nav";
 import ScrollHUD from "./ScrollHUD";
 
@@ -18,6 +19,7 @@ export default function SiteChrome() {
     <>
       <ScrollHUD active={active} />
       <Nav active={active} />
+      <CommandPalette />
     </>
   );
 }

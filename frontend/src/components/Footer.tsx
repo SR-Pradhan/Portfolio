@@ -1,5 +1,6 @@
 import { footer, site } from "@/data/site";
 import { opensInNewTab, socialLinks } from "@/lib/socials";
+import ApiStatus from "./ApiStatus";
 
 /**
  * Centred and stacked rather than a single justified row: a footer is the last
@@ -60,6 +61,10 @@ export default function Footer() {
             </span>
           ))}
         </nav>
+
+        {/* Last line before the credit: the site says the chat and the form are
+            backed by a real API, and this is what proves it. */}
+        <ApiStatus />
 
         <p className="font-mono text-xs text-muted">
           {footer.credit}{" "}

@@ -48,6 +48,11 @@ const context = {
       title: p.title,
       what: p.blurb,
       hardPart: p.hardPart,
+      // The case-study notes are the deepest thing written about a project, so
+      // withholding them would leave the assistant answering more shallowly
+      // than the page it sits on.
+      notes: p.caseStudy?.notes,
+      flow: p.caseStudy?.flow,
       tech: p.tags,
       code: p.code,
       demo: p.demo,

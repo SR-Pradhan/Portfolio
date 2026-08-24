@@ -1,28 +1,16 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { setTheme, useIsDark } from "@/lib/ui";
 
 export default function ThemeToggle() {
-  const [dark, setDark] = useState(true);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    const isDark = stored ? stored === "dark" : true;
-    setDark(isDark);
-    document.documentElement.classList.toggle("dark", isDark);
-  }, []);
-
-  function toggle() {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("theme", next ? "dark" : "light");
-  }
+  // Subscribed, not local: the command palette can flip the theme too, and
+  // this button has to follow it rather than showing the wrong glyph.
+  const dark = useIsDark();
 
   return (
     <button
-      onClick={toggle}
+      onClick={() => setTheme(!dark)}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       className="grid size-9 place-items-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent"
     >

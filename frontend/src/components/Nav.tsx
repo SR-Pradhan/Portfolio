@@ -1,8 +1,9 @@
 "use client";
 
-import { FileDown, Menu, X } from "lucide-react";
+import { Command, FileDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { nav, site } from "@/data/site";
+import { openPalette } from "@/lib/ui";
 import ThemeToggle from "./ThemeToggle";
 
 /**
@@ -54,6 +55,17 @@ export default function Nav({ active }: { active: string }) {
               <FileDown size={14} />
               Resume
             </a>
+            {/* Discoverability for ⌘K. Only from xl up: below that the pill is
+                already carrying nine links, Resume and the toggle, and this is
+                the one control that has a keyboard route without it. */}
+            <button
+              type="button"
+              onClick={openPalette}
+              aria-label="Open command palette"
+              className="hidden items-center gap-1.5 rounded-full border border-border px-2.5 py-1 font-mono text-[11px] text-muted transition hover:border-accent hover:text-accent xl:inline-flex"
+            >
+              <Command size={11} />K
+            </button>
             <ThemeToggle />
             <button
               className="md:hidden"

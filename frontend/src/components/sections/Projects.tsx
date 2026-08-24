@@ -1,7 +1,12 @@
+"use client";
+
 import { ArrowUpRight, Package } from "lucide-react";
 import { Github } from "@/components/BrandIcons";
 import { projects, type Project, projectsMore, site } from "@/data/site";
+import { repoSlug, useRepoStats } from "@/hooks/useRepoStats";
 import { techEmoji, techSlug } from "@/lib/techSlugs";
+import CaseStudy from "../CaseStudy";
+import RepoStats from "../RepoStats";
 import Reveal from "../Reveal";
 import Section from "../Section";
 import SpotlightCard from "../SpotlightCard";
@@ -53,6 +58,9 @@ function Links({ project }: { project: Project }) {
 
 export default function Projects() {
   const real = projects.filter((p) => !p.comingSoon);
+  // Live GitHub numbers, fetched once for the whole section rather than per
+  // card. Empty until they land — and stays empty if the API is asleep.
+  const stats = useRepoStats();
 
   return (
     <Section id="projects" title="Projects" sub="A selection of my recent work">
@@ -123,6 +131,13 @@ export default function Projects() {
                       </li>
                     ))}
                   </ul>
+
+                  {(() => {
+                    const live = stats.get(repoSlug(p.code) ?? "");
+                    return live ? <RepoStats stats={live} /> : null;
+                  })()}
+
+                  <CaseStudy project={p} />
 
                   <Links project={p} />
                 </div>

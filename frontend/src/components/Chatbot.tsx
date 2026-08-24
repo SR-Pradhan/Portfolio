@@ -3,6 +3,7 @@
 import { Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
+import { OPEN_CHAT } from "@/lib/ui";
 import ChatMessage from "./ChatMessage";
 
 /**
@@ -65,6 +66,14 @@ export default function Chatbot() {
   // pulses on every page load reads as an ad.
   useEffect(() => {
     setNudged(localStorage.getItem("chat-seen") === "1");
+  }, []);
+
+  // The command palette can launch the chat; it has no handle on this state,
+  // so it asks on the window instead.
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener(OPEN_CHAT, onOpen);
+    return () => window.removeEventListener(OPEN_CHAT, onOpen);
   }, []);
 
 
