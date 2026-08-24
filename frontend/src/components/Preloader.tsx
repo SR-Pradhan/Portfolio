@@ -18,9 +18,6 @@ const STAGES = [
  */
 const LABEL = "Portfolio";
 
-/** Circumference of the r=46 progress ring, so the dash maths stays readable. */
-const RING = 2 * Math.PI * 46;
-
 /** Placeholder the server renders, so hydration has nothing to disagree with. */
 const PENDING = "···";
 
@@ -230,7 +227,10 @@ export default function Preloader() {
   if (gone) return null;
 
   const stage = STAGES.reduce((acc, s) => (progress >= s.at ? s.label : acc), STAGES[0].label);
-  const letters = [...site.name];
+  // Set as three stacked lines, so the name can run at display size without
+  // wrapping at an arbitrary point decided by the viewport.
+  const lines = site.name.split(" ");
+  let letterIndex = 0;
 
   return (
     <div
@@ -244,78 +244,82 @@ export default function Preloader() {
           seam riding its trailing edge. */}
       <div className="preloader-panel" aria-hidden="true" />
       <div className="preloader-seam" aria-hidden="true" />
-
       <div className="preloader-grid" aria-hidden="true" />
 
-      {/* Corner readouts — real numbers, so they read as instrumentation. */}
-      <div className="preloader-hud preloader-hud-tl" aria-hidden="true">
-        <span className="preloader-hud-key">TTFB</span> {ttfb}
-      </div>
-      <div className="preloader-hud preloader-hud-tr" aria-hidden="true">
-        {link === PENDING ? (
-          <>
-            <span className="preloader-hud-key">VIEWPORT</span> {viewport}
-          </>
-        ) : (
-          <>
-            <span className="preloader-hud-key">LINK</span> {link}
-          </>
-        )}
-      </div>
-      <div className="preloader-hud preloader-hud-bl" aria-hidden="true">
-        <span className="preloader-hud-key">ASSETS</span> {assets}
-      </div>
-      <div className="preloader-hud preloader-hud-br" aria-hidden="true">
-        <span className="preloader-hud-stage">{stage}</span>{" "}
-        <span className="preloader-percent">{String(progress).padStart(3, "0")}%</span>
-      </div>
+      <div className="preloader-shell">
+        {/* Top rule: the wordmark, and the two readouts that describe the
+            connection this page arrived over. */}
+        <header className="preloader-top" aria-hidden="true">
+          <span className="preloader-mark">
+            {site.initials}
+            <span className="preloader-dot">.</span>
+          </span>
+          <span className="preloader-meta">
+            <span className="preloader-meta-key">TTFB</span> {ttfb}
+            <span className="preloader-sep">/</span>
+            {link === PENDING ? (
+              <>
+                <span className="preloader-meta-key">VIEWPORT</span> {viewport}
+              </>
+            ) : (
+              <>
+                <span className="preloader-meta-key">LINK</span> {link}
+              </>
+            )}
+          </span>
+        </header>
 
-      <div className="preloader-content">
-        <div className="preloader-mark">
-          {/* The ring IS the progress bar: one arc, drawn to the same number
-              the readout shows, rather than a spinner running beside it. */}
-          <svg className="preloader-ring" viewBox="0 0 100 100" aria-hidden="true">
-            <circle className="preloader-ring-track" cx="50" cy="50" r="46" />
-            <circle
-              className="preloader-ring-arc"
-              cx="50"
-              cy="50"
-              r="46"
-              strokeDasharray={RING}
-              strokeDashoffset={RING * (1 - progress / 100)}
-            />
-          </svg>
-          <span className="preloader-initials">{site.initials}</span>
+        <div className="preloader-main">
+          {/* The name is the artwork here — display size, left aligned, one
+              word per line. Letters stagger in on a pure-CSS delay, so the
+              entrance is already playing in the server HTML. */}
+          <h1 className="preloader-name" aria-label={site.name}>
+            {lines.map((word, w) => (
+              <span className="preloader-line" key={word} aria-hidden="true">
+                {[...word].map((char, i) => (
+                  <span
+                    key={`${char}-${i}`}
+                    className="preloader-letter"
+                    style={{ animationDelay: `${letterIndex++ * 26}ms` }}
+                  >
+                    {char}
+                  </span>
+                ))}
+                {/* Rides the end of the last word rather than sitting on a line
+                    of its own, where it reads as a stray block instead of a
+                    cursor waiting at the end of the name. */}
+                {w === lines.length - 1 && <span className="preloader-caret" />}
+              </span>
+            ))}
+          </h1>
+
+          <div className="preloader-side">
+            <p className="preloader-role">{LABEL}</p>
+            <ul className="preloader-log" aria-hidden="true">
+              {/* Signals often resolve in the same frame on a warm cache, which
+                  would drop the whole log in at once. The per-index delay keeps
+                  it cascading without misreporting any of the timings. */}
+              {logs.map((line, i) => (
+                <li key={line.id} style={{ animationDelay: `${i * 220}ms` }}>
+                  <span className="preloader-log-mark">▸</span>
+                  <span className="preloader-log-text">{line.text}</span>
+                  <span className="preloader-log-ms">{line.ms}ms</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* Letters stagger in on a pure-CSS delay, so the animation is already
-            running in the server HTML — no wait for hydration. */}
-        <p className="preloader-name" aria-label={site.name}>
-          {letters.map((char, i) => (
-            <span
-              key={`${char}-${i}`}
-              className="preloader-letter"
-              style={{ animationDelay: `${i * 28}ms` }}
-              aria-hidden="true"
-            >
-              {char === " " ? " " : char}
-            </span>
-          ))}
-        </p>
-        <p className="preloader-role">{LABEL}</p>
-
-        <ul className="preloader-log" aria-hidden="true">
-          {/* Signals often resolve in the same frame on a warm cache, which
-              would drop the whole log in at once. The per-index delay keeps it
-              cascading without misreporting any of the timings. */}
-          {logs.map((line, i) => (
-            <li key={line.id} style={{ animationDelay: `${i * 260}ms` }}>
-              <span className="preloader-log-mark">▸</span>
-              <span className="preloader-log-text">{line.text}</span>
-              <span className="preloader-log-ms">{line.ms}ms</span>
-            </li>
-          ))}
-        </ul>
+        {/* Bottom rail: the progress is the full width of the screen, and the
+            number is large enough to be the second thing you read. */}
+        <footer className="preloader-rail" aria-hidden="true">
+          <span className="preloader-stage">{stage}</span>
+          <span className="preloader-assets">{assets}</span>
+          <div className="preloader-track">
+            <span className="preloader-fill" style={{ width: `${progress}%` }} />
+          </div>
+          <span className="preloader-count">{String(progress).padStart(2, "0")}</span>
+        </footer>
       </div>
     </div>
   );
