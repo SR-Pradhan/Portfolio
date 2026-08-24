@@ -27,6 +27,13 @@ const PENDING = "···";
 type LogLine = { id: string; text: string; ms: number };
 
 /**
+ * The Network Information API, which TypeScript's DOM library doesn't declare
+ * because it is not on a standards track. Narrowed to the two fields used here
+ * and read defensively — Safari and Firefox don't implement it at all.
+ */
+type Connection = { effectiveType?: string; downlink?: number; rtt?: number };
+
+/**
  * First-paint curtain.
  *
  * Rendered on the server so it is in the HTML before any JavaScript runs —
@@ -53,6 +60,7 @@ export default function Preloader() {
   const [ttfb, setTtfb] = useState<string>(PENDING);
   const [viewport, setViewport] = useState<string>(PENDING);
   const [assets, setAssets] = useState<string>(PENDING);
+  const [link, setLink] = useState<string>(PENDING);
   const [logs, setLogs] = useState<LogLine[]>([]);
 
   useEffect(() => {
@@ -67,27 +75,59 @@ export default function Preloader() {
 
     root.classList.add("preloading");
 
-    const since = () => Math.round(performance.now());
-    const push = (id: string, text: string) =>
+    /**
+     * Each line reports when its own milestone happened, not when the log line
+     * was appended.
+     *
+     * On a warm load every signal resolves inside the same frame, so stamping
+     * `performance.now()` at append time printed the same number four times —
+     * which reads as decoration however real it actually is. The navigation
+     * entry already holds the true moment for each one.
+     */
+    const push = (id: string, text: string, ms: number) =>
       setLogs((prev) =>
-        prev.some((l) => l.id === id) ? prev : [...prev, { id, text, ms: since() }],
+        prev.some((l) => l.id === id)
+          ? prev
+          : [...prev, { id, text, ms: Math.max(0, Math.round(ms)) }],
       );
 
     setViewport(`${window.innerWidth}×${window.innerHeight}`);
+
+    // Connection class, where the browser will say. Not decoration: it is the
+    // context that makes every other number on this curtain mean something —
+    // a 400ms TTFB says one thing on 4g and quite another on a fast link.
+    const conn = (navigator as Navigator & { connection?: Connection }).connection;
+    if (conn?.effectiveType) {
+      const rtt = conn.rtt ? ` · ${conn.rtt}ms rtt` : "";
+      setLink(`${conn.effectiveType}${rtt}`);
+    }
 
     const nav = performance.getEntriesByType("navigation")[0] as
       | PerformanceNavigationTiming
       | undefined;
     if (nav) {
       setTtfb(`${Math.round(nav.responseStart)}ms`);
-      push("net", "connection established");
+      // Time to first byte: DNS, TLS and the server's own thinking time.
+      push("net", "connection established", nav.responseStart);
     }
 
-    /** Resource count and bytes actually transferred, straight off the timeline. */
+    /**
+     * Resource count and weight, straight off the timeline.
+     *
+     * `transferSize` is 0 for anything served from cache, so a warm reload used
+     * to report "0KB" — technically true about the network and useless to
+     * read. When nothing crossed the wire the decoded size is shown instead and
+     * the row says so, which is the more interesting fact anyway: the second
+     * visit costs nothing.
+     */
     const sampleAssets = () => {
       const res = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
-      const kb = res.reduce((sum, r) => sum + (r.transferSize || 0), 0) / 1024;
-      setAssets(`${res.length} · ${kb < 1 ? "0" : Math.round(kb)}KB`);
+      const wire = res.reduce((sum, r) => sum + (r.transferSize || 0), 0);
+      const decoded = res.reduce((sum, r) => sum + (r.decodedBodySize || 0), 0);
+      const bytes = wire > 0 ? wire : decoded;
+      const kb = Math.round(bytes / 1024);
+      const suffix = wire > 0 ? `${kb}KB` : decoded > 0 ? `${kb}KB cached` : "—";
+      setAssets(`${res.length} · ${suffix}`);
     };
     sampleAssets();
     const sampler = setInterval(sampleAssets, 120);
@@ -102,20 +142,22 @@ export default function Preloader() {
 
     const markInteractive = () => {
       raise(45);
-      push("dom", "document interactive");
+      push("dom", "document interactive", nav?.domInteractive || performance.now());
     };
     if (document.readyState !== "loading") markInteractive();
     document.addEventListener("DOMContentLoaded", markInteractive);
 
     document.fonts?.ready.then(() => {
       raise(75);
-      push("fonts", "typefaces resolved");
+      // No navigation-timing field for webfonts, so this one is genuinely
+      // measured at the moment the promise settles.
+      push("fonts", "typefaces resolved", performance.now());
     });
 
     const markLoaded = () => {
       raise(100);
       sampleAssets();
-      push("load", "assets settled");
+      push("load", "assets settled", nav?.loadEventStart || performance.now());
     };
     if (document.readyState === "complete") markLoaded();
     window.addEventListener("load", markLoaded);
@@ -131,6 +173,7 @@ export default function Preloader() {
     let current = 0;
     let raf = 0;
     let exitTimer: ReturnType<typeof setTimeout>;
+    let holdTimer: ReturnType<typeof setTimeout>;
 
     const tick = () => {
       const elapsed = performance.now() - start;
@@ -152,12 +195,21 @@ export default function Preloader() {
       setProgress(shown);
 
       if (shown >= 100) {
-        setLeaving(true);
+        // The last thing the log says is the only number that matters to a
+        // visitor: how long they actually waited.
+        push("ready", "ready", nav?.loadEventEnd || performance.now());
         root.classList.remove("preloading");
         root.classList.add("preloaded");
-        // Matches the exit transition in globals.css; unmounting any sooner
-        // cuts the wipe off mid-way.
-        exitTimer = setTimeout(() => setGone(true), 950);
+
+        // A beat before the wipe. Leaving on the same frame as the final line
+        // means it fades out as it fades in — the closing number would be
+        // written and destroyed too fast for anyone to read it.
+        holdTimer = setTimeout(() => {
+          setLeaving(true);
+          // Matches the exit transition in globals.css; unmounting any sooner
+          // cuts the wipe off mid-way.
+          exitTimer = setTimeout(() => setGone(true), 950);
+        }, 500);
         return;
       }
       raf = requestAnimationFrame(tick);
@@ -167,6 +219,7 @@ export default function Preloader() {
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(exitTimer);
+      clearTimeout(holdTimer);
       clearInterval(sampler);
       document.removeEventListener("DOMContentLoaded", markInteractive);
       window.removeEventListener("load", markLoaded);
@@ -199,7 +252,15 @@ export default function Preloader() {
         <span className="preloader-hud-key">TTFB</span> {ttfb}
       </div>
       <div className="preloader-hud preloader-hud-tr" aria-hidden="true">
-        <span className="preloader-hud-key">VIEWPORT</span> {viewport}
+        {link === PENDING ? (
+          <>
+            <span className="preloader-hud-key">VIEWPORT</span> {viewport}
+          </>
+        ) : (
+          <>
+            <span className="preloader-hud-key">LINK</span> {link}
+          </>
+        )}
       </div>
       <div className="preloader-hud preloader-hud-bl" aria-hidden="true">
         <span className="preloader-hud-key">ASSETS</span> {assets}
