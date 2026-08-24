@@ -418,17 +418,19 @@ html:not(.dark) .bg-surface {
 
 /* ── Preloader ────────────────────────────────────────────────────────
    Plain CSS rather than utilities because this markup has to look finished in
-   the server HTML, before Tailwind's classes are joined by any JavaScript.
+   the server HTML, before Tailwind's classes are joined by any JavaScript —
+   and because the exit is a skewed wipe that needs several elements moving on
+   one shared transition.
 
-   The layout is a three-row shell — rule, stage, rail — rather than a centred
-   island. A small block of content floating in the middle of a 1440px screen
-   reads as a spinner someone styled; anchoring type to the edges is what makes
-   it read as a designed frame. */
+   Colours come from the theme tokens, so the curtain is already in the right
+   mode: the inline theme script in layout.tsx runs above this. */
 
 #preloader {
   position: fixed;
   inset: 0;
   z-index: 100;
+  display: grid;
+  place-items: center;
   color: var(--foreground);
   font-family: var(--font-mono), ui-monospace, monospace;
 }
@@ -468,154 +470,220 @@ html:not(.dark) .bg-surface {
     opacity 0.2s ease;
 }
 
-/* Blueprint tone, masked to a soft oval so it has no hard edge. Sits behind
-   the type at a fraction of its old strength: the name is the artwork now, and
-   a grid running through display-size letters only muddies them. */
+/* Blueprint tone behind the mark. Faint enough to register as texture rather
+   than as a visible grid, and masked to a soft oval so it has no hard edge. */
 .preloader-grid {
   position: absolute;
   inset: 0;
   background-image:
     linear-gradient(
       to right,
-      color-mix(in srgb, var(--foreground) 5%, transparent) 1px,
+      color-mix(in srgb, var(--foreground) 7%, transparent) 1px,
       transparent 1px
     ),
     linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--foreground) 5%, transparent) 1px,
+      color-mix(in srgb, var(--foreground) 7%, transparent) 1px,
       transparent 1px
     );
-  background-size: 96px 96px;
-  mask: radial-gradient(120% 90% at 20% 45%, #000, transparent 75%);
-  -webkit-mask: radial-gradient(120% 90% at 20% 45%, #000, transparent 75%);
+  background-size: 64px 64px;
+  mask: radial-gradient(closest-side at 50% 50%, #000, transparent 78%);
+  -webkit-mask: radial-gradient(closest-side at 50% 50%, #000, transparent 78%);
+  opacity: 0.9;
   transition: opacity 0.35s ease;
 }
 
-/* ── Shell ───────────────────────────────────────────────────────────── */
+/* ── Corner readouts ─────────────────────────────────────────────────── */
 
-.preloader-shell {
-  position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  height: 100%;
-  padding: clamp(1.25rem, 3vw, 2.5rem);
-  gap: clamp(1.5rem, 4vh, 3rem);
-}
-
-.preloader-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--border);
-  animation: preloader-fade-in 0.5s ease both;
-}
-
-.preloader-mark {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-
-.preloader-dot {
-  color: var(--accent);
-}
-
-.preloader-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
+.preloader-hud {
+  position: absolute;
   font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  animation: preloader-fade-in 0.5s 0.1s ease both;
 }
 
-.preloader-meta-key {
+.preloader-hud-key {
   color: color-mix(in srgb, var(--muted) 55%, transparent);
   margin-right: 0.35em;
 }
 
-.preloader-sep {
-  color: var(--border);
+.preloader-hud-stage {
+  margin-right: 0.6em;
 }
 
-/* ── Name and log ────────────────────────────────────────────────────── */
-
-.preloader-main {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: clamp(1.5rem, 6vw, 5rem);
-  min-height: 0;
+.preloader-percent {
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
 }
 
-/* Display size, one word per line, sans rather than mono: at this scale the
-   mono face's even widths read as a data table, not a signature. */
-.preloader-name {
+.preloader-hud-tl {
+  top: 1.5rem;
+  left: 1.5rem;
+}
+.preloader-hud-tr {
+  top: 1.5rem;
+  right: 1.5rem;
+}
+.preloader-hud-bl {
+  bottom: 1.5rem;
+  left: 1.5rem;
+}
+.preloader-hud-br {
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+/* Crosshair ticks in each corner — the detail that makes the readouts look
+   mounted to the frame rather than floated in it. */
+.preloader-hud::before {
+  content: "";
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
+}
+
+.preloader-hud-tl::before {
+  top: -0.85rem;
+  left: -0.85rem;
+  border-right: 0;
+  border-bottom: 0;
+}
+.preloader-hud-tr::before {
+  top: -0.85rem;
+  right: -0.85rem;
+  border-left: 0;
+  border-bottom: 0;
+}
+.preloader-hud-bl::before {
+  bottom: -0.85rem;
+  left: -0.85rem;
+  border-right: 0;
+  border-top: 0;
+}
+.preloader-hud-br::before {
+  bottom: -0.85rem;
+  right: -0.85rem;
+  border-left: 0;
+  border-top: 0;
+}
+
+/* ── Centre mark ─────────────────────────────────────────────────────── */
+
+.preloader-content {
+  position: relative;
   display: flex;
   flex-direction: column;
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(2.25rem, 8.5vw, 6.5rem);
-  font-weight: 600;
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  align-items: center;
+  gap: 0.6rem;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
-.preloader-line {
+.preloader-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* The glow under the monogram — the same light source the hero uses, so the
+   curtain and the page it opens onto belong to one design. */
+.preloader-mark::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--accent) 20%, transparent),
+    transparent 70%
+  );
+  filter: blur(6px);
+  animation: preloader-breathe 2.6s ease-in-out infinite;
+}
+
+/* Rotated so the arc starts at twelve o'clock; the dash offset is set from
+   the measured progress in the component, so this ring is the progress bar. */
+.preloader-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.preloader-ring-track,
+.preloader-ring-arc {
+  fill: none;
+  stroke-width: 2;
+}
+
+.preloader-ring-track {
+  stroke: var(--border);
+}
+
+.preloader-ring-arc {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 60%, transparent));
+  /* short, so the arc keeps up with the number instead of lagging behind it */
+  transition: stroke-dashoffset 0.12s linear;
+}
+
+.preloader-initials {
+  position: relative;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding-left: 0.08em; /* optical centring against the tracking above */
+}
+
+/* ── Name and label ──────────────────────────────────────────────────── */
+
+.preloader-name {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   display: flex;
-  align-items: flex-end;
 }
 
 /* Per-letter stagger, driven by an inline animation-delay. Pure CSS, so the
    entrance is already playing in the server HTML — it doesn't wait for React. */
 .preloader-letter {
   display: inline-block;
-  animation: preloader-letter-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* The same blinking block the hero headline uses, so the curtain and the page
-   it opens onto are speaking the same language. */
-.preloader-caret {
-  align-self: center;
-  width: clamp(0.4rem, 1.2vw, 0.85rem);
-  height: clamp(1.75rem, 6vw, 4.25rem);
-  margin-left: clamp(0.4rem, 1.2vw, 1rem);
-  background: var(--accent);
-  animation: preloader-caret 1.1s steps(1) infinite;
-}
-
-.preloader-side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 1.25rem;
-  flex-shrink: 0;
+  white-space: pre;
+  animation: preloader-letter-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .preloader-role {
   font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.28em;
   color: var(--muted);
-  animation: preloader-fade-in 0.6s 0.3s ease both;
+  padding-left: 0.28em;
+  animation: preloader-fade-in 0.6s 0.35s ease both;
 }
 
+/* ── Boot log ────────────────────────────────────────────────────────── */
+
 .preloader-log {
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  width: min(19rem, 42vw);
+  gap: 0.3rem;
+  width: min(20rem, 72vw);
   font-size: 0.625rem;
   letter-spacing: 0.1em;
   color: var(--muted);
-  /* holds the block's height so the row above doesn't shift as lines land */
-  min-height: 5rem;
+  /* holds the block's height so the centred mark doesn't jump as lines land */
+  min-height: 3.6rem;
 }
 
 .preloader-log li {
@@ -642,64 +710,6 @@ html:not(.dark) .bg-surface {
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Bottom rail ─────────────────────────────────────────────────────── */
-
-.preloader-rail {
-  display: grid;
-  grid-template-columns: auto auto 1fr auto;
-  align-items: center;
-  gap: clamp(0.75rem, 2vw, 1.75rem);
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--border);
-  font-size: 0.625rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted);
-  animation: preloader-fade-in 0.5s 0.1s ease both;
-}
-
-.preloader-assets {
-  color: color-mix(in srgb, var(--muted) 70%, transparent);
-  white-space: nowrap;
-}
-
-.preloader-track {
-  position: relative;
-  height: 1px;
-  background: var(--border);
-}
-
-/* The dot on the leading edge is the whole trick: a 1px line growing across
-   the screen is easy to miss, and a travelling point is not. */
-.preloader-fill {
-  position: absolute;
-  inset: 0 auto 0 0;
-  background: var(--accent);
-}
-
-.preloader-fill::after {
-  content: "";
-  position: absolute;
-  right: -2px;
-  top: 50%;
-  width: 5px;
-  height: 5px;
-  margin-top: -2.5px;
-  border-radius: 9999px;
-  background: var(--accent);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 80%, transparent);
-}
-
-/* The count is deliberately large and unlabelled — at this size "%" is noise,
-   and the rail it sits on already says what is being counted. */
-.preloader-count {
-  font-size: clamp(1.75rem, 4.5vw, 3.25rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--foreground);
-  font-variant-numeric: tabular-nums;
-}
-
 /* ── Exit ────────────────────────────────────────────────────────────── */
 
 #preloader.is-leaving {
@@ -708,13 +718,11 @@ html:not(.dark) .bg-surface {
 
 /* Everything on the glass clears first, then the curtain moves — otherwise
    the readouts would slide off with it and read as a slipping layer. */
-#preloader.is-leaving .preloader-shell,
+#preloader.is-leaving .preloader-content,
+#preloader.is-leaving .preloader-hud,
 #preloader.is-leaving .preloader-grid {
   opacity: 0;
   transform: translateY(-6px);
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
 }
 
 #preloader.is-leaving .preloader-panel,
@@ -740,6 +748,16 @@ html.preloaded #preloader {
   display: none;
 }
 
+@keyframes preloader-breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @keyframes preloader-fade-in {
   from {
     opacity: 0;
@@ -752,8 +770,8 @@ html.preloaded #preloader {
 @keyframes preloader-letter-in {
   from {
     opacity: 0;
-    transform: translateY(0.4em);
-    filter: blur(6px);
+    transform: translateY(0.5em);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
@@ -773,73 +791,21 @@ html.preloaded #preloader {
   }
 }
 
-@keyframes preloader-caret {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-
-/* Narrow screens: the log becomes a footnote under the name rather than a
-   column beside it, and the name drops to a size that still fits three
-   stacked words. */
-@media (max-width: 48rem) {
-  .preloader-main {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 2rem;
-  }
-
-  .preloader-side {
-    align-items: flex-start;
-    width: 100%;
-  }
-
-  .preloader-log {
-    width: 100%;
-  }
-
-  .preloader-assets {
+/* Narrow screens: the corner grid would crowd a 360px-wide phone, so only the
+   two readouts that carry the load state survive. */
+@media (max-width: 30rem) {
+  .preloader-hud-tr,
+  .preloader-hud-bl {
     display: none;
-  }
-
-  /* On one row the label leaves the track a few dozen pixels, which reads as a
-     stray dot rather than progress. Two rows: the track gets the full width,
-     the label and the count sit under it. */
-  .preloader-rail {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "track track"
-      "stage count";
-    row-gap: 0.9rem;
-  }
-
-  .preloader-track {
-    grid-area: track;
-  }
-
-  .preloader-stage {
-    grid-area: stage;
-    align-self: center;
-  }
-
-  .preloader-count {
-    grid-area: count;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .preloader-mark::before,
   .preloader-letter,
   .preloader-log li,
-  .preloader-top,
-  .preloader-rail,
-  .preloader-role,
-  .preloader-caret {
+  .preloader-hud,
+  .preloader-role {
     animation: none;
   }
 
