@@ -1,7 +1,9 @@
 import Chatbot from "@/components/Chatbot";
 import CursorFollower from "@/components/CursorFollower";
 import Footer from "@/components/Footer";
+import GitHubHeatmap from "@/components/GitHubHeatmap";
 import SiteChrome from "@/components/SiteChrome";
+import SiteMetrics from "@/components/SiteMetrics";
 import Starfield from "@/components/Starfield";
 import About from "@/components/sections/About";
 import Achievements from "@/components/sections/Achievements";
@@ -30,6 +32,8 @@ export default function Home() {
         <Certifications />
         <Contact />
       </main>
+      <GitHubHeatmap />
+      <SiteMetrics />
       <Footer />
       <Chatbot />
     </>

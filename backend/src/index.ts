@@ -3,7 +3,9 @@ import cors from "cors";
 import express from "express";
 import chatRouter from "./routes/chat.js";
 import contactRouter from "./routes/contact.js";
+import { observeLatency } from "./lib/metrics.js";
 import githubRouter from "./routes/github.js";
+import metricsRouter from "./routes/metrics.js";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -25,6 +27,21 @@ app.use(
 );
 app.use(express.json({ limit: "16kb" }));
 
+/**
+ * Times every request so the metrics panel can report a real p95 rather than a
+ * number measured from the browser, which would mostly be describing the
+ * visitor's own connection.
+ */
+app.use((req, res, next) => {
+  const started = process.hrtime.bigint();
+  res.on("finish", () => {
+    // the metrics endpoints themselves would only measure themselves
+    if (req.path.startsWith("/api/metrics")) return;
+    observeLatency(Number(process.hrtime.bigint() - started) / 1e6);
+  });
+  next();
+});
+
 app.get("/health", (_req, res) => {
   res.json({ ok: true, uptime: process.uptime() });
 });
@@ -32,6 +49,7 @@ app.get("/health", (_req, res) => {
 app.use("/api/contact", contactRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/github", githubRouter);
+app.use("/api/metrics", metricsRouter);
 
 // Fallback error handler — keeps stack traces out of responses.
 app.use(

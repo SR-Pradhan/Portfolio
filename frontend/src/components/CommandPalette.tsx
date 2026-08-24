@@ -14,6 +14,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Github, Linkedin } from "@/components/BrandIcons";
 import { nav, projects, site } from "@/data/site";
+import { track } from "@/lib/metrics";
 import { OPEN_PALETTE, openChat, toggleTheme, useIsDark } from "@/lib/ui";
 
 type Command = {
@@ -140,7 +141,10 @@ export default function CommandPalette() {
         group: "Actions",
         icon: FileDown,
         keywords: "cv pdf",
-        run: () => window.open(site.resumeUrl, "_blank", "noreferrer"),
+        run: () => {
+          track("resume");
+          window.open(site.resumeUrl, "_blank", "noreferrer");
+        },
       },
       {
         id: "chat",

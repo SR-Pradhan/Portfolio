@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { ArrowDown, FileDown } from "lucide-react";
+import { track } from "@/lib/metrics";
 import { site } from "@/data/site";
 import { opensInNewTab, socialLinks } from "@/lib/socials";
 import RotatingRole from "@/components/RotatingRole";
@@ -81,6 +82,7 @@ export default function Hero() {
             </a>
             <a
               href={site.resumeUrl}
+              onClick={() => track("resume")}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium transition hover:border-accent hover:text-accent"

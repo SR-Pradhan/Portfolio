@@ -120,3 +120,135 @@ export async function getRepoStats(): Promise<RepoStats[]> {
   }
   return inFlight;
 }
+
+/* ── Contribution calendar ────────────────────────────────────────────── */
+
+export type Contributions = {
+  total: number;
+  /** Longest run of consecutive days with at least one contribution, and the current one. */
+  streak: { current: number; longest: number };
+  weeks: { days: { date: string; count: number; level: number }[] }[];
+};
+
+/** GitHub's own quartile buckets, mapped to the 0–4 the grid renders. */
+const LEVELS: Record<string, number> = {
+  NONE: 0,
+  FIRST_QUARTILE: 1,
+  SECOND_QUARTILE: 2,
+  THIRD_QUARTILE: 3,
+  FOURTH_QUARTILE: 4,
+};
+
+/**
+ * The account whose calendar to show, taken from the repositories the site
+ * already lists rather than hardcoded — one less thing to keep in step with
+ * site.ts.
+ */
+function login(): string | null {
+  return REPOS[0]?.split("/")[0] ?? null;
+}
+
+const CONTRIB_TTL_MS = 60 * 60 * 1000;
+let contribCache: { at: number; data: Contributions | null } | null = null;
+let contribInFlight: Promise<Contributions | null> | null = null;
+
+function streaks(days: { date: string; count: number }[]) {
+  let longest = 0;
+  let run = 0;
+  for (const day of days) {
+    run = day.count > 0 ? run + 1 : 0;
+    if (run > longest) longest = run;
+  }
+
+  // The current streak is counted backwards from the end, and today not being
+  // done yet must not break it — otherwise the number would read as zero for
+  // most of every morning.
+  let current = 0;
+  for (let i = days.length - 1; i >= 0; i--) {
+    if (days[i].count > 0) current++;
+    else if (i !== days.length - 1) break;
+  }
+  return { current, longest };
+}
+
+/**
+ * A year of contribution counts.
+ *
+ * GraphQL-only on GitHub's side, which is why this needs a token where the
+ * repo stats don't. Without one it returns null and the section is simply
+ * absent from the page — the alternative would be scraping github.com's HTML,
+ * which is undocumented and can change without notice.
+ */
+export async function getContributions(): Promise<Contributions | null> {
+  if (!process.env.GITHUB_TOKEN) return null;
+
+  const user = login();
+  if (!user) return null;
+
+  if (contribCache && Date.now() - contribCache.at < CONTRIB_TTL_MS) return contribCache.data;
+
+  if (!contribInFlight) {
+    contribInFlight = (async () => {
+      try {
+        const res = await fetch("https://api.github.com/graphql", {
+          method: "POST",
+          headers: { ...headers(), "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: `query($user:String!){user(login:$user){contributionsCollection{contributionCalendar{totalContributions weeks{contributionDays{date contributionCount contributionLevel}}}}}}`,
+            variables: { user },
+          }),
+        });
+        if (!res.ok) throw new Error(`GraphQL ${res.status}`);
+
+        const body = (await res.json()) as {
+          data?: {
+            user?: {
+              contributionsCollection?: {
+                contributionCalendar?: {
+                  totalContributions: number;
+                  weeks: {
+                    contributionDays: {
+                      date: string;
+                      contributionCount: number;
+                      contributionLevel: string;
+                    }[];
+                  }[];
+                };
+              };
+            };
+          };
+          errors?: { message: string }[];
+        };
+        if (body.errors?.length) throw new Error(body.errors[0].message);
+
+        const cal = body.data?.user?.contributionsCollection?.contributionCalendar;
+        if (!cal) throw new Error("no calendar in response");
+
+        const weeks = cal.weeks.map((w) => ({
+          days: w.contributionDays.map((d) => ({
+            date: d.date,
+            count: d.contributionCount,
+            level: LEVELS[d.contributionLevel] ?? 0,
+          })),
+        }));
+
+        const data: Contributions = {
+          total: cal.totalContributions,
+          streak: streaks(weeks.flatMap((w) => w.days)),
+          weeks,
+        };
+        contribCache = { at: Date.now(), data };
+        return data;
+      } catch (err) {
+        console.error("github: contributions unavailable", err);
+        // Keep serving the last good calendar through a transient failure;
+        // only an empty cache degrades to hiding the section.
+        contribCache ??= { at: Date.now(), data: null };
+        return contribCache.data;
+      } finally {
+        contribInFlight = null;
+      }
+    })();
+  }
+  return contribInFlight;
+}

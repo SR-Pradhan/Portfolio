@@ -3,6 +3,7 @@
 import { Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
+import { track } from "@/lib/metrics";
 import { OPEN_CHAT } from "@/lib/ui";
 import ChatMessage from "./ChatMessage";
 
@@ -91,6 +92,7 @@ export default function Chatbot() {
     setMessages([...history, { role: "assistant", content: "" }]);
     setInput("");
     setBusy(true);
+    track("chat");
 
     try {
       const res = await fetch(`${API_URL}/api/chat`, {

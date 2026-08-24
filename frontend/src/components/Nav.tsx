@@ -3,6 +3,7 @@
 import { Command, FileDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { nav, site } from "@/data/site";
+import { track } from "@/lib/metrics";
 import { openPalette } from "@/lib/ui";
 import ThemeToggle from "./ThemeToggle";
 
@@ -48,6 +49,7 @@ export default function Nav({ active }: { active: string }) {
             {/* an action, not a section — so it gets a button, not link styling */}
             <a
               href={site.resumeUrl}
+              onClick={() => track("resume")}
               target="_blank"
               rel="noreferrer"
               className="hidden items-center gap-1.5 rounded-full border border-accent/50 px-3.5 py-1.5 text-sm font-medium text-accent transition hover:bg-accent hover:text-white sm:inline-flex"
@@ -99,6 +101,7 @@ export default function Nav({ active }: { active: string }) {
             })}
             <a
               href={site.resumeUrl}
+              onClick={() => track("resume")}
               target="_blank"
               rel="noreferrer"
               className="mt-2 flex items-center justify-center gap-2 rounded-lg border border-accent/50 px-3 py-2.5 text-sm font-medium text-accent"

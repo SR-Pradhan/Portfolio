@@ -26,6 +26,11 @@ about my work, backed by a small Express API.
   the decisions worth explaining in an interview.
 - **API status strip** in the footer that reports real reachability and round-trip
   time, including when the free-tier backend is waking from idle
+- **GitHub contribution heatmap** — a year of real commit activity with totals and
+  current streak, from GitHub's GraphQL API
+- **"This site" metrics panel** — the page reporting on itself: views, résumé opens,
+  questions asked and API p95, counted by the backend. Aggregate only: three integers
+  per calendar day, no cookies, no identifiers, nothing traceable to a person.
 - **AI chatbot** that answers questions about my background, streamed token by token
   over Server-Sent Events. Its knowledge base is generated from the site's own content,
   so it can't invent an employer or a grade.
@@ -152,8 +157,15 @@ not just an environment edit.
   `site.ts` by way of the generated context file, so there is nothing for a caller to
   point at an arbitrary URL.
 - Everything that depends on the API degrades to the pre-existing UI: no stats on the
-  cards, and the footer says the API is unreachable. A sleeping backend never costs a
-  visitor the content.
+  cards, no heatmap, no metrics panel, and the footer says the API is unreachable. A
+  sleeping backend never costs a visitor the content.
+- The metrics store is a JSON file of daily counters in `backend/.data/`, flushed every
+  30s and on shutdown. On a free tier that file does not survive a redeploy, which is
+  why the panel labels its window from when counting actually started ("this site · 3
+  days") instead of claiming 30 days it doesn't have. Point it at a persistent disk or
+  a small store to keep history across deploys.
+- The heatmap needs `GITHUB_TOKEN`; contribution counts are GraphQL-only. Without it
+  the endpoint answers `enabled: false` and the section is absent rather than empty.
 
 ---
 
