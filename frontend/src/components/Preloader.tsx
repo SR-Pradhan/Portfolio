@@ -5,11 +5,18 @@ import { site } from "@/data/site";
 
 /** What the status line reads at each stage, keyed by the progress floor. */
 const STAGES = [
-  { at: 0, label: "Initialising" },
-  { at: 35, label: "Loading assets" },
-  { at: 70, label: "Composing scene" },
+  { at: 0, label: "Booting" },
+  { at: 35, label: "Fetching assets" },
+  { at: 70, label: "Building view" },
   { at: 100, label: "Ready" },
 ];
+
+/**
+ * The line under the name. Deliberately not a job title — the hero already
+ * cycles those, and a title on the curtain dates the moment the roles change.
+ * A neutral label reads as the shell the work is served from.
+ */
+const LABEL = "Portfolio";
 
 /**
  * First-paint curtain.
@@ -129,7 +136,7 @@ export default function Preloader() {
         </div>
 
         <p className="preloader-name">{site.name}</p>
-        <p className="preloader-role">{site.role}</p>
+        <p className="preloader-role">{LABEL}</p>
 
         <div className="preloader-bar" aria-hidden="true">
           <span className="preloader-fill" style={{ width: `${progress}%` }} />
