@@ -121,6 +121,27 @@ const TARGETS: Record<string, string> = {
   email: `mailto:${site.email}`,
 };
 
+/**
+ * The words a visitor is likely to type on their own, mapped to what the shell
+ * actually calls them.
+ */
+const ALIASES: Record<string, string> = {
+  achievements: "awards",
+  awards: "awards",
+  certifications: "certs",
+  certificates: "certs",
+  work: "experience",
+  jobs: "experience",
+  study: "education",
+  school: "education",
+  stack: "skills",
+  tech: "skills",
+  bio: "about",
+  me: "about",
+  email: "contact",
+  project: "projects",
+};
+
 const HELP: Line[] = [
   head("commands"),
   blank,
@@ -132,6 +153,8 @@ const HELP: Line[] = [
   { text: "  ask             open the AI assistant" },
   { text: "  theme [dark|light]" },
   { text: "  clear           wipe the scrollback" },
+  blank,
+  { text: "  a bare word works too — `education`, `skills`, `solvix`", tone: "muted" },
   { text: "  exit            close the terminal" },
   blank,
   { text: "↑ ↓ history · tab completes · esc closes", tone: "muted" },
@@ -232,7 +255,27 @@ export function run(input: string): ShellResult {
     case "":
       return { lines: [] };
 
-    default:
+    default: {
+      // A bare noun is what everyone actually types first — `education`, not
+      // `cat education`. A real shell would refuse, but this one exists to be
+      // explored, and refusing the most natural input teaches nothing. Nouns
+      // resolve to the file or listing they obviously mean.
+      const noun = ALIASES[cmd.toLowerCase()] ?? cmd.toLowerCase();
+
+      if (noun === "projects") {
+        return {
+          lines: [
+            { text: `  ${DIRS.projects().join("    ")}` },
+            { text: "`cat <name>` for one of them.", tone: "muted" },
+          ],
+        };
+      }
+      if (FILES[noun]) return { lines: FILES[noun]() };
+
+      const asProject = projectFile(noun, args[0]?.toLowerCase());
+      if (asProject) return { lines: asProject };
+
       return { lines: [{ text: `${cmd}: command not found — try \`help\``, tone: "error" }] };
+    }
   }
 }
