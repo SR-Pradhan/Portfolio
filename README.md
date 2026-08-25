@@ -166,6 +166,19 @@ not just an environment edit.
   Render's filesystem is ephemeral. Either way the panel labels its window from when
   counting actually started ("this site · 3 days") rather than claiming 30 days it
   doesn't have.
+- `GET /api/metrics` reports which driver is live and whether it is working:
+
+  ```json
+  "store": { "driver": "upstash", "ok": false, "lastError": "write: NOPERM ..." }
+  ```
+
+  Worth checking first when the panel looks wrong, because the two failure modes look
+  identical on the page. Upstash returns HTTP 200 with a per-command error rather than
+  a failed status, so a read-only token silently drops every write. Status codes only
+  are surfaced — never anything from the credentials.
+- A store outage does not read as zero. Each instance keeps its own tally in memory and
+  serves that when Redis is unreachable, so the panel degrades to a smaller number
+  rather than a false one.
 - The heatmap needs `GITHUB_TOKEN`; contribution counts are GraphQL-only. Without it
   the endpoint answers `enabled: false` and the section is absent rather than empty.
 
