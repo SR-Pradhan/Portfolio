@@ -115,8 +115,6 @@ export default function Projects() {
                     </div>
                   )}
 
-                  <div className="flex-1" />
-
                   <ul className="mt-6 flex flex-wrap gap-2">
                     {p.tags.map((t) => (
                       <li
@@ -134,6 +132,15 @@ export default function Projects() {
                       </li>
                     ))}
                   </ul>
+
+                  {/* The cards in a row are equal height but their content is
+                      not, so the slack has to go somewhere. Here rather than
+                      above the tags: with the spacer higher up, a card with
+                      fewer tag rows opened a visible hole under its blurb,
+                      while this keeps blurb and tags reading as one block and
+                      still bottom-anchors the stats, case study and links so
+                      they line up across the row. */}
+                  <div className="flex-1" />
 
                   {(() => {
                     const live = stats.get(repoSlug(p.code) ?? "");
