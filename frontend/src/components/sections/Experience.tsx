@@ -28,6 +28,17 @@ export default function Experience() {
               <span className="absolute -left-[calc(1.5rem+6px)] top-7 size-3 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_2px_var(--accent)] transition-[scale] duration-300 group-hover/entry:scale-125 md:-left-[calc(2.5rem+6px)]" />
 
               <SpotlightCard>
+                {/* The start year as a watermark, the same idiom the project
+                    cards use for their index — bottom-right rather than top,
+                    where it would print the same year the period already shows
+                    a few pixels away. */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -bottom-5 right-4 select-none font-mono text-[7rem] font-bold leading-none text-foreground/[0.035] transition-colors duration-500 group-hover/entry:text-foreground/[0.06]"
+                >
+                  {job.period.match(/\d{4}/)?.[0]}
+                </span>
+
                 <div className="relative z-10 p-6 md:p-7">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                     <h3 className="flex flex-wrap items-center gap-2.5 text-lg font-semibold tracking-tight">
