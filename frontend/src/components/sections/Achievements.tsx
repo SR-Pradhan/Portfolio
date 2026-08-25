@@ -171,7 +171,21 @@ export default function Achievements() {
                     className="absolute left-1/2 top-1/2 hidden size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-muted/70 bg-surface transition-all duration-300 group-hover:border-accent group-hover:bg-background group-hover:shadow-[0_0_12px_2px_var(--accent)] md:block"
                   />
 
-                  <div className={cardLeft ? "md:pr-0" : "md:col-start-2"}>
+                  {/* The year owns the empty half while the row is at rest, and
+                      clears out of the way when the proof photos take that
+                      space on hover — the two never compete for it. Achievements
+                      without a four-digit year ("Ongoing") simply don't get one
+                      rather than being given a made-up date. */}
+                  <span
+                    aria-hidden
+                    className={`pointer-events-none hidden select-none items-center justify-center font-mono text-6xl font-bold leading-none text-foreground/[0.05] transition-opacity duration-300 group-hover:opacity-0 md:flex ${
+                      cardLeft ? "md:col-start-2 md:row-start-1" : "md:col-start-1 md:row-start-1"
+                    }`}
+                  >
+                    {item.year.match(/\d{4}/)?.[0]}
+                  </span>
+
+                  <div className={cardLeft ? "md:col-start-1 md:row-start-1" : "md:col-start-2 md:row-start-1"}>
                     <Card item={item} onOpen={() => setOpen({ item, index: 0 })} />
                   </div>
                   {/* proof sits in the empty half, out of the flow */}
