@@ -1,89 +1,27 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { EVENTS, type EventName, dayKey, emptyDay, store } from "./metricsStore.js";
 
-const here = dirname(fileURLToPath(import.meta.url));
-const STORE = join(here, "..", "..", ".data", "metrics.json");
+export { EVENTS, durable } from "./metricsStore.js";
+export type { EventName } from "./metricsStore.js";
 
-export const EVENTS = ["view", "resume", "chat"] as const;
-export type EventName = (typeof EVENTS)[number];
-
-type Day = Record<EventName, number>;
-type Store = { since: string; days: Record<string, Day> };
-
-/** Two months of buckets so a 30-day window always has history behind it. */
-const KEEP_DAYS = 60;
+/** The window the panel reports on. */
 const WINDOW_DAYS = 30;
-
-const emptyDay = (): Day => ({ view: 0, resume: 0, chat: 0 });
-const dayKey = (d: Date) => d.toISOString().slice(0, 10);
 
 /**
  * What this stores, exhaustively: three counters per calendar day.
  *
- * No IP addresses, no user agents, no identifiers, no per-visitor rows —
- * there is deliberately nothing here that could be traced to a person, which
- * is what lets the panel be public and needs no cookie banner.
+ * No IP addresses, no user agents, no identifiers, no per-visitor rows — there
+ * is deliberately nothing here that could be traced to a person, which is what
+ * lets the panel be public and needs no cookie banner.
  */
-function load(): Store {
-  try {
-    const raw = JSON.parse(readFileSync(STORE, "utf8")) as Store;
-    if (raw?.since && raw.days) return raw;
-  } catch {
-    // first boot, or the file was lost with the container
-  }
-  return { since: new Date().toISOString(), days: {} };
-}
-
-const store = load();
-let dirty = false;
-
-function prune() {
-  const cutoff = dayKey(new Date(Date.now() - KEEP_DAYS * 86_400_000));
-  for (const key of Object.keys(store.days)) {
-    if (key < cutoff) delete store.days[key];
-  }
-}
-
-function flush() {
-  if (!dirty) return;
-  try {
-    mkdirSync(dirname(STORE), { recursive: true });
-    writeFileSync(STORE, JSON.stringify(store));
-    dirty = false;
-  } catch (err) {
-    // A read-only or full filesystem must not take the API down; the counters
-    // simply stay in memory until the process ends.
-    console.error("metrics: could not persist", err);
-  }
-}
-
-// Batched rather than written on every event: this is a counter file, and a
-// hit of disk I/O per page view is a silly cost for data nobody reads in real
-// time.
-const timer = setInterval(flush, 30_000);
-timer.unref?.();
-for (const signal of ["SIGTERM", "SIGINT"] as const) {
-  process.once(signal, () => {
-    flush();
-    process.exit(0);
-  });
-}
-
 export function record(event: EventName) {
-  const key = dayKey(new Date());
-  store.days[key] ??= emptyDay();
-  store.days[key][event] += 1;
-  dirty = true;
-  prune();
+  store.record(event);
 }
 
 /**
  * Response latency, sampled in memory.
  *
  * A ring of recent durations rather than a persisted series: p95 is only
- * meaningful about recent traffic, and keeping it in memory means a restart
- * costs nothing worth having.
+ * meaningful about recent traffic, so a restart costs nothing worth having.
  */
 const LATENCY_SAMPLES = 500;
 const latencies: number[] = [];
@@ -99,24 +37,25 @@ function p95() {
   return Math.round(sorted[Math.floor(sorted.length * 0.95)] ?? sorted.at(-1) ?? 0);
 }
 
-export function snapshot() {
+export async function snapshot() {
   const today = new Date();
-  const series: { day: string; views: number }[] = [];
-  const totals = emptyDay();
+  const days = Array.from({ length: WINDOW_DAYS }, (_, i) =>
+    dayKey(new Date(today.getTime() - (WINDOW_DAYS - 1 - i) * 86_400_000)),
+  );
 
-  for (let i = WINDOW_DAYS - 1; i >= 0; i--) {
-    const key = dayKey(new Date(today.getTime() - i * 86_400_000));
-    const day = store.days[key] ?? emptyDay();
-    series.push({ day: key, views: day.view });
-    for (const name of EVENTS) totals[name] += day[name];
-  }
+  const stored = await store.read(days);
+  const totals = emptyDay();
+  const series = days.map((day) => {
+    const bucket = stored.days[day] ?? emptyDay();
+    for (const name of EVENTS) totals[name] += bucket[name];
+    return { day, views: bucket.view };
+  });
 
   return {
     // The panel labels itself from this rather than claiming "last 30 days"
-    // outright — on a free tier the store is younger than the window more
-    // often than not, and a window that overstates its own history is exactly
-    // the kind of number this panel exists not to print.
-    since: store.since,
+    // outright: a window that overstates its own history is exactly the kind
+    // of number this panel exists not to print.
+    since: stored.since,
     windowDays: WINDOW_DAYS,
     totals,
     series,

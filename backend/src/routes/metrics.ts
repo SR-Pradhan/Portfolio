@@ -26,9 +26,9 @@ function rateLimited(ip: string): boolean {
  * Public because everything in it is aggregate — see lib/metrics.ts for what
  * is actually stored, which is three integers a day and nothing else.
  */
-router.get("/", (_req, res) => {
+router.get("/", async (_req, res) => {
   res.set("Cache-Control", "public, max-age=60");
-  res.json({ ok: true, ...snapshot() });
+  res.json({ ok: true, ...(await snapshot()) });
 });
 
 /**

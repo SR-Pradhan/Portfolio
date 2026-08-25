@@ -159,11 +159,13 @@ not just an environment edit.
 - Everything that depends on the API degrades to the pre-existing UI: no stats on the
   cards, no heatmap, no metrics panel, and the footer says the API is unreachable. A
   sleeping backend never costs a visitor the content.
-- The metrics store is a JSON file of daily counters in `backend/.data/`, flushed every
-  30s and on shutdown. On a free tier that file does not survive a redeploy, which is
-  why the panel labels its window from when counting actually started ("this site · 3
-  days") instead of claiming 30 days it doesn't have. Point it at a persistent disk or
-  a small store to keep history across deploys.
+- The metrics store has two drivers. With `UPSTASH_REDIS_REST_URL` and
+  `UPSTASH_REDIS_REST_TOKEN` set, daily counters go to Redis over HTTP and survive
+  deploys and instance sleep. Without them it falls back to a JSON file in
+  `backend/.data/`, which is fine locally but resets on every free-tier redeploy —
+  Render's filesystem is ephemeral. Either way the panel labels its window from when
+  counting actually started ("this site · 3 days") rather than claiming 30 days it
+  doesn't have.
 - The heatmap needs `GITHUB_TOKEN`; contribution counts are GraphQL-only. Without it
   the endpoint answers `enabled: false` and the section is absent rather than empty.
 
