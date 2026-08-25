@@ -109,6 +109,17 @@ class FileStore implements Store {
   }
 }
 
+/**
+ * Strips anything credential-shaped out of a message bound for the public
+ * health field: URLs, and `user:password@host` pairs.
+ */
+function redact(message: string) {
+  return message
+    .replace(/[a-z]+:\/\/[^\s]+/gi, "<url>")
+    .replace(/[^\s:]+:[^\s@]+@[^\s]+/g, "<credentials>")
+    .slice(0, 120);
+}
+
 /* ── Upstash driver ───────────────────────────────────────────────────── */
 
 /**
@@ -128,14 +139,23 @@ class UpstashStore implements Store {
   ) {}
 
   private async pipeline(commands: (string | number)[][]): Promise<{ result: unknown }[]> {
-    const res = await fetch(`${this.url}/pipeline`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(commands),
-    });
+    let res: Response;
+    try {
+      res = await fetch(`${this.url}/pipeline`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(commands),
+      });
+    } catch {
+      // Never let the underlying error through: fetch puts the URL it tried
+      // into its message, and if someone has pasted a redis:// connection
+      // string into the env var, that URL contains the password. This message
+      // is reported publicly by /api/metrics.
+      throw new Error("unreachable — check UPSTASH_REDIS_REST_URL");
+    }
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const body = (await res.json()) as { result: unknown; error?: string }[];
@@ -143,7 +163,7 @@ class UpstashStore implements Store {
     // rejected — a read-only token failing a write looks exactly like this, so
     // the status code alone would report success.
     const failed = body.find((r) => r.error);
-    if (failed) throw new Error(failed.error);
+    if (failed) throw new Error(redact(failed.error ?? "command rejected"));
     return body;
   }
 
@@ -165,7 +185,7 @@ class UpstashStore implements Store {
         this.lastError = null;
       })
       .catch((err: Error) => {
-        this.lastError = `write: ${err.message}`;
+        this.lastError = redact(`write: ${err.message}`);
         console.error("metrics: upstash write failed", err.message);
       });
   }
@@ -208,7 +228,7 @@ class UpstashStore implements Store {
       this.lastError = null;
       return this.cache.data;
     } catch (err) {
-      this.lastError = `read: ${(err as Error).message}`;
+      this.lastError = redact(`read: ${(err as Error).message}`);
       console.error("metrics: upstash read failed", (err as Error).message);
       // Serve the last good snapshot, or at minimum what this instance has
       // counted itself. Dropping `pending` here was wrong: a store outage
