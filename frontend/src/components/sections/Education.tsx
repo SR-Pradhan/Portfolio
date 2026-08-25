@@ -37,7 +37,11 @@ export default function Education() {
                       left ? "md:col-start-2 md:row-start-1 md:justify-start" : "md:col-start-1 md:row-start-1 md:justify-end"
                     }`}
                   >
-                    {e.period.match(/\d{4}/)?.[0]}
+                    {/* The last year in the range, not the first: for a
+                        qualification the year it was awarded is the one that
+                        means something. "2023 – Present" has only one, so it
+                        keeps showing the start. */}
+                    {e.period.match(/\d{4}(?![\s\S]*\d{4})/)?.[0]}
                   </span>
 
                   <div className={left ? "" : "md:col-start-2 md:row-start-1"}>

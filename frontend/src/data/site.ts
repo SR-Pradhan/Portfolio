@@ -113,13 +113,13 @@ export const education: Education[] = [
     degree: "Class XII, CHSE",
     school: "FM Higher Secondary School",
     location: "Balasore, Odisha",
-    period: "2021",
+    period: "2019 – 2021",
   },
   {
     degree: "Class X, BSE",
     school: "SR Bidyapitha",
     location: "Bhograi, Balasore, Odisha",
-    period: "2019",
+    period: "2016 – 2019",
   },
 ];
 
