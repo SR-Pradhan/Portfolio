@@ -29,9 +29,20 @@ export const dayKey = (d: Date) => d.toISOString().slice(0, 10);
 const KEEP_DAYS = 60;
 const TTL_SECONDS = KEEP_DAYS * 24 * 60 * 60;
 
+export type Health = { driver: "upstash" | "file"; ok: boolean; lastError: string | null };
+
 export interface Store {
   record(event: EventName): void;
   read(days: string[]): Promise<Snapshot>;
+  /**
+   * Why the panel is showing what it is showing.
+   *
+   * A counter store that fails silently is the worst version of this feature:
+   * the page prints zeros, which reads as "nobody visits" rather than "the
+   * database is misconfigured". Status codes only — never anything from the
+   * credentials.
+   */
+  health(): Health;
 }
 
 /* ── File driver ──────────────────────────────────────────────────────── */
@@ -92,6 +103,10 @@ class FileStore implements Store {
   async read(): Promise<Snapshot> {
     return this.data;
   }
+
+  health(): Health {
+    return { driver: "file", ok: true, lastError: null };
+  }
 }
 
 /* ── Upstash driver ───────────────────────────────────────────────────── */
@@ -103,6 +118,7 @@ class FileStore implements Store {
  */
 class UpstashStore implements Store {
   private cache: { at: number; data: Snapshot } | null = null;
+  private lastError: string | null = null;
   /** Counted here too, so the panel reflects a visit that just happened. */
   private pending: Record<string, Day> = {};
 
@@ -120,8 +136,15 @@ class UpstashStore implements Store {
       },
       body: JSON.stringify(commands),
     });
-    if (!res.ok) throw new Error(`upstash ${res.status}`);
-    return (await res.json()) as { result: unknown }[];
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const body = (await res.json()) as { result: unknown; error?: string }[];
+    // Upstash answers 200 with a per-command `error` when a command itself is
+    // rejected — a read-only token failing a write looks exactly like this, so
+    // the status code alone would report success.
+    const failed = body.find((r) => r.error);
+    if (failed) throw new Error(failed.error);
+    return body;
   }
 
   record(event: EventName) {
@@ -137,7 +160,14 @@ class UpstashStore implements Store {
       // NX: only the first write ever sets it, so "since" is when counting
       // actually began rather than when this container booted.
       ["SET", "metrics:since", new Date().toISOString(), "NX"],
-    ]).catch((err) => console.error("metrics: upstash write failed", err));
+    ])
+      .then(() => {
+        this.lastError = null;
+      })
+      .catch((err: Error) => {
+        this.lastError = `write: ${err.message}`;
+        console.error("metrics: upstash write failed", err.message);
+      });
   }
 
   async read(days: string[]): Promise<Snapshot> {
@@ -175,12 +205,20 @@ class UpstashStore implements Store {
       // trip may miss this snapshot and appear in the next one — a display
       // counter can afford that; double-counting it would be worse.
       this.pending = {};
+      this.lastError = null;
       return this.cache.data;
     } catch (err) {
-      console.error("metrics: upstash read failed", err);
-      // Serve the last good snapshot rather than a screen of zeros.
-      return this.cache ? this.merged(this.cache.data) : { since: new Date().toISOString(), days: {} };
+      this.lastError = `read: ${(err as Error).message}`;
+      console.error("metrics: upstash read failed", (err as Error).message);
+      // Serve the last good snapshot, or at minimum what this instance has
+      // counted itself. Dropping `pending` here was wrong: a store outage
+      // turned real visits into zeros rather than into a smaller number.
+      return this.merged(this.cache?.data ?? { since: new Date().toISOString(), days: {} });
     }
+  }
+
+  health(): Health {
+    return { driver: "upstash", ok: this.lastError === null, lastError: this.lastError };
   }
 
   /** Folds writes made since the last read on top of the cached snapshot. */

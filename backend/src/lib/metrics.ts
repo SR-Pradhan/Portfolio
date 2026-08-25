@@ -61,5 +61,6 @@ export async function snapshot() {
     series,
     latencyP95: p95(),
     uptimeSeconds: Math.round(process.uptime()),
+    store: store.health(),
   };
 }
