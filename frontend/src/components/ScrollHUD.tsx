@@ -51,7 +51,7 @@ export default function ScrollHUD({ active }: { active: string }) {
         <div className="relative hidden h-4 flex-1 overflow-hidden rounded-sm bg-foreground/[0.06] sm:block">
           <motion.div
             style={{ width: fillWidth }}
-            className="absolute inset-y-0 left-0 flex items-center overflow-hidden whitespace-nowrap rounded-sm bg-accent px-1.5 text-white"
+            className="absolute inset-y-0 left-0 flex items-center overflow-hidden whitespace-nowrap rounded-sm bg-accent px-1.5 text-on-accent"
           >
             {trail}
             <span className="ml-px animate-pulse">_</span>

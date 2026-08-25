@@ -152,7 +152,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+              className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-on-accent transition hover:opacity-90 disabled:opacity-60"
             >
               <Send size={16} />
               {status === "sending" ? "Sending…" : "Send message"}

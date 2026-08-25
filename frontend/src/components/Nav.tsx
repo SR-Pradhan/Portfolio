@@ -52,7 +52,7 @@ export default function Nav({ active }: { active: string }) {
               onClick={() => track("resume")}
               target="_blank"
               rel="noreferrer"
-              className="hidden items-center gap-1.5 rounded-full border border-accent/50 px-3.5 py-1.5 text-sm font-medium text-accent transition hover:bg-accent hover:text-white sm:inline-flex"
+              className="hidden items-center gap-1.5 rounded-full border border-accent/50 px-3.5 py-1.5 text-sm font-medium text-accent transition hover:bg-accent hover:text-on-accent sm:inline-flex"
             >
               <FileDown size={14} />
               Resume

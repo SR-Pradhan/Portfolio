@@ -32,6 +32,12 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+  /* What to write on a filled accent surface.
+     Not white: the dark theme's accent is a light lavender, and white on it
+     measures 2.93:1 — below the 3.0 floor for even large text. The page
+     background reads 6.84:1 there and 5.03:1 on the light theme's deeper
+     accent, so one token serves both. */
+  --color-on-accent: var(--background);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

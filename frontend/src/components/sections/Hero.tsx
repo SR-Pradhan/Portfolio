@@ -76,7 +76,7 @@ export default function Hero() {
           >
             <a
               href="#contact"
-              className="rounded-full bg-accent px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
+              className="rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent transition hover:opacity-90"
             >
               Get in touch
             </a>

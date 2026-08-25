@@ -131,7 +131,7 @@ function Proof({
 
       {/* sits above the whole stack, not inside the top card */}
       <span
-        className="pointer-events-none absolute right-3 top-3 rounded bg-accent px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-white"
+        className="pointer-events-none absolute right-3 top-3 rounded bg-accent px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-on-accent"
         style={{ zIndex: photos.length + 1 }}
       >
         {photos.length > 1 ? `Unlocked · ${photos.length}` : "Unlocked"}

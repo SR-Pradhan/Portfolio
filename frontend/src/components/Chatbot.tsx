@@ -198,7 +198,7 @@ export default function Chatbot() {
         }}
         aria-label={open ? "Close chat" : "Ask about Sruti"}
         aria-expanded={open}
-        className="group fixed bottom-6 right-6 z-50 grid size-14 place-items-center rounded-full bg-accent text-white shadow-[0_10px_35px_-8px_var(--accent)] transition-transform hover:scale-105 active:scale-95"
+        className="group fixed bottom-6 right-6 z-50 grid size-14 place-items-center rounded-full bg-accent text-on-accent shadow-[0_10px_35px_-8px_var(--accent)] transition-transform hover:scale-105 active:scale-95"
       >
         {/* Beacon: two staggered rings pushing outward so the button reads as
             live. Always on (not just first visit) — it's the only cue that the
@@ -264,7 +264,7 @@ export default function Chatbot() {
                 key={i}
                 className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed ${
                   m.role === "user"
-                    ? "ml-auto bg-accent text-white"
+                    ? "ml-auto bg-accent text-on-accent"
                     : "bg-background text-muted"
                 }`}
               >
@@ -317,7 +317,7 @@ export default function Chatbot() {
               type="submit"
               disabled={busy || !input.trim()}
               aria-label="Send"
-              className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-white transition hover:opacity-90 disabled:opacity-40"
+              className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-on-accent transition hover:opacity-90 disabled:opacity-40"
             >
               <Send size={15} />
             </button>
