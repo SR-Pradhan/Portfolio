@@ -315,6 +315,8 @@ export const skills = [
 
 export type Job = {
   role: string;
+  /** Internship, Leadership… — rendered as a small badge beside the role. */
+  kind?: string;
   company: string;
   companyUrl?: string;
   location?: string;
@@ -328,6 +330,7 @@ export type Job = {
 export const experience: Job[] = [
   {
     role: "Full-Stack Java Developer Intern",
+    kind: "Internship",
     company: "Delhi Integrated Multi-Modal Transit System Ltd. (DIMTS)",
     companyUrl: "https://www.dimts.in/",
     location: "Delhi, India",
@@ -362,6 +365,7 @@ export const experience: Job[] = [
   },
   {
     role: "President",
+    kind: "Leadership",
     company: "Cybernautics Tech Club, GD Goenka University",
     location: "Gurugram, Haryana, India",
     period: "2024 – 2025",

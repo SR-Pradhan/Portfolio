@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { experience } from "@/data/site";
 import { techEmoji, techSlug } from "@/lib/techSlugs";
+import { tenure } from "@/lib/tenure";
 import Reveal from "../Reveal";
 import SpotlightCard from "../SpotlightCard";
 import TechIcon from "../TechIcon";
@@ -20,13 +21,53 @@ export default function Experience() {
               <span className="absolute -left-[calc(1.5rem+6px)] top-7 size-3 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_2px_var(--accent)] md:-left-[calc(2.5rem+6px)]" />
 
               <SpotlightCard>
+                {/* The start year as a watermark, the same idiom the project
+                    cards use for their index. On a timeline it does a second
+                    job: the eye picks up the chronology without reading a
+                    single date. */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -top-3 right-3 select-none font-mono text-[7rem] font-bold leading-none text-foreground/[0.035]"
+                >
+                  {job.period.match(/\d{4}/)?.[0]}
+                </span>
+
                 <div className="relative z-10 p-6 md:p-7">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                    <h3 className="text-lg font-semibold tracking-tight">
+                    <h3 className="flex flex-wrap items-center gap-2.5 text-lg font-semibold tracking-tight">
                       {job.role}
+                      {job.kind && (
+                        <span className="rounded-full border border-border px-2 py-0.5 font-mono text-[10px] font-normal uppercase tracking-[0.16em] text-muted">
+                          {job.kind}
+                        </span>
+                      )}
                     </h3>
-                    <span className="font-mono text-xs text-muted">
+
+                    <span className="flex items-center gap-2 font-mono text-xs text-muted">
                       {job.period}
+                      {(() => {
+                        const span = tenure(job.period);
+                        if (!span) return null;
+                        return (
+                          <>
+                            <span aria-hidden className="text-border">
+                              ·
+                            </span>
+                            {/* Worked out from the period beside it, so the two
+                                can never disagree. */}
+                            <span className="text-foreground">{span.label}</span>
+                            {span.current && (
+                              <span className="flex items-center gap-1.5 text-accent">
+                                <span className="relative flex size-1.5">
+                                  <span className="live-ping absolute inline-flex size-full rounded-full bg-accent" />
+                                  <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
+                                </span>
+                                now
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
                     </span>
                   </div>
 
@@ -52,17 +93,22 @@ export default function Experience() {
                     )}
                   </div>
 
-                  <ul className="mt-5 space-y-2">
-                    {job.points.map((point) => (
+                  {/* Numbered rather than bulleted. Four dots read as prose that
+                      happens to be chopped up; an index reads as a record of
+                      separate things done, which is what these are. */}
+                  <ol className="mt-5 space-y-2.5">
+                    {job.points.map((point, n) => (
                       <li
                         key={point}
                         className="flex gap-3 text-sm leading-relaxed text-muted"
                       >
-                        <span className="mt-[7px] size-1 shrink-0 rounded-full bg-accent" />
+                        <span className="mt-px shrink-0 font-mono text-[11px] text-accent/70">
+                          {String(n + 1).padStart(2, "0")}
+                        </span>
                         {point}
                       </li>
                     ))}
-                  </ul>
+                  </ol>
 
                   <ul className="mt-5 flex flex-wrap gap-2">
                     {job.stack.map((t) => (
