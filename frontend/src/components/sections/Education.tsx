@@ -76,7 +76,7 @@ export default function Education() {
                             return (
                               <>
                                 <span className="text-border">·</span>
-                                <span className="text-foreground">{span.label}</span>
+                                <span className="text-foreground/70">{span.label}</span>
                                 {span.current && (
                                   <span className="flex items-center gap-1.5 text-accent">
                                     <span className="relative flex size-1.5">

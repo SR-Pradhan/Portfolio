@@ -62,7 +62,7 @@ export default function Experience() {
                             </span>
                             {/* Worked out from the period beside it, so the two
                                 can never disagree. */}
-                            <span className="text-foreground">{span.label}</span>
+                            <span className="text-foreground/70">{span.label}</span>
                             {span.current && (
                               <span className="flex items-center gap-1.5 text-accent">
                                 <span className="relative flex size-1.5">
