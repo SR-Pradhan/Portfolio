@@ -17,8 +17,15 @@ export default function Experience() {
 
         {experience.map((job, i) => (
           <li key={i} className="relative pb-8 last:pb-0">
-            <Reveal delay={i * 0.06}>
-              <span className="absolute -left-[calc(1.5rem+6px)] top-7 size-3 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_2px_var(--accent)] md:-left-[calc(2.5rem+6px)]" />
+            {/* `group/entry` rather than the card's own `group`: the node sits
+                outside SpotlightCard, so it needs a group spanning both to
+                react to the same hover.
+
+                The node transitions `scale`, not `transform` — Tailwind v4
+                compiles scale-125 to the standalone `scale` property, so
+                transition-transform animates nothing at all. */}
+            <Reveal delay={i * 0.06} className="group/entry">
+              <span className="absolute -left-[calc(1.5rem+6px)] top-7 size-3 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_2px_var(--accent)] transition-[scale] duration-300 group-hover/entry:scale-125 md:-left-[calc(2.5rem+6px)]" />
 
               <SpotlightCard>
                 {/* The start year as a watermark, the same idiom the project
@@ -27,7 +34,7 @@ export default function Experience() {
                     single date. */}
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute -top-3 right-3 select-none font-mono text-[7rem] font-bold leading-none text-foreground/[0.035]"
+                  className="pointer-events-none absolute -top-3 right-3 select-none font-mono text-[7rem] font-bold leading-none text-foreground/[0.035] transition-colors duration-500 group-hover/entry:text-foreground/[0.06]"
                 >
                   {job.period.match(/\d{4}/)?.[0]}
                 </span>
@@ -114,7 +121,7 @@ export default function Experience() {
                     {job.stack.map((t) => (
                       <li
                         key={t}
-                        className="flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 font-mono text-[11px] text-muted"
+                        className="flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 font-mono text-[11px] text-muted transition-colors duration-300 group-hover/entry:border-accent/30"
                       >
                         {techSlug(t) ? (
                           <TechIcon slug={techSlug(t)} size={12} />
