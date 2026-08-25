@@ -18,7 +18,12 @@ const MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-120b";
  */
 function loadContext(): string | null {
   try {
-    return readFileSync(join(here, "..", "data", "portfolio-context.json"), "utf8");
+    const raw = readFileSync(join(here, "..", "data", "portfolio-context.json"), "utf8");
+    // Minified before it goes in the prompt. The file is pretty-printed so a
+    // human can read it, but indentation is ~23% of its characters and every
+    // one of them is billed against the same per-minute token budget the
+    // answer needs. Same data, a quarter fewer tokens per request.
+    return JSON.stringify(JSON.parse(raw));
   } catch {
     return null;
   }
@@ -59,6 +64,8 @@ export type ChatMessage = { role: "user" | "assistant"; content: string };
  * `data: [DONE]`. Network chunks can split mid-event, so the buffer is only
  * drained on a complete blank-line separator.
  */
+export type GroqError = Error & { status?: number };
+
 export async function* streamReply(messages: ChatMessage[]) {
   const res = await fetch(GROQ_URL, {
     method: "POST",
@@ -81,7 +88,11 @@ export async function* streamReply(messages: ChatMessage[]) {
 
   if (!res.ok || !res.body) {
     const detail = await res.text().catch(() => "");
-    throw new Error(`Groq responded ${res.status}: ${detail.slice(0, 200)}`);
+    const error = new Error(`Groq responded ${res.status}: ${detail.slice(0, 200)}`);
+    // Tagged so the route can tell "slow down" apart from "broken" — they need
+    // to say very different things to a visitor.
+    (error as GroqError).status = res.status;
+    throw error;
   }
 
   const reader = res.body.getReader();

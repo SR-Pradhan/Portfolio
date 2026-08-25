@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { z } from "zod";
-import { chatEnabled, streamReply, type ChatMessage } from "../lib/chat.js";
+import { chatEnabled, streamReply, type ChatMessage, type GroqError } from "../lib/chat.js";
 
 const router = Router();
 
@@ -88,7 +88,18 @@ router.post("/", async (req, res) => {
     send({ done: true });
   } catch (err) {
     console.error("Chat failed:", err);
-    send({ error: "Something went wrong. Please try again." });
+
+    // A burst of questions hits Groq's per-minute token budget long before it
+    // hits anything else, and the free tier's budget is small. "Something went
+    // wrong" told a visitor the site was broken when the honest answer was
+    // "ask me again in a moment".
+    const status = (err as GroqError).status;
+    send({
+      error:
+        status === 429
+          ? "I'm getting more questions than I can answer right now — try again in a few seconds."
+          : "Something went wrong. Please try again.",
+    });
   } finally {
     res.end();
   }

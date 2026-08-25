@@ -49,9 +49,12 @@ function Links({ project }: { project: Project }) {
           </a>
         ))}
       </div>
-      {project.demoNote && (
-        <p className="mt-3 font-mono text-[11px] text-muted/70">{project.demoNote}</p>
-      )}
+      {/* Always rendered, even when empty. Everything below the spacer in a card
+          is bottom-anchored, so a note present on one card and absent on its
+          neighbour pushes that card's whole footer — buttons, case study, stats
+          — a line out of step with the row. Reserving the line costs nothing
+          and keeps the grid reading as a grid. */}
+      <p className="mt-3 min-h-4 font-mono text-[11px] text-muted/70">{project.demoNote}</p>
     </div>
   );
 }
