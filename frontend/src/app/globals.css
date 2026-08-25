@@ -863,3 +863,17 @@ html.preloaded #preloader {
     transition: none;
   }
 }
+
+/* ── Terminal ─────────────────────────────────────────────────────────
+   Same entrance as the command palette — they are siblings, opened by
+   neighbouring keys, and should not arrive differently. */
+
+.terminal-window {
+  animation: palette-in 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-window {
+    animation: none;
+  }
+}

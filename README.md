@@ -19,6 +19,11 @@ about my work, backed by a small Express API.
 - **⌘K command palette** — fuzzy jump to any section, open a repo, copy the email,
   take the résumé, flip the theme or open the assistant. The only route through the
   whole site that never needs a mouse.
+- **A working shell**, opened with `` ` `` or from the palette: `ls`, `cat`,
+  `open`, `goto`, `whoami`, with history and tab completion. Every command resolves
+  against `site.ts`, so it cannot describe a project the page doesn't have — and the
+  command layer is a pure function (`lib/shell.ts`) that returns output plus an
+  effect, so the UI decides what to do with it.
 - **Live project stats** pulled from the GitHub API through the backend: last push,
   language split, stars and forks when there are any. Cached for 30 minutes upstream
   and shared across visitors, so the cards stay current without burning the rate limit.

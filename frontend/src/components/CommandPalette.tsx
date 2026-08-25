@@ -10,12 +10,13 @@ import {
   Moon,
   Search,
   Sun,
+  Terminal as TerminalIcon,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Github, Linkedin } from "@/components/BrandIcons";
 import { nav, projects, site } from "@/data/site";
 import { track } from "@/lib/metrics";
-import { OPEN_PALETTE, openChat, toggleTheme, useIsDark } from "@/lib/ui";
+import { OPEN_PALETTE, openChat, openTerminal, toggleTheme, useIsDark } from "@/lib/ui";
 
 type Command = {
   id: string;
@@ -154,6 +155,15 @@ export default function CommandPalette() {
         icon: MessageSquare,
         keywords: "chat bot question ai",
         run: openChat,
+      },
+      {
+        id: "terminal",
+        label: "Open terminal",
+        hint: "`",
+        group: "Actions",
+        icon: TerminalIcon,
+        keywords: "shell console command line cli",
+        run: openTerminal,
       },
       {
         id: "theme",

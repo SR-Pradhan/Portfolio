@@ -16,6 +16,7 @@ import { useSyncExternalStore } from "react";
 export const THEME_CHANGED = "portfolio:theme";
 export const OPEN_CHAT = "portfolio:open-chat";
 export const OPEN_PALETTE = "portfolio:open-palette";
+export const OPEN_TERMINAL = "portfolio:open-terminal";
 
 /** Reads the theme off the class the inline script in layout.tsx already set. */
 export function isDark() {
@@ -62,4 +63,8 @@ export function openChat() {
 
 export function openPalette() {
   window.dispatchEvent(new CustomEvent(OPEN_PALETTE));
+}
+
+export function openTerminal() {
+  window.dispatchEvent(new CustomEvent(OPEN_TERMINAL));
 }
