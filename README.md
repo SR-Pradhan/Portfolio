@@ -47,6 +47,11 @@ about my work, backed by a small Express API.
 - **Contact form** with server-side validation, a honeypot field, and per-IP rate
   limiting
 - **Light and dark themes**, no flash on first paint
+- **A cursor that reports rather than decorates** — over anything interactive it
+  latches onto the element's real box, matching its size and corner radius, and prints
+  one word for what a click will do (`open ↗`, `jump`, `expand`, `type`, `theme`).
+  Labels are derived from the element itself, so a link added later is labelled without
+  anyone annotating it.
 - **Reduced-motion support** throughout: the starfield renders static, the cursor
   follower doesn't mount, and scroll-driven transforms are skipped
 
