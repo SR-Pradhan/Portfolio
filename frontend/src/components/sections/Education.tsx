@@ -3,6 +3,7 @@ import { education } from "@/data/site";
 import EducationCurve from "../EducationCurve";
 import Reveal from "../Reveal";
 import Section from "../Section";
+import { tenure } from "@/lib/tenure";
 import SpotlightCard from "../SpotlightCard";
 
 export default function Education() {
@@ -24,13 +25,26 @@ export default function Education() {
                     nodes on the curve rather than at the centre line */}
                 <div
                   data-edu-row
-                  className="relative md:grid md:grid-cols-2 md:gap-16"
+                  className="group/edu relative md:grid md:grid-cols-2 md:gap-16"
                 >
-                  <div className={left ? "" : "md:col-start-2"}>
+                  {/* Half of every row was empty space either side of the
+                      curve. The year fills it — quiet enough to stay a
+                      background note, large enough that the chronology reads
+                      without anyone parsing a date. */}
+                  <span
+                    aria-hidden
+                    className={`pointer-events-none hidden select-none items-center font-mono text-6xl font-bold leading-none text-foreground/[0.05] transition-colors duration-500 group-hover/edu:text-foreground/[0.09] md:flex ${
+                      left ? "md:col-start-2 md:row-start-1 md:justify-start" : "md:col-start-1 md:row-start-1 md:justify-end"
+                    }`}
+                  >
+                    {e.period.match(/\d{4}/)?.[0]}
+                  </span>
+
+                  <div className={left ? "" : "md:col-start-2 md:row-start-1"}>
                     <SpotlightCard>
                       <div className="relative z-10 flex h-full flex-col p-7">
                         <div className="flex items-start gap-4">
-                          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
+                          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent ring-1 ring-transparent transition duration-300 group-hover/edu:ring-accent/40">
                             <GraduationCap size={18} />
                           </span>
                           <div className="min-w-0">
@@ -50,10 +64,31 @@ export default function Education() {
 
                         <div className="mt-5 flex flex-wrap items-center gap-3 font-mono text-xs text-muted">
                           <span>{e.period}</span>
+                          {(() => {
+                            // Same derivation as the experience timeline: read
+                            // off the period, so the two can't disagree.
+                            const span = tenure(e.period);
+                            if (!span) return null;
+                            return (
+                              <>
+                                <span className="text-border">·</span>
+                                <span className="text-foreground">{span.label}</span>
+                                {span.current && (
+                                  <span className="flex items-center gap-1.5 text-accent">
+                                    <span className="relative flex size-1.5">
+                                      <span className="live-ping absolute inline-flex size-full rounded-full bg-accent" />
+                                      <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
+                                    </span>
+                                    now
+                                  </span>
+                                )}
+                              </>
+                            );
+                          })()}
                           {e.grade && (
                             <>
                               <span className="text-border">·</span>
-                              <span className="rounded-md border border-border px-2 py-0.5">
+                              <span className="rounded-md border border-border px-2 py-0.5 transition-colors duration-300 group-hover/edu:border-accent/30">
                                 {e.grade}
                               </span>
                             </>
