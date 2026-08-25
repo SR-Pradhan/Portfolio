@@ -29,12 +29,13 @@ export default function Experience() {
 
               <SpotlightCard>
                 {/* The start year as a watermark, the same idiom the project
-                    cards use for their index — bottom-right rather than top,
-                    where it would print the same year the period already shows
-                    a few pixels away. */}
+                    cards use for their index, in the same top-right corner they
+                    use. It sits behind the period, which prints the same year
+                    in words — kept faint enough that it reads as texture behind
+                    the date rather than as a second copy of it. */}
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute -bottom-5 right-4 select-none font-mono text-[7rem] font-bold leading-none text-foreground/[0.035] transition-colors duration-500 group-hover/entry:text-foreground/[0.06]"
+                  className="pointer-events-none absolute -top-3 right-3 select-none font-mono text-[7rem] font-bold leading-none text-foreground/[0.035] transition-colors duration-500 group-hover/entry:text-foreground/[0.06]"
                 >
                   {job.period.match(/\d{4}/)?.[0]}
                 </span>
