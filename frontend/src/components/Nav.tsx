@@ -4,7 +4,7 @@ import { Command, FileDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { nav, site } from "@/data/site";
 import { track } from "@/lib/metrics";
-import { openPalette } from "@/lib/ui";
+import { openPalette, openTerminal } from "@/lib/ui";
 import ThemeToggle from "./ThemeToggle";
 
 /**
@@ -67,6 +67,18 @@ export default function Nav({ active }: { active: string }) {
               className="hidden items-center gap-1.5 rounded-full border border-border px-2.5 py-1 font-mono text-[11px] text-muted transition hover:border-accent hover:text-accent xl:inline-flex"
             >
               <Command size={11} />K
+            </button>
+            {/* The shell's only visible handle. It opens on a backtick, which
+                nobody discovers on their own, and living solely inside ⌘K makes
+                it a secret behind a secret. */}
+            <button
+              type="button"
+              onClick={openTerminal}
+              aria-label="Open terminal"
+              title="Open terminal (`)"
+              className="hidden items-center rounded-full border border-border px-2.5 py-1 font-mono text-[11px] text-muted transition hover:border-accent hover:text-accent xl:inline-flex"
+            >
+              &gt;_
             </button>
             <ThemeToggle />
             <button

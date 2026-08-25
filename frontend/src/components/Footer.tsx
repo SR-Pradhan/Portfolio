@@ -66,6 +66,18 @@ export default function Footer() {
           ))}
         </nav>
 
+        {/* The nav chips only appear on wide screens, so this is where the two
+            keyboard routes are actually announced. */}
+        <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted/70">
+          <kbd className="rounded border border-border px-1.5 py-0.5 text-foreground">⌘K</kbd>{" "}
+          commands
+          <span aria-hidden className="mx-2 text-border">
+            ·
+          </span>
+          <kbd className="rounded border border-border px-1.5 py-0.5 text-foreground">`</kbd>{" "}
+          terminal
+        </p>
+
         {/* Last line before the credit: the site says the chat and the form are
             backed by a real API, and this is what proves it. */}
         <ApiStatus />
