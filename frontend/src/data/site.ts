@@ -206,10 +206,36 @@ export const projects: Project[] = [
     code: "https://github.com/SR-Pradhan/secure-auth-system",
   },
   {
-    title: "Coming Soon",
-    blurb: "Something new is in the works. Check back soon.",
-    tags: [],
-    comingSoon: true,
+    title: "Emergency Ambulance Route Optimizer",
+    blurb:
+      "A dispatch system that answers two questions from a patient's location: which hospital they should go to, and the fastest road route there. It then sends the nearest available ambulance and tracks it live on an OpenStreetMap network.",
+    hardPart:
+      "Edge weights are travel time rather than distance, so a congested shortcut loses to a clear detour — on the demo network a 3.9km direct route is rejected for an 8.4km one that is genuinely faster.",
+    tags: [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "SQLAlchemy",
+      "React",
+      "Vite",
+      "Leaflet",
+      "OpenStreetMap",
+      "Dijkstra",
+      "A*",
+    ],
+    caseStudy: {
+      notes: [
+        "Dijkstra, A*, the min-heap ranking and the triage queue are written from scratch — no networkx, no shortest-path library.",
+        "A* is measurably cheaper on the same route: 286 node expansions against Dijkstra's 379 on the 433-junction network, which /route?algo=compare reports directly.",
+        "Hospital ranking balances distance against capacity — a hospital with no spare beds is ranked as if it were three minutes further, enough to break ties but never enough to send a patient past a much closer one.",
+        "Triage cannot starve anyone: severity sets your place in the queue, and every ten minutes of waiting improves it by a full level.",
+        "An ambulance's position is derived from elapsed time along its computed route, so it needs no background job and survives a restart.",
+      ],
+      flow: ["Patient location", "Hospital ranking", "A* over OSM graph", "Dispatch", "Live tracking"],
+    },
+    code: "https://github.com/SR-Pradhan/Ambulance-Router",
+    demo: "https://ambulance-router.vercel.app",
+    demoNote: "Road network and hospitals are real OSM data; traffic, beds and ambulances are simulated",
   },
 ];
 
