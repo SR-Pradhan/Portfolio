@@ -498,7 +498,11 @@ export type Certification = {
   title: string;
   issuer: string;
   year: string;
-  /** simple-icons slug for the issuer, e.g. "udemy", "coursera". */
+  /**
+   * simple-icons slug for the issuer, e.g. "udemy", "coursera", "edx",
+   * "greatlearning". Leave it out when the issuer has no published mark
+   * (Scaler, most universities) and the card falls back to their initial.
+   */
   icon?: string;
   /** simple-icons slug for what the course was about — drawn large and faint
       behind the card, the way the timelines carry a year. */

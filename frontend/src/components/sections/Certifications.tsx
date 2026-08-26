@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, BadgeCheck, Hourglass } from "lucide-react";
+import { ArrowUpRight, Hourglass } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef, useState } from "react";
 import { certifications, certificationsMore } from "@/data/site";
@@ -83,7 +83,14 @@ export default function Certifications() {
                       {c.icon ? (
                         <TechIcon slug={c.icon} size={19} />
                       ) : (
-                        <BadgeCheck size={19} className="text-accent" />
+                        /* No published mark for this issuer — Scaler, for one,
+                           isn't in simple-icons. Its initial beats a generic
+                           badge: it identifies the issuer at a glance and works
+                           for whatever gets added next, without anyone drawing
+                           a logo that isn't theirs to draw. */
+                        <span className="font-mono text-base font-bold leading-none text-accent">
+                          {c.issuer.trim().charAt(0).toUpperCase()}
+                        </span>
                       )}
                     </span>
                     {(c.url || c.image) && (
