@@ -474,6 +474,9 @@ export type Certification = {
   year: string;
   /** simple-icons slug for the issuer, e.g. "udemy", "coursera". */
   icon?: string;
+  /** simple-icons slug for what the course was about — drawn large and faint
+      behind the card, the way the timelines carry a year. */
+  tech?: string;
   url?: string;
   /** Scan of the certificate. Opens full-size when the card is clicked. */
   image?: string;
@@ -484,6 +487,7 @@ export const certifications: Certification[] = [
     title: "Python Course for Beginners: Mastering the Essentials",
     issuer: "Scaler",
     year: "2026",
+    tech: "python",
     // Scaler has no simple-icons mark, so this falls back to the badge glyph
     image: "/certificates/python-scaler/1-20cf0aa6.webp",
   },
@@ -492,6 +496,7 @@ export const certifications: Certification[] = [
     issuer: "Udemy",
     year: "2023",
     icon: "udemy",
+    tech: "c",
     image: "/certificates/c-language/1-2cae510e.webp",
   },
 ];

@@ -19,12 +19,15 @@ function lookup(slug?: string): SimpleIcon | null {
 export default function TechIcon({
   slug,
   size = 16,
+  mono = false,
 }: {
   slug?: string;
   size?: number;
+  /** Draw in the current text colour instead of the brand's own. */
+  mono?: boolean;
 }) {
   // Java has no simple-icons mark, so it comes from BrandIcons instead
-  if (slug === "java") return <Java size={size} />;
+  if (slug === "java") return <Java size={size} className={mono ? "fill-current" : undefined} />;
 
   const icon = lookup(slug);
 
@@ -47,8 +50,8 @@ export default function TechIcon({
       height={size}
       viewBox="0 0 24 24"
       aria-hidden
-      className={`shrink-0 ${dark ? "fill-foreground" : ""}`}
-      fill={dark ? undefined : `#${icon.hex}`}
+      className={`shrink-0 ${mono || dark ? "fill-current" : ""}`}
+      fill={mono || dark ? undefined : `#${icon.hex}`}
     >
       <path d={icon.path} />
     </svg>

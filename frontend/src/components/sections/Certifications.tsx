@@ -59,11 +59,26 @@ export default function Certifications() {
                             setOpen({ image: c.image!, title: c.title }),
                         }
                       : {})}
-                  className={`group flex w-72 shrink-0 flex-col rounded-2xl border border-border bg-surface p-6 text-left transition-colors hover:border-accent/60 sm:w-80 ${
+                  className={`group relative flex w-72 shrink-0 flex-col overflow-hidden rounded-2xl border border-border bg-surface p-6 text-left transition-colors hover:border-accent/60 sm:w-80 ${
                     c.url || c.image ? "cursor-pointer" : ""
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  {/* The subject's mark, doing the job the year does on the
+                      timelines: filling the card's empty corner and saying what
+                      this is about before the title is read. Bottom-right —
+                      top-left holds the issuer tile and top-right the arrow.
+                      Drawn mono, because a full-colour logo at this size stops
+                      being a watermark and becomes the loudest thing here. */}
+                  {c.tech && (
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute -bottom-4 -right-3 select-none text-foreground/[0.05] transition-colors duration-500 group-hover:text-accent/20"
+                    >
+                      <TechIcon slug={c.tech} size={112} mono />
+                    </span>
+                  )}
+
+                  <div className="relative flex items-start justify-between gap-3">
                     <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent-soft">
                       {c.icon ? (
                         <TechIcon slug={c.icon} size={19} />
@@ -79,11 +94,11 @@ export default function Certifications() {
                     )}
                   </div>
 
-                  <h3 className="mt-5 font-semibold leading-snug tracking-tight transition-colors group-hover:text-accent">
+                  <h3 className="relative mt-5 font-semibold leading-snug tracking-tight transition-colors group-hover:text-accent">
                     {c.title}
                   </h3>
-                  <p className="mt-1 flex-1 text-sm text-muted">{c.issuer}</p>
-                  <span className="mt-5 w-fit rounded-md border border-border px-2.5 py-1 font-mono text-xs text-muted">
+                  <p className="relative mt-1 flex-1 text-sm text-muted">{c.issuer}</p>
+                  <span className="relative mt-5 w-fit rounded-md border border-border px-2.5 py-1 font-mono text-xs text-muted">
                     {c.year}
                   </span>
                 </Card>
