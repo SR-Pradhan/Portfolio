@@ -180,32 +180,6 @@ export const projects: Project[] = [
     demoNote: "API cold-starts after idle (first request ~50s)",
   },
   {
-    title: "Real-Time Drowsiness Detection",
-    blurb:
-      "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue, triggering an audio alert when eyes stay closed past a threshold.",
-    hardPart:
-      "Tuning the EAR threshold and frame count to catch real drowsiness without firing on ordinary blinks, while staying fast enough for live video.",
-    tags: ["Python", "OpenCV", "dlib", "imutils", "SciPy", "Streamlit", "pygame"],
-    caseStudy: {
-      // TODO: add `notes` — the decisions you'd talk through in an interview.
-      flow: ["Webcam frame", "dlib landmarks", "Eye Aspect Ratio", "Threshold + frame count", "pygame alert"],
-    },
-    code: "https://github.com/SR-Pradhan/real-time-drowsiness-detection",
-  },
-  {
-    title: "Secure Auth System",
-    blurb:
-      "A Spring Boot authentication system implementing user registration, login, and role-based access control (USER/ADMIN), with BCrypt password encryption and session-managed protected routes.",
-    hardPart:
-      "Designing role-based access, BCrypt storage, and session handling into the Spring Security layer from the start, rather than bolting security on afterwards.",
-    tags: ["Java", "Spring Boot", "Spring Security", "Thymeleaf", "MySQL", "Maven"],
-    caseStudy: {
-      // TODO: add `notes` — the decisions you'd talk through in an interview.
-      flow: ["Login form", "Spring Security filter", "BCrypt check", "Session + role", "Guarded route"],
-    },
-    code: "https://github.com/SR-Pradhan/secure-auth-system",
-  },
-  {
     title: "Emergency Ambulance Route Optimizer",
     blurb:
       "A dispatch system that answers two questions from a patient's location: which hospital they should go to, and the fastest road route there. It then sends the nearest available ambulance and tracks it live on an OpenStreetMap network.",
@@ -235,7 +209,33 @@ export const projects: Project[] = [
     },
     code: "https://github.com/SR-Pradhan/Ambulance-Router",
     demo: "https://ambulance-router.vercel.app",
-    demoNote: "Road network and hospitals are real OSM data; traffic, beds and ambulances are simulated",
+    demoNote: "Traffic, beds and ambulances are simulated",
+  },
+  {
+    title: "Real-Time Drowsiness Detection",
+    blurb:
+      "A computer vision system that monitors a live webcam feed, tracks facial landmarks, and computes Eye Aspect Ratio in real time to detect fatigue, triggering an audio alert when eyes stay closed past a threshold.",
+    hardPart:
+      "Tuning the EAR threshold and frame count to catch real drowsiness without firing on ordinary blinks, while staying fast enough for live video.",
+    tags: ["Python", "OpenCV", "dlib", "imutils", "SciPy", "Streamlit", "pygame"],
+    caseStudy: {
+      // TODO: add `notes` — the decisions you'd talk through in an interview.
+      flow: ["Webcam frame", "dlib landmarks", "Eye Aspect Ratio", "Threshold + frame count", "pygame alert"],
+    },
+    code: "https://github.com/SR-Pradhan/real-time-drowsiness-detection",
+  },
+  {
+    title: "Secure Auth System",
+    blurb:
+      "A Spring Boot authentication system implementing user registration, login, and role-based access control (USER/ADMIN), with BCrypt password encryption and session-managed protected routes.",
+    hardPart:
+      "Designing role-based access, BCrypt storage, and session handling into the Spring Security layer from the start, rather than bolting security on afterwards.",
+    tags: ["Java", "Spring Boot", "Spring Security", "Thymeleaf", "MySQL", "Maven"],
+    caseStudy: {
+      // TODO: add `notes` — the decisions you'd talk through in an interview.
+      flow: ["Login form", "Spring Security filter", "BCrypt check", "Session + role", "Guarded route"],
+    },
+    code: "https://github.com/SR-Pradhan/secure-auth-system",
   },
 ];
 
