@@ -1,14 +1,39 @@
-# Portfolio
+<div align="center">
 
-Personal portfolio for **Sruti Ranjan Pradhan**, an aspiring AI Engineer with a backend
-development foundation. A single-page site with an AI assistant that answers questions
-about my work, backed by a small Express API.
+# 🛰️ Portfolio
 
-**Live:** [srutiranjanpradhan.online](https://www.srutiranjanpradhan.online/)
+**A single-page portfolio that reports on itself** — live GitHub data, a working shell,
+and an AI assistant whose knowledge base is generated from the site's own content.
+
+[![Live](https://img.shields.io/badge/live-srutiranjanpradhan.online-9d84ff?style=flat-square)](https://www.srutiranjanpradhan.online/)
+[![Next.js](https://img.shields.io/badge/Next.js%2016-000000?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React%2019-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Tailwind](https://img.shields.io/badge/Tailwind%20v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Express](https://img.shields.io/badge/Express%205-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com)
+[![Render](https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=black)](https://render.com)
+
+![The site](docs/preview.png)
+
+</div>
 
 ---
 
-## What's in it
+## 📑 Contents
+
+| | |
+|---|---|
+| [✨ What's in it](#-whats-in-it) | the features worth calling out |
+| [🧱 Stack](#-stack) | what it is built with |
+| [📁 Layout](#-layout) | where everything lives |
+| [🚀 Running locally](#-running-locally) | two terminals, no keys needed |
+| [🌐 Deploying](#-deploying) | Render then Vercel, in that order |
+| [🔎 Notes](#-notes) | security, degradation and the metrics store |
+
+---
+
+## ✨ What's in it
 
 - **First-paint curtain** that fills the gap before the page is ready: a progress ring,
   a boot log and corner readouts driven by the Performance API — real TTFB, real
@@ -19,7 +44,7 @@ about my work, backed by a small Express API.
 - **⌘K command palette** — fuzzy jump to any section, open a repo, copy the email,
   take the résumé, flip the theme or open the assistant. The only route through the
   whole site that never needs a mouse.
-- **A working shell**, opened with `` ` `` or from the palette: `ls`, `cat`,
+- **A working shell** ([pictured](docs/terminal.png)), opened with `` ` `` or from the palette: `ls`, `cat`,
   `open`, `goto`, `whoami`, with history and tab completion. Every command resolves
   against `site.ts`, so it cannot describe a project the page doesn't have — and the
   command layer is a pure function (`lib/shell.ts`) that returns output plus an
@@ -55,18 +80,22 @@ about my work, backed by a small Express API.
 - **Reduced-motion support** throughout: the starfield renders static, the cursor
   follower doesn't mount, and scroll-driven transforms are skipped
 
-## Stack
+## 🧱 Stack
 
-**Frontend** Next.js 16 (App Router, Turbopack) · React 19 · TypeScript ·
-Tailwind CSS v4 · Motion · deployed on Vercel
-
-**Backend** Express 5 · TypeScript · Zod · Groq (`openai/gpt-oss-120b`) ·
-Resend · deployed on Render
+| Layer | Choice |
+|---|---|
+| 🖼️ **Frontend** | Next.js 16 (App Router, Turbopack) · React 19 · TypeScript |
+| 🎨 **Styling** | Tailwind CSS v4 · Motion |
+| ⚙️ **Backend** | Express 5 · TypeScript · Zod |
+| 🤖 **AI** | Groq (`openai/gpt-oss-120b`), streamed over SSE |
+| 📊 **Live data** | GitHub REST + GraphQL · Upstash Redis counters |
+| ✉️ **Mail** | Resend |
+| ☁️ **Hosting** | Vercel (frontend) · Render (API) |
 
 Tailwind v4 is configured CSS-first. There is no `tailwind.config.js`; design tokens
 live in `@theme inline` inside `frontend/src/app/globals.css`.
 
-## Layout
+## 📁 Layout
 
 ```
 Portfolio/
@@ -95,7 +124,7 @@ Portfolio/
 copy. Changing a project description, a job title or a skill means editing that file and
 nothing else.
 
-## Running locally
+## 🚀 Running locally
 
 Two terminals:
 
@@ -109,14 +138,14 @@ replies with a message pointing at my email instead of failing, and without
 `RESEND_API_KEY` contact submissions are logged to the console. Both degrade rather
 than break, so a fresh clone runs with no accounts and no keys.
 
-### Checks before committing
+### ✅ Checks before committing
 
 ```bash
 cd frontend && npx tsc --noEmit && npm run build
 cd backend  && npm run typecheck
 ```
 
-### After editing content
+### 🔄 After editing content
 
 ```bash
 cd backend && npm run sync:context   # regenerate the chatbot's knowledge base
@@ -125,7 +154,7 @@ cd backend && npm run sync:context   # regenerate the chatbot's knowledge base
 Then restart the backend. The context is read once at import, so a running server keeps
 serving the previous version even though the file on disk has changed.
 
-### Adding proof photos
+### 📸 Adding proof photos
 
 ```bash
 cd frontend && node scripts/add-proof.mjs nexify photo-1.jpg photo-2.jpg
@@ -136,7 +165,7 @@ hash in the filename. The hash is not decoration: Next's image optimizer caches 
 and rejects query strings, so a changed filename is the only thing that reliably
 invalidates a replaced image. The script prints the line to paste into `site.ts`.
 
-## Deploying
+## 🌐 Deploying
 
 Backend first, since the frontend build needs its URL.
 
@@ -154,7 +183,7 @@ blocks both the chat and the contact form.
 `NEXT_PUBLIC_*` values are inlined at build time, so changing one requires a redeploy,
 not just an environment edit.
 
-## Notes
+## 🔎 Notes
 
 - The chatbot only accepts `user` and `assistant` roles from the client. A visitor
   cannot inject a `system` message, which is the main defence against prompt injection.
@@ -194,4 +223,9 @@ not just an environment edit.
 
 ---
 
-Designed and built by Sruti Ranjan Pradhan.
+<div align="center">
+
+**Designed and built by [Sruti Ranjan Pradhan](https://www.srutiranjanpradhan.online/)**
+· [GitHub](https://github.com/SR-Pradhan) · [LinkedIn](https://www.linkedin.com/in/sruti-ranjan/)
+
+</div>
