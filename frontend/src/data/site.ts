@@ -520,6 +520,14 @@ export type Certification = {
 
 export const certifications: Certification[] = [
   {
+    title: "Basics of Python - Part I",
+    issuer: "Code360 by Coding Ninjas",
+    year: "2026",
+    icon: "codingninjas",
+    tech: "python",
+    image: "/certificates/python-code360/1-93801d04.webp",
+  },
+  {
     title: "Python Course for Beginners: Mastering the Essentials",
     issuer: "Scaler",
     year: "2026",
@@ -527,7 +535,6 @@ export const certifications: Certification[] = [
     // Scaler's own cube mark, taken from their favicon — simple-icons has no
     // entry for them (its "scalar" is a different company).
     logo: "/logos/scaler.png",
-    // Scaler has no simple-icons mark, so this falls back to the badge glyph
     image: "/certificates/python-scaler/1-20cf0aa6.webp",
   },
   {
