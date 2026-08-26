@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUpRight, Hourglass } from "lucide-react";
+import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef, useState } from "react";
 import { certifications, certificationsMore } from "@/data/site";
@@ -80,7 +81,15 @@ export default function Certifications() {
 
                   <div className="relative flex items-start justify-between gap-3">
                     <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent-soft">
-                      {c.icon ? (
+                      {c.logo ? (
+                        <Image
+                          src={c.logo}
+                          alt={`${c.issuer} logo`}
+                          width={20}
+                          height={20}
+                          className="size-5 object-contain"
+                        />
+                      ) : c.icon ? (
                         <TechIcon slug={c.icon} size={19} />
                       ) : (
                         /* No published mark for this issuer — Scaler, for one,

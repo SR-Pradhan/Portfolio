@@ -499,11 +499,17 @@ export type Certification = {
   issuer: string;
   year: string;
   /**
-   * simple-icons slug for the issuer, e.g. "udemy", "coursera", "edx",
-   * "greatlearning". Leave it out when the issuer has no published mark
-   * (Scaler, most universities) and the card falls back to their initial.
+   * How the issuer is identified on the card, in order of preference:
+   *
+   * 1. `logo` — a file in `public/logos/`, for issuers simple-icons doesn't
+   *    carry. Take it from the issuer's own favicon or press kit; don't redraw
+   *    a mark by hand.
+   * 2. `icon` — a simple-icons slug ("udemy", "coursera", "edx",
+   *    "greatlearning"), drawn in the brand's own colour.
+   * 3. Neither — the card falls back to the issuer's initial.
    */
   icon?: string;
+  logo?: string;
   /** simple-icons slug for what the course was about — drawn large and faint
       behind the card, the way the timelines carry a year. */
   tech?: string;
@@ -518,6 +524,9 @@ export const certifications: Certification[] = [
     issuer: "Scaler",
     year: "2026",
     tech: "python",
+    // Scaler's own cube mark, taken from their favicon — simple-icons has no
+    // entry for them (its "scalar" is a different company).
+    logo: "/logos/scaler.png",
     // Scaler has no simple-icons mark, so this falls back to the badge glyph
     image: "/certificates/python-scaler/1-20cf0aa6.webp",
   },
