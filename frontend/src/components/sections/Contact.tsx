@@ -41,7 +41,8 @@ export default function Contact() {
     "w-full rounded-lg border border-border bg-background px-4 py-3 text-sm outline-none transition placeholder:text-muted focus:border-accent";
 
   return (
-    <Section id="contact" title={contact.heading}>
+    <Section id="contact"
+      index={8} title={contact.heading}>
       <div className="grid gap-14 md:grid-cols-[1fr_1.2fr]">
         <Reveal>
           <p className="text-lg leading-relaxed text-muted">{contact.sub}</p>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/data/site";
+import { useCountUp } from "@/hooks/useCountUp";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
@@ -57,6 +58,7 @@ function monthLabels(weeks: { days: Day[] }[]) {
  */
 export default function GitHubHeatmap() {
   const [data, setData] = useState<Contributions | null>(null);
+  const { ref: totalRef, value: totalShown } = useCountUp(data?.total ?? 0);
 
   useEffect(() => {
     const abort = new AbortController();
@@ -105,7 +107,10 @@ export default function GitHubHeatmap() {
             GitHub activity · last 12 months
           </h2>
           <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
-            <span className="text-foreground">{data.total.toLocaleString()}</span> contributions
+            <span ref={totalRef as React.Ref<HTMLSpanElement>} className="tabular-nums text-foreground">
+              {totalShown.toLocaleString()}
+            </span>{" "}
+            contributions
             {data.streak.current > 0 && (
               <>
                 <span aria-hidden className="mx-2 text-border">

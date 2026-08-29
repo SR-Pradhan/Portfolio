@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useCountUp } from "@/hooks/useCountUp";
 import { usePresence } from "@/hooks/usePresence";
 import { type SiteMetrics as Metrics, trackView } from "@/lib/metrics";
 
@@ -54,11 +55,18 @@ function windowLabel(d: Metrics) {
     : `${days} day${days > 1 ? "s" : ""}`;
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value, suffix = "" }: { label: string; value: number; suffix?: string }) {
+  const { ref, value: shown } = useCountUp(value);
   return (
     <div>
       <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">{label}</p>
-      <p className="mt-1 font-mono text-xl text-foreground">{value}</p>
+      <p
+        ref={ref as React.Ref<HTMLParagraphElement>}
+        className="mt-1 font-mono text-xl tabular-nums text-foreground"
+      >
+        {shown.toLocaleString()}
+        {suffix}
+      </p>
     </div>
   );
 }
@@ -124,13 +132,10 @@ export default function SiteMetrics() {
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
-          <Stat label="Views" value={data.totals.view.toLocaleString()} />
-          <Stat label="Résumé opens" value={data.totals.resume.toLocaleString()} />
-          <Stat label="Questions asked" value={data.totals.chat.toLocaleString()} />
-          <Stat
-            label="API p95"
-            value={data.latencyP95 === null ? "—" : `${data.latencyP95}ms`}
-          />
+          <Stat label="Views" value={data.totals.view} />
+          <Stat label="Résumé opens" value={data.totals.resume} />
+          <Stat label="Questions asked" value={data.totals.chat} />
+          <Stat label="API p95" value={data.latencyP95 ?? 0} suffix="ms" />
         </div>
 
         <div className="mt-6 text-accent">

@@ -32,6 +32,7 @@ export default function Certifications() {
   return (
     <Section
       id="certifications"
+      index={7}
       title="Certifications"
       sub="Courses and credentials I've completed"
       // cards ride off the edges instead of stopping short of them

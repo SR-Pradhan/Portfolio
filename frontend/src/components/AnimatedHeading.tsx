@@ -18,15 +18,35 @@ import { motion, useReducedMotion } from "motion/react";
 export default function AnimatedHeading({
   title,
   sub,
+  index,
 }: {
   title: string;
   sub?: string;
+  /** Position in the page, printed as an eyebrow above the title. */
+  index?: number;
 }) {
   const reduced = useReducedMotion();
   const words = title.split(" ");
 
   return (
     <div className="mb-12 text-center">
+      {/* An eyebrow number, the way a magazine numbers its chapters. Nine
+          headings that differ only in their wording read as a list; a running
+          count tells the visitor where they are in the argument and how much
+          is left. Padded to two digits so the column never shifts. */}
+      {index !== undefined && (
+        <motion.p
+          initial={reduced ? undefined : { opacity: 0 }}
+          whileInView={reduced ? undefined : { opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
+          className="mb-4 flex items-center justify-center gap-3 font-mono text-[10px] uppercase tracking-[0.32em] text-muted"
+        >
+          <span aria-hidden className="h-px w-8 bg-gradient-to-r from-transparent to-border" />
+          {String(index).padStart(2, "0")}
+          <span aria-hidden className="h-px w-8 bg-gradient-to-l from-transparent to-border" />
+        </motion.p>
+      )}
       <motion.h2
         initial="hidden"
         whileInView="shown"

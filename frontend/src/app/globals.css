@@ -883,3 +883,96 @@ html.preloaded #preloader {
     animation: none;
   }
 }
+
+/* ── Material: mesh, grain and lit edges ─────────────────────────────────
+   The page was one flat background, hairline borders and a single accent —
+   correct, but weightless. Three cheap layers give it a surface without
+   touching a single element's position:
+
+   1. a fixed gradient mesh whose hue drifts as sections pass over it,
+   2. a fine grain that stops large dark areas banding,
+   3. a lit top edge on cards, so they read as lifted rather than outlined.
+
+   All three are `pointer-events: none` and sit behind content. */
+
+/* 1 ─ Mesh. Fixed rather than scrolling, so it behaves like light in the room
+       rather than wallpaper on the page. Two accent pools and one cool
+       counter-tone, wide enough that no edge is ever visible. */
+.dark body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -9;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      42rem 34rem at 18% 12%,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      38rem 30rem at 82% 38%,
+      color-mix(in srgb, oklch(0.62 0.13 235) 12%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      46rem 36rem at 46% 88%,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 70%
+    );
+  /* The drift is what keeps it from reading as a static image. Very slow and
+     very small: at 40s and a few per cent of travel it is felt rather than
+     seen, and it never competes with anything the visitor is reading. */
+  animation: mesh-drift 40s ease-in-out infinite alternate;
+}
+
+@keyframes mesh-drift {
+  from {
+    transform: translate3d(-1.5%, -1%, 0) scale(1.02);
+  }
+  to {
+    transform: translate3d(1.5%, 1.5%, 0) scale(1.06);
+  }
+}
+
+/* 2 ─ Grain. A single inline SVG turbulence, tiled by the browser. Large flat
+       fields of near-black band on cheap panels; a little noise breaks the
+       gradient into something that reads as a surface. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -8;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+html:not(.dark) body::after {
+  opacity: 0.35;
+}
+
+/* 3 ─ Lit edge. A one-pixel highlight along the top of every raised surface,
+       brighter than the border below it, which is how a real edge catches the
+       light. Inset so it follows the radius rather than sitting on it. */
+.dark .spotlight-card::after,
+.dark .bg-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 0 color-mix(in srgb, white 7%, transparent);
+}
+
+/* Only surfaces that establish a containing block can carry it. */
+.dark .spotlight-card,
+.dark .bg-surface {
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dark body::before {
+    animation: none;
+  }
+}

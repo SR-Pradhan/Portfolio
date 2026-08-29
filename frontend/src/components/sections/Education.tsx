@@ -10,6 +10,7 @@ export default function Education() {
   return (
     <Section
       id="education"
+      index={5}
       title="Education"
       sub="The formal part of the story"
     >

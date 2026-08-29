@@ -10,18 +10,21 @@ export default function Section({
   id,
   title,
   sub,
+  index,
   children,
   className = "",
 }: {
   id: string;
   title?: string;
   sub?: string;
+  /** Chapter number shown above the title. */
+  index?: number;
   children: ReactNode;
   className?: string;
 }) {
   return (
     <section id={id} className={`mx-auto max-w-6xl px-6 py-20 md:py-24 ${className}`}>
-      {title && <AnimatedHeading title={title} sub={sub} />}
+      {title && <AnimatedHeading title={title} sub={sub} index={index} />}
       {children}
     </section>
   );

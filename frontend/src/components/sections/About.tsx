@@ -6,7 +6,8 @@ import Section from "../Section";
 
 export default function About() {
   return (
-    <Section id="about" title={about.heading} sub={about.sub}>
+    <Section id="about"
+      index={1} title={about.heading} sub={about.sub}>
       {/* photo column deliberately narrower than the text: a 5:6 frame at half
           the page width runs ~630px tall and pushes the stats off screen */}
       <div className="grid items-center gap-10 md:grid-cols-[0.7fr_1.3fr]">

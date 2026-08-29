@@ -149,6 +149,7 @@ export default function Achievements() {
   return (
     <Section
       id="achievements"
+      index={6}
       title="Achievements"
       sub="Hover a card to unlock the proof, or open the photos"
     >

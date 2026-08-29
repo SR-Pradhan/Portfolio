@@ -7,6 +7,7 @@ export default function Skills() {
   return (
     <Section
       id="skills"
+      index={3}
       title="Skills & Expertise"
       sub="The technologies I reach for, from languages to frameworks and tools"
     >

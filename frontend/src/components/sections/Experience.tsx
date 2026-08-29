@@ -10,7 +10,8 @@ import Section from "../Section";
 
 export default function Experience() {
   return (
-    <Section id="experience" title="Experience" sub="My professional journey">
+    <Section id="experience"
+      index={4} title="Experience" sub="My professional journey">
       {/* the rail runs down the left; each card hangs off a node */}
       <ol className="relative ml-2 pl-6 md:ml-6 md:pl-10">
         <ScrollRail className="left-0" />

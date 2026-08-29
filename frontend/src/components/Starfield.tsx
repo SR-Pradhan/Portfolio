@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef } from "react";
 
 type Star = {
@@ -28,6 +29,18 @@ const SPEED = 0.55;
  */
 export default function Starfield() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const reduced = useReducedMotion();
+
+  /**
+   * Parallax. The field is fixed, so without this it sits perfectly still while
+   * the page moves over it — which reads as a printed backdrop rather than
+   * depth. Drifting it a little slower than the page puts it behind the
+   * content. Spring-smoothed because raw scroll on a fixed layer judders on a
+   * trackpad, and capped at 8% of the viewport so it never runs out of stars.
+   */
+  const { scrollYProgress } = useScroll();
+  const smooth = useSpring(scrollYProgress, { stiffness: 90, damping: 30, restDelta: 0.001 });
+  const y = useTransform(smooth, [0, 1], ["0vh", "8vh"]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -134,9 +147,10 @@ export default function Starfield() {
   }, []);
 
   return (
-    <canvas
+    <motion.canvas
       ref={canvasRef}
       aria-hidden
+      style={reduced ? undefined : { y }}
       className="pointer-events-none fixed inset-0 -z-10"
     />
   );
