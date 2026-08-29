@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePresence } from "@/hooks/usePresence";
 import { type SiteMetrics as Metrics, trackView } from "@/lib/metrics";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
@@ -77,6 +78,7 @@ function Stat({ label, value }: { label: string; value: string }) {
  */
 export default function SiteMetrics() {
   const [data, setData] = useState<(Metrics & { window: string }) | null>(null);
+  const here = usePresence();
 
   useEffect(() => {
     trackView();
@@ -99,7 +101,24 @@ export default function SiteMetrics() {
           <h2 className="font-mono text-[10px] uppercase tracking-[0.22em] text-accent">
             This site · {data.window}
           </h2>
-          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted/70">
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted/70">
+            {/* Only shown when someone is actually there. A hardcoded "1" that
+                is always the reader themselves would be theatre, and a "0" is
+                impossible by definition — you are here to read it. */}
+            {here !== null && here > 0 && (
+              <>
+                <span className="flex items-center gap-2 text-accent">
+                  <span className="relative flex size-1.5">
+                    <span className="live-ping absolute inline-flex size-full rounded-full bg-accent" />
+                    <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
+                  </span>
+                  <span className="text-foreground">{here}</span> reading now
+                </span>
+                <span aria-hidden className="text-border">
+                  ·
+                </span>
+              </>
+            )}
             aggregate only · no cookies · no personal data
           </p>
         </div>

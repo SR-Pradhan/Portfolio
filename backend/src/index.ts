@@ -6,6 +6,7 @@ import contactRouter from "./routes/contact.js";
 import { observeLatency } from "./lib/metrics.js";
 import githubRouter from "./routes/github.js";
 import metricsRouter from "./routes/metrics.js";
+import presenceRouter from "./routes/presence.js";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -50,6 +51,7 @@ app.use("/api/contact", contactRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/github", githubRouter);
 app.use("/api/metrics", metricsRouter);
+app.use("/api/presence", presenceRouter);
 
 // Fallback error handler — keeps stack traces out of responses.
 app.use(
