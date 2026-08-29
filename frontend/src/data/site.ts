@@ -485,7 +485,7 @@ export const achievements: Achievement[] = [
   {
     title: "300+ Coding Problems Solved",
     org: "LeetCode \u00b7 GeeksforGeeks \u00b7 HackerRank",
-    photos: ["/proof/dsa/1-62b3dbb6.webp"],
+    photos: ["/proof/dsa/1-c5d27f2f.webp"],
     detail:
       "Consistent DSA practice across three platforms. It\u2019s the habit behind the problem-solving the rest of this page is built on.",
     year: "Ongoing",
