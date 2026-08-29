@@ -59,9 +59,9 @@ and an AI assistant whose knowledge base is generated from the site's own conten
 - **GitHub contribution heatmap** — a year of real commit activity with totals and
   current streak, from GitHub's GraphQL API
 - **Live presence** — "2 reading now", pushed over SSE as people arrive and leave.
-  The count comes from the open connections themselves, so nothing is stored and
-  nothing polls; addresses are hashed with a per-boot salt held only while the
-  connection is open, purely so one person with four tabs counts once.
+  One open page is one reader: the count is the set of open connections, so
+  nothing is stored, nothing polls, and nothing about a visitor is derived — not
+  even their address.
 - **"This site" metrics panel** — the page reporting on itself: views, résumé opens,
   questions asked and API p95, counted by the backend. Aggregate only: three integers
   per calendar day, no cookies, no identifiers, nothing traceable to a person.

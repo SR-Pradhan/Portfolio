@@ -17,15 +17,14 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 py-14 text-center">
         {/* Wordmark. The trailing accent dot is the site's own idiom — the nav
             logo and every section heading end the same way. */}
-        <p className="font-mono text-4xl font-bold uppercase tracking-[0.2em] text-foreground sm:text-5xl">
+        <p className="font-mono text-4xl font-bold uppercase tracking-[0.02em] text-foreground sm:text-5xl">
           {site.initials}
-          {/* Two separate gaps to close, which is why 0.2em was not enough: the
-              tracking adds 0.2em after the final R, and the mono face sets the
-              period centred in a full character cell, so the glyph carries
-              empty space on its left as well. 0.36em is tuned by eye rather
-              than derived — the cell padding depends on the face. The nav
-              lockup needs no correction at all, being sans at normal tracking. */}
-          <span className="-ml-[0.36em] text-accent">.</span>
+          {/* The mono face sets the period centred in a full character cell, so
+              the glyph carries empty space on its left that the tracking then
+              widens. Both are pulled back here: 0.18em is tuned by eye, since
+              the cell padding depends on the face. Tracking is near zero so the
+              two letters read as one lockup, the way the nav's does. */}
+          <span className="-ml-[0.18em] text-accent">.</span>
         </p>
 
         <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-muted">
