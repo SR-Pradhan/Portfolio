@@ -954,21 +954,17 @@ html:not(.dark) body::after {
 
 /* 3 ─ Lit edge. A one-pixel highlight along the top of every raised surface,
        brighter than the border below it, which is how a real edge catches the
-       light. Inset so it follows the radius rather than sitting on it. */
-.dark .spotlight-card::after,
-.dark .bg-surface::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow: inset 0 1px 0 0 color-mix(in srgb, white 7%, transparent);
-}
+       light.
 
-/* Only surfaces that establish a containing block can carry it. */
+       Applied directly, not through a pseudo-element. The first version used
+       `::after` and therefore had to force `position: relative` on the host —
+       and `.dark .bg-surface` (0,2,0) outranks Tailwind's `.absolute` (0,1,0),
+       which tore the absolutely-positioned achievement proof photos out of
+       their stack and rendered them full size across the page. An inset shadow
+       needs no positioning context and cannot do that. */
 .dark .spotlight-card,
 .dark .bg-surface {
-  position: relative;
+  box-shadow: inset 0 1px 0 0 color-mix(in srgb, white 7%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

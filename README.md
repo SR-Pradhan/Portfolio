@@ -84,10 +84,9 @@ and an AI assistant whose knowledge base is generated from the site's own conten
 - **Reduced-motion support** throughout: the starfield renders static, the cursor
   follower doesn't mount, and scroll-driven transforms are skipped
 
-- **A page with a pace** — chapter numbers above each section, a full-width lead
-  project against a three-up row, a drifting gradient mesh, film grain, lit card
-  edges, counters that count up on entry and a starfield that parallaxes behind
-  the content.
+- **A page with a pace** — chapter numbers above each section, a drifting
+  gradient mesh, film grain, lit card edges, counters that count up on entry and
+  a starfield that parallaxes behind the content.
 
 ## 🧱 Stack
 

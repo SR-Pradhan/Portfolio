@@ -68,11 +68,7 @@ export default function Projects() {
   return (
     <Section id="projects"
       index={2} title="Projects" sub="A selection of my recent work">
-      {/* Three widths, not one. A grid of four identical cards gives every
-          project the same claim on attention; leading with one full-width card
-          says which is the strongest and gives the section a shape. The last
-          card widens on md so the second row never ends in an orphan. */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         {projects.map((p, i) =>
           p.comingSoon ? (
             <Reveal key={p.title} delay={(i % 2) * 0.08} className="h-full">
@@ -87,17 +83,7 @@ export default function Projects() {
               </article>
             </Reveal>
           ) : (
-            <Reveal
-              key={p.title}
-              delay={(i % 2) * 0.08}
-              className={`h-full ${
-                i === 0
-                  ? "md:col-span-2 lg:col-span-3"
-                  : i === projects.length - 1
-                    ? "md:col-span-2 lg:col-span-1"
-                    : ""
-              }`}
-            >
+            <Reveal key={p.title} delay={(i % 2) * 0.08} className="h-full">
               <SpotlightCard>
                 {/* oversized index sitting behind the content as a watermark */}
                 <span
@@ -107,29 +93,15 @@ export default function Projects() {
                   {String(real.indexOf(p) + 1).padStart(2, "0")}
                 </span>
 
-                <div
-                  className={`relative z-10 flex h-full flex-col p-7 ${
-                    i === 0 ? "lg:p-9" : ""
-                  }`}
-                >
+                <div className="relative z-10 flex h-full flex-col p-7">
                   <div className="flex items-start justify-between gap-4">
-                    <h3
-                      className={`font-semibold tracking-tight transition-colors group-hover:text-accent ${
-                        i === 0 ? "text-2xl lg:text-3xl" : "text-xl"
-                      }`}
-                    >
+                    <h3 className="text-xl font-semibold tracking-tight transition-colors group-hover:text-accent">
                       {p.title}
                     </h3>
                     {p.demo && <LiveBadge />}
                   </div>
 
-                  <p
-                    className={`mt-3 leading-relaxed text-muted ${
-                      i === 0 ? "lg:max-w-3xl lg:text-lg" : ""
-                    }`}
-                  >
-                    {p.blurb}
-                  </p>
+                  <p className="mt-3 leading-relaxed text-muted">{p.blurb}</p>
 
                   {p.hardPart && (
                     <div className="hard-part">
