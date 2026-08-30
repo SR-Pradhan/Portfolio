@@ -73,6 +73,10 @@ and an AI assistant whose knowledge base is generated from the site's own conten
   there is no hover.
 - **Education** drawn along a serpentine SVG curve, with the node for each entry
   measured off the path rather than positioned by hand
+- **A location panel** on the contact section: a dotted world map with a pinging
+  marker and the current local time where he is. Land is sampled from Natural
+  Earth 110m at build time, so the page ships an array of small integers rather
+  than a topology and a projection library.
 - **Contact form** with server-side validation, a honeypot field, and per-IP rate
   limiting
 - **Light and dark themes**, no flash on first paint

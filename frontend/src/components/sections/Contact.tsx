@@ -6,6 +6,7 @@ import { contact, site } from "@/data/site";
 import { opensInNewTab, socialLinks } from "@/lib/socials";
 import Reveal from "../Reveal";
 import Section from "../Section";
+import WorldMarker from "../WorldMarker";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
@@ -108,6 +109,13 @@ export default function Contact() {
                 <Icon size={18} />
               </a>
             ))}
+          </div>
+
+          {/* Under the details rather than beside them: it is context for the
+              location line above, not a feature of its own. Hidden on small
+              screens, where a 360-wide equirectangular map is a smudge. */}
+          <div className="mt-10 hidden sm:block">
+            <WorldMarker />
           </div>
         </Reveal>
 

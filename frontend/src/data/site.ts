@@ -25,6 +25,10 @@ export const site = {
    */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sruti-ranjan.vercel.app",
   location: "Gurugram, India",
+  /** Where the marker sits on the contact map. Gurugram, Haryana. */
+  coords: { lat: 28.4595, lng: 77.0266 },
+  /** IANA zone, for the local-time readout beside the map. */
+  timezone: "Asia/Kolkata",
   email: "pradhansr2003@gmail.com",
   /** Display form. `tel:` links strip the spaces at the call site. */
   phone: "+91 8249809895",
