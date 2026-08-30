@@ -36,12 +36,54 @@ function useLocalTime() {
   );
 
   if (tick === null) return null;
-  return new Intl.DateTimeFormat("en-GB", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: site.timezone,
-  }).format(new Date());
+
+  const now = new Date();
+  return {
+    time: new Intl.DateTimeFormat("en-GB", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: site.timezone,
+    }).format(now),
+    offset: offsetFromViewer(now),
+  };
+}
+
+/**
+ * How far ahead of the reader he is, in their own terms.
+ *
+ * "2:34 am local" only answers "can I call him?" for someone who already knows
+ * the offset. This closes that gap, and it needs no location at all: the
+ * browser already knows the timezone it is set to, which is how it shows the
+ * right time on the clock. Read on their machine, never sent anywhere — no
+ * permission prompt, no IP lookup, no third party, and nothing that would
+ * contradict the "no personal data" line in the metrics band.
+ *
+ * The comparison is made by formatting the same instant in both zones and
+ * subtracting, rather than by looking up a fixed UTC offset, so daylight saving
+ * is handled wherever the reader happens to be.
+ */
+function offsetFromViewer(now: Date) {
+  const inZone = (timeZone: string) =>
+    new Date(now.toLocaleString("en-US", { timeZone })).getTime();
+
+  const minutes = Math.round((inZone(site.timezone) - inZone(viewerZone())) / 60_000);
+  if (minutes === 0) return "same time as you";
+
+  const hours = Math.floor(Math.abs(minutes) / 60);
+  const rest = Math.abs(minutes) % 60;
+  const span = `${hours ? `${hours}h ` : ""}${rest ? `${rest}m` : ""}`.trim();
+  return `${span} ${minutes > 0 ? "ahead of" : "behind"} you`;
+}
+
+function viewerZone() {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch {
+    // A browser that cannot name its own zone gets the site's, which makes the
+    // offset zero and the line read "same time as you" rather than break.
+    return site.timezone;
+  }
 }
 
 /**
@@ -63,7 +105,7 @@ function useLocalTime() {
  */
 export default function WorldMarker() {
   const me = project(site.coords.lng, site.coords.lat);
-  const time = useLocalTime();
+  const local = useLocalTime();
 
   return (
     <figure className="w-full max-w-sm">
@@ -136,13 +178,17 @@ export default function WorldMarker() {
           <span aria-hidden className="size-1.5 rounded-full bg-accent" />
           {site.location}
         </span>
-        {time && (
+        {/* Empty until the clock has been read on the client. */}
+        {local && (
           <>
             <span aria-hidden className="text-border">
               ·
             </span>
-            {/* Empty until the clock has been read on the client. */}
-            <span className="text-foreground">{time} local</span>
+            <span className="text-foreground">{local.time} local</span>
+            <span aria-hidden className="text-border">
+              ·
+            </span>
+            <span>{local.offset}</span>
           </>
         )}
       </figcaption>
