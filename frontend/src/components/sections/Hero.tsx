@@ -6,6 +6,7 @@ import { track } from "@/lib/metrics";
 import { site } from "@/data/site";
 import { opensInNewTab, socialLinks } from "@/lib/socials";
 import RotatingRole from "@/components/RotatingRole";
+import NeuralMark from "@/components/NeuralMark";
 import TechOrbit from "@/components/TechOrbit";
 
 export default function Hero() {
@@ -14,6 +15,11 @@ export default function Hero() {
       id="home"
       className="relative mx-auto flex min-h-svh max-w-6xl flex-col justify-center px-6 pt-32"
     >
+      {/* The wordmark, assembled out of a particle graph and let go again.
+          Behind the copy and at low opacity: it is atmosphere, not a headline,
+          and the text has to stay the first thing read. */}
+      <NeuralMark />
+
       {/* soft accent glow behind the headline */}
       <div
         aria-hidden
