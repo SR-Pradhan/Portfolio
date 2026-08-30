@@ -6,9 +6,7 @@ import { track } from "@/lib/metrics";
 import { site } from "@/data/site";
 import { opensInNewTab, socialLinks } from "@/lib/socials";
 import RotatingRole from "@/components/RotatingRole";
-import TechIcon from "@/components/TechIcon";
-import { techSlug } from "@/lib/techSlugs";
-import NeuralMark from "@/components/NeuralMark";
+import TechOrbit from "@/components/TechOrbit";
 
 export default function Hero() {
   return (
@@ -65,27 +63,6 @@ export default function Hero() {
           >
             {site.tagline}
           </motion.p>
-
-          {/* The stack, in words. This is what the orbit used to say in icons —
-              nine marks on two rotating rings that a visitor had to decode. A
-              labelled chip is read, not decoded, and it matches the chips every
-              other section already uses. */}
-          <motion.ul
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-7 flex max-w-xl flex-wrap gap-2"
-          >
-            {site.heroStack.map((tech) => (
-              <li
-                key={tech}
-                className="flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1 font-mono text-[11px] text-muted transition-colors hover:border-accent/40 hover:text-foreground"
-              >
-                <TechIcon slug={techSlug(tech)} size={12} />
-                {tech}
-              </li>
-            ))}
-          </motion.ul>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -146,19 +123,9 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="flex justify-center md:justify-end"
+          className="flex justify-center md:-translate-y-10 md:justify-end md:pr-0 lg:-mr-8"
         >
-          {/* One visual per region. The mark and the orbit were both here, which
-              put two focal points and two copies of "SR" in the same space and
-              ran the constellation straight through the headline. The stack the
-              orbit carried now reads as labelled chips on the left, which says
-              the same thing in words. */}
-          {/* Desktop only. Stacked under the copy on a phone it lands below the
-              fold and buys nothing but scroll — the chips and the CTAs are what
-              a visitor needs there. */}
-          <div className="hidden aspect-[4/3] w-full max-w-lg md:block">
-            <NeuralMark />
-          </div>
+          <TechOrbit />
         </motion.div>
       </div>
 

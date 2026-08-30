@@ -73,10 +73,6 @@ and an AI assistant whose knowledge base is generated from the site's own conten
   there is no hover.
 - **Education** drawn along a serpentine SVG curve, with the node for each entry
   measured off the path rather than positioned by hand
-- **A dotted world map** on the contact section with a pinging marker on
-  Gurugram. Land comes from Natural Earth 110m, sampled onto a 2° grid at build
-  time by `scripts/build-world-map.mjs`, so the page ships an array of small
-  integers instead of a topology and a projection library.
 - **Contact form** with server-side validation, a honeypot field, and per-IP rate
   limiting
 - **Light and dark themes**, no flash on first paint
@@ -88,11 +84,6 @@ and an AI assistant whose knowledge base is generated from the site's own conten
 - **Reduced-motion support** throughout: the starfield renders static, the cursor
   follower doesn't mount, and scroll-driven transforms are skipped
 
-- **A wordmark that assembles itself** — a particle graph in the hero's right
-  column that gathers into `SR.`, holds, scatters and reforms. The letterforms
-  are sampled from the rendered glyphs rather than traced, so the shape follows
-  whatever `site.initials` says and whatever font actually loaded. Pauses when
-  off screen, and sits out entirely below `md`.
 - **A page with a pace** — chapter numbers above each section, a drifting
   gradient mesh, film grain, lit card edges, counters that count up on entry and
   a starfield that parallaxes behind the content.

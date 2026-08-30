@@ -14,22 +14,6 @@ export const site = {
   initials: "SR",
   /** Primary title — used in the page <title> and OG tags. */
   role: "AI Engineer",
-  /**
-   * The stack shown as chips under the hero tagline. Nine names, in the order
-   * they read best — this is a first impression, not the full inventory, which
-   * is what the Skills section is for.
-   */
-  heroStack: [
-    "Python",
-    "FastAPI",
-    "LangChain",
-    "Java",
-    "Spring Boot",
-    "React",
-    "PostgreSQL",
-    "OpenCV",
-    "Hugging Face",
-  ],
   /** Cycled through by the hero headline, in this order. */
   roles: ["AI Engineer", "Backend Developer", "Problem Solver", "DSA Enthusiast"],
   tagline:
@@ -41,8 +25,6 @@ export const site = {
    */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sruti-ranjan.vercel.app",
   location: "Gurugram, India",
-  /** Where the marker sits on the contact map. Gurugram, Haryana. */
-  coords: { lat: 28.4595, lng: 77.0266 },
   email: "pradhansr2003@gmail.com",
   /** Display form. `tel:` links strip the spaces at the call site. */
   phone: "+91 8249809895",
