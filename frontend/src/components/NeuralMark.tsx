@@ -24,7 +24,7 @@ type Particle = {
  * lilac cloud with no letterform left in it. A few hundred points with a
  * shorter reach reads as a network; more reads as fog.
  */
-const LINK_DISTANCE = 74;
+const LINK_DISTANCE = 58;
 const PARTICLES = 340;
 const PARTICLES_COARSE = 160;
 /** Seconds: gather, hold formed, scatter, hold loose. */
@@ -84,7 +84,7 @@ export default function NeuralMark() {
       const octx = off.getContext("2d", { willReadFrequently: true });
       if (!octx) return [];
 
-      const size = Math.min(w * 0.34, h * 0.68);
+      const size = Math.min(w * 0.72, h * 0.78);
       octx.fillStyle = "#fff";
       octx.textAlign = "center";
       octx.textBaseline = "middle";
@@ -114,8 +114,21 @@ export default function NeuralMark() {
     function build() {
       const rect = canvas!.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = rect.width;
-      height = rect.height;
+      // Rounded, and that is not cosmetic. `sampleMark` walks the pixel buffer
+      // as `(y * width + x) * 4`, so a fractional width shifts every row a
+      // little further along than the last and shears the glyph into diagonal
+      // stripes. The full-bleed version never hit it because the viewport width
+      // happened to be a whole number.
+      width = Math.round(rect.width);
+      height = Math.round(rect.height);
+
+      // Hidden below `md`, where `display: none` gives a 0x0 box — and
+      // `getImageData` throws outright on a zero-width source. Bail here and
+      // let the ResizeObserver call back if the element ever gets a size.
+      if (!width || !height) {
+        particles = [];
+        return;
+      }
       canvas!.width = width * dpr;
       canvas!.height = height * dpr;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -131,8 +144,8 @@ export default function NeuralMark() {
         // Wander within a band around the mark rather than the whole canvas:
         // scattered points that fly to the far corners stop reading as the same
         // object that just formed the letters.
-        dx: t.x + (Math.random() - 0.5) * width * 0.5,
-        dy: t.y + (Math.random() - 0.5) * height * 0.6,
+        dx: t.x + (Math.random() - 0.5) * width * 0.42,
+        dy: t.y + (Math.random() - 0.5) * height * 0.42,
       }));
     }
 
@@ -190,7 +203,7 @@ export default function NeuralMark() {
           const d2 = dx * dx + dy * dy;
           if (d2 > LINK_DISTANCE * LINK_DISTANCE) continue;
           const d = Math.sqrt(d2);
-          ctx!.globalAlpha = (1 - d / LINK_DISTANCE) * 0.2;
+          ctx!.globalAlpha = (1 - d / LINK_DISTANCE) * 0.28;
           ctx!.beginPath();
           ctx!.moveTo(a.x, a.y);
           ctx!.lineTo(b.x, b.y);
@@ -235,12 +248,15 @@ export default function NeuralMark() {
     };
     document.addEventListener("visibilitychange", onVisibility);
 
+    // A ResizeObserver rather than a window listener: this element is hidden at
+    // small widths, so it needs to rebuild when it *gains* a size, which a
+    // resize event does not reliably describe.
     let resizeTimer: ReturnType<typeof setTimeout>;
-    const onResize = () => {
+    const resizeObserver = new ResizeObserver(() => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(build, 200);
-    };
-    window.addEventListener("resize", onResize);
+    });
+    resizeObserver.observe(canvas);
 
     raf = requestAnimationFrame(frame);
 
@@ -248,8 +264,8 @@ export default function NeuralMark() {
       cancelAnimationFrame(raf);
       clearTimeout(resizeTimer);
       observer.disconnect();
+      resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -257,7 +273,7 @@ export default function NeuralMark() {
     <canvas
       ref={canvasRef}
       aria-hidden
-      className="pointer-events-none absolute inset-0 -z-10 size-full"
+      className="pointer-events-none size-full"
     />
   );
 }

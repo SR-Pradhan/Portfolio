@@ -14,6 +14,22 @@ export const site = {
   initials: "SR",
   /** Primary title — used in the page <title> and OG tags. */
   role: "AI Engineer",
+  /**
+   * The stack shown as chips under the hero tagline. Nine names, in the order
+   * they read best — this is a first impression, not the full inventory, which
+   * is what the Skills section is for.
+   */
+  heroStack: [
+    "Python",
+    "FastAPI",
+    "LangChain",
+    "Java",
+    "Spring Boot",
+    "React",
+    "PostgreSQL",
+    "OpenCV",
+    "Hugging Face",
+  ],
   /** Cycled through by the hero headline, in this order. */
   roles: ["AI Engineer", "Backend Developer", "Problem Solver", "DSA Enthusiast"],
   tagline:
