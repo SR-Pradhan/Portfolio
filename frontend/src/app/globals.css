@@ -981,3 +981,30 @@ html:not(.dark) body::after {
     animation: none;
   }
 }
+
+/* The contact map's location ping. Scale from the marker's own centre rather
+   than the SVG origin, or it flies off toward the top-left corner. */
+@keyframes world-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70%,
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+.world-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: world-ping 2.6s cubic-bezier(0.16, 0.8, 0.4, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-ping {
+    animation: none;
+    opacity: 0.35;
+  }
+}

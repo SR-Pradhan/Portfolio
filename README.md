@@ -73,6 +73,10 @@ and an AI assistant whose knowledge base is generated from the site's own conten
   there is no hover.
 - **Education** drawn along a serpentine SVG curve, with the node for each entry
   measured off the path rather than positioned by hand
+- **A dotted world map** on the contact section with a pinging marker on
+  Gurugram. Land comes from Natural Earth 110m, sampled onto a 2° grid at build
+  time by `scripts/build-world-map.mjs`, so the page ships an array of small
+  integers instead of a topology and a projection library.
 - **Contact form** with server-side validation, a honeypot field, and per-IP rate
   limiting
 - **Light and dark themes**, no flash on first paint
