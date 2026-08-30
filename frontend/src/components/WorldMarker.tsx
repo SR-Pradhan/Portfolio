@@ -89,11 +89,46 @@ export default function WorldMarker() {
           className="text-foreground/25"
         />
 
+        {/* Crosshair, not a label. The dot alone is four pixels on a 380px
+            map and takes a moment to find; guides running to the edges put the
+            eye on it immediately, and they speak the same instrument language
+            as the loading curtain's corner ticks and the scroll HUD. Faded at
+            both ends so they read as guides rather than as borders. */}
+        <defs>
+          {/* userSpaceOnUse, not the default objectBoundingBox: a horizontal
+              line has zero height, so a bounding-box gradient degenerates and
+              paints nothing at all. */}
+          <linearGradient id="crosshair-x" gradientUnits="userSpaceOnUse" x1={0} y1={0} x2={VIEW_W} y2={0}>
+            <stop offset="0" stopColor="var(--accent)" stopOpacity="0" />
+            <stop offset="0.5" stopColor="var(--accent)" stopOpacity="0.42" />
+            <stop offset="1" stopColor="var(--accent)" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="crosshair-y" gradientUnits="userSpaceOnUse" x1={0} y1={0} x2={0} y2={VIEW_H}>
+            <stop offset="0" stopColor="var(--accent)" stopOpacity="0" />
+            <stop offset="0.5" stopColor="var(--accent)" stopOpacity="0.42" />
+            <stop offset="1" stopColor="var(--accent)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        <line x1={0} y1={me.y} x2={VIEW_W} y2={me.y} stroke="url(#crosshair-x)" strokeWidth={0.3} />
+        <line x1={me.x} y1={0} x2={me.x} y2={VIEW_H} stroke="url(#crosshair-y)" strokeWidth={0.3} />
+
         {/* A soft halo, then the ping, then the dot: three layers so the marker
             reads as lit rather than merely coloured. */}
-        <circle cx={me.x} cy={me.y} r={9} className="fill-accent/10" />
+        <circle cx={me.x} cy={me.y} r={7} className="fill-accent/12" />
         <circle cx={me.x} cy={me.y} r={3} className="fill-accent/30 world-ping" />
-        <circle cx={me.x} cy={me.y} r={2.2} className="fill-accent" />
+        <circle cx={me.x} cy={me.y} r={2} className="fill-accent" />
+        {/* A thin ring holds the dot's shape against the fill behind it. */}
+        <circle
+          cx={me.x}
+          cy={me.y}
+          r={4.5}
+          fill="none"
+          stroke="var(--accent)"
+          strokeOpacity={0.5}
+          strokeWidth={0.4}
+        />
+
       </svg>
 
       <figcaption className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
