@@ -47,10 +47,10 @@ function useLocalTime() {
 /**
  * Where he is, and what time it is there.
  *
- * A panel rather than a loose graphic. The first version was a full-width field
- * of grey dots that restated the "Gurugram, India" line directly above it at ten
- * times the size and became the loudest thing in a section whose job is a form.
- * Bordered, compact and captioned, it reads as a deliberate piece of UI.
+ * Deliberately not a card. Full width it shouted, and boxed it framed its own
+ * empty space — both read as a widget bolted onto a section whose job is a
+ * form. Masked at the edges and captioned in the same mono as the details above
+ * it, the map sits on the page as texture with one bright point on it.
  *
  * The clock is what earns it a place: someone deciding whether to call right now
  * needs the answer in local terms, and "it is 11pm there" is the one thing the
@@ -66,36 +66,45 @@ export default function WorldMarker() {
   const time = useLocalTime();
 
   return (
-    <div className="max-w-sm rounded-2xl border border-border bg-surface/50 p-5">
-      <div className="relative">
-        <svg
-          viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-          className="w-full"
-          role="img"
-          aria-label={`World map with a marker on ${site.location}`}
-        >
-          {/* The land, quiet enough to read as a backdrop for one bright dot. */}
-          <g fill="currentColor" className="text-foreground/[0.14]">
-            {WORLD_DOTS.map(([lng, lat], i) => {
-              const { x, y } = project(lng, lat);
-              return <circle key={i} cx={x} cy={y} r={WORLD_STEP * 0.26} />;
-            })}
-          </g>
+    <figure className="w-full max-w-sm">
+      {/* No card. A border around a small map frames empty space and turns a
+          background graphic into a widget; masked at the edges the dots fade
+          into the page instead of ending on a rectangle. */}
+      <svg
+        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+        className="world-map w-full overflow-visible"
+        role="img"
+        aria-label={`World map with a marker on ${site.location}`}
+      >
+        <g fill="currentColor" className="text-foreground/[0.16]">
+          {WORLD_DOTS.map(([lng, lat], i) => {
+            const { x, y } = project(lng, lat);
+            return <circle key={i} cx={x} cy={y} r={WORLD_STEP * 0.26} />;
+          })}
+        </g>
 
-          {/* Ping under the dot, so the dot stays the sharpest thing on the map. */}
-          <circle cx={me.x} cy={me.y} r={3} className="fill-accent/30 world-ping" />
-          <circle cx={me.x} cy={me.y} r={2.2} className="fill-accent" />
-        </svg>
-      </div>
+        {/* A soft halo, then the ping, then the dot: three layers so the marker
+            reads as lit rather than merely coloured. */}
+        <circle cx={me.x} cy={me.y} r={9} className="fill-accent/10" />
+        <circle cx={me.x} cy={me.y} r={3} className="fill-accent/30 world-ping" />
+        <circle cx={me.x} cy={me.y} r={2.2} className="fill-accent" />
+      </svg>
 
-      <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
+      <figcaption className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
         <span className="flex items-center gap-2">
           <span aria-hidden className="size-1.5 rounded-full bg-accent" />
           {site.location}
         </span>
-        {/* Empty until the clock has been read on the client. */}
-        <span className="text-foreground">{time ? `${time} local` : ""}</span>
-      </div>
-    </div>
+        {time && (
+          <>
+            <span aria-hidden className="text-border">
+              ·
+            </span>
+            {/* Empty until the clock has been read on the client. */}
+            <span className="text-foreground">{time} local</span>
+          </>
+        )}
+      </figcaption>
+    </figure>
   );
 }

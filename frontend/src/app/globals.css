@@ -1009,3 +1009,11 @@ html:not(.dark) body::after {
     opacity: 0.35;
   }
 }
+
+/* The contact map fades out at its edges rather than stopping on the straight
+   line of its own viewBox. A rectangle of dots reads as a panel however little
+   chrome it has; a fading field reads as background. */
+.world-map {
+  mask-image: radial-gradient(120% 100% at 50% 45%, #000 45%, transparent 92%);
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 45%, #000 45%, transparent 92%);
+}
