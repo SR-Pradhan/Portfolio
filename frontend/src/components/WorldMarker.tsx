@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { site } from "@/data/site";
-import { WORLD_BOUNDS, WORLD_DOT, WORLD_PATH } from "@/data/worldMap";
+import { WORLD_BOUNDS, WORLD_PATH } from "@/data/worldMap";
 
 /** Equirectangular: longitude and latitude map straight onto x and y. */
 const VIEW_W = 360;
@@ -76,16 +76,17 @@ export default function WorldMarker() {
         role="img"
         aria-label={`World map with a marker on ${site.location}`}
       >
-        {/* One path for all 9,176 points: each is a zero-length
-            subpath, and a round line cap turns it into a dot. Nine thousand
-            circles would be nine thousand DOM nodes for a background. */}
+        {/* Filled first, then stroked: the fill gives the continents body so
+            they read as land rather than as wireframe, and the stroke keeps the
+            borders that make a world map look like a map. One path does both. */}
+        <path d={WORLD_PATH} className="fill-foreground/[0.07]" />
         <path
           d={WORLD_PATH}
-          stroke="currentColor"
-          strokeWidth={WORLD_DOT}
-          strokeLinecap="round"
           fill="none"
-          className="text-foreground/[0.17]"
+          stroke="currentColor"
+          strokeWidth={0.35}
+          strokeLinejoin="round"
+          className="text-foreground/25"
         />
 
         {/* A soft halo, then the ping, then the dot: three layers so the marker
