@@ -1,7 +1,9 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { site } from "@/data/site";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 import { WORLD_BOUNDS, WORLD_PATH } from "@/data/worldMap";
 
 /** Equirectangular: longitude and latitude map straight onto x and y. */
@@ -25,7 +27,7 @@ const project = (lng: number, lat: number) => ({
  */
 const TICK = 30_000;
 
-function useLocalTime() {
+function useLocalTime(timezone: string) {
   const tick = useSyncExternalStore(
     (onChange) => {
       const timer = setInterval(onChange, TICK);
@@ -43,9 +45,9 @@ function useLocalTime() {
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
-      timeZone: site.timezone,
+      timeZone: timezone,
     }).format(now),
-    offset: offsetFromViewer(now),
+    offset: offsetFromViewer(now, timezone),
   };
 }
 
@@ -63,11 +65,11 @@ function useLocalTime() {
  * subtracting, rather than by looking up a fixed UTC offset, so daylight saving
  * is handled wherever the reader happens to be.
  */
-function offsetFromViewer(now: Date) {
+function offsetFromViewer(now: Date, timezone: string) {
   const inZone = (timeZone: string) =>
     new Date(now.toLocaleString("en-US", { timeZone })).getTime();
 
-  const minutes = Math.round((inZone(site.timezone) - inZone(viewerZone())) / 60_000);
+  const minutes = Math.round((inZone(timezone) - inZone(viewerZone())) / 60_000);
   if (minutes === 0) return "same time as you";
 
   const hours = Math.floor(Math.abs(minutes) / 60);
@@ -103,9 +105,56 @@ function viewerZone() {
  * (`scripts/build-world-map.mjs`), so this ships an array of small integers
  * rather than a projection library and a 55KB topology.
  */
+type Place = { city: string; lat: number; lng: number; timezone: string };
+
+const HOME: Place = {
+  city: site.location,
+  lat: site.coords.lat,
+  lng: site.coords.lng,
+  timezone: site.timezone,
+};
+
+/**
+ * Where he is, overridable without a deploy.
+ *
+ * `site.ts` holds the answer, and the API can override it — the point being
+ * that moving city is then a change to an environment variable on Render
+ * rather than an edit, a commit and a frontend rebuild. Anything the API omits
+ * or gets wrong falls back to the file, field by field, so a half-filled
+ * dashboard cannot produce a marker in the sea with the right city name under
+ * it.
+ */
+function usePlace(): Place {
+  const [place, setPlace] = useState<Place>(HOME);
+
+  useEffect(() => {
+    const abort = new AbortController();
+    fetch(`${API_URL}/api/location`, { signal: abort.signal })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: { location?: Partial<Place> } | null) => {
+        const l = data?.location;
+        if (!l) return;
+        setPlace({
+          city: l.city ?? HOME.city,
+          // Coordinates move together or not at all.
+          lat: typeof l.lat === "number" ? l.lat : HOME.lat,
+          lng: typeof l.lng === "number" ? l.lng : HOME.lng,
+          timezone: l.timezone ?? HOME.timezone,
+        });
+      })
+      .catch(() => {
+        // API asleep or unreachable: the file's answer is still correct
+      });
+    return () => abort.abort();
+  }, []);
+
+  return place;
+}
+
 export default function WorldMarker() {
-  const me = project(site.coords.lng, site.coords.lat);
-  const local = useLocalTime();
+  const place = usePlace();
+  const me = project(place.lng, place.lat);
+  const local = useLocalTime(place.timezone);
 
   return (
     <figure className="w-full max-w-sm">
@@ -116,7 +165,7 @@ export default function WorldMarker() {
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="world-map w-full overflow-visible"
         role="img"
-        aria-label={`World map with a marker on ${site.location}`}
+        aria-label={`World map with a marker on ${place.city}`}
       >
         {/* Filled first, then stroked: the fill gives the continents body so
             they read as land rather than as wireframe, and the stroke keeps the
@@ -176,7 +225,7 @@ export default function WorldMarker() {
       <figcaption className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
         <span className="flex items-center gap-2">
           <span aria-hidden className="size-1.5 rounded-full bg-accent" />
-          {site.location}
+          {place.city}
         </span>
         {/* Empty until the clock has been read on the client. */}
         {local && (
