@@ -79,8 +79,6 @@ and an AI assistant whose knowledge base is generated from the site's own conten
   reader that is** — worked out from the timezone their browser is already set
   to, on their machine, with no permission prompt, no IP lookup and nothing sent
   anywhere.
-  Where the pin sits is overridable from the backend's environment
-  (`LOCATION_*`), so moving city is a dashboard edit rather than a code change.
 - **Contact form** with server-side validation, a honeypot field, and per-IP rate
   limiting
 - **Light and dark themes**, no flash on first paint

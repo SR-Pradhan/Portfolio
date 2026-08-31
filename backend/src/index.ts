@@ -5,7 +5,6 @@ import chatRouter from "./routes/chat.js";
 import contactRouter from "./routes/contact.js";
 import { observeLatency } from "./lib/metrics.js";
 import githubRouter from "./routes/github.js";
-import locationRouter from "./routes/location.js";
 import metricsRouter from "./routes/metrics.js";
 import presenceRouter from "./routes/presence.js";
 
@@ -51,7 +50,6 @@ app.get("/health", (_req, res) => {
 app.use("/api/contact", contactRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/github", githubRouter);
-app.use("/api/location", locationRouter);
 app.use("/api/metrics", metricsRouter);
 app.use("/api/presence", presenceRouter);
 

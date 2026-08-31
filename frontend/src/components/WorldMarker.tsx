@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import { site } from "@/data/site";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 import { WORLD_BOUNDS, WORLD_PATH } from "@/data/worldMap";
 
 /** Equirectangular: longitude and latitude map straight onto x and y. */
@@ -91,6 +89,11 @@ function viewerZone() {
 /**
  * Where he is, and what time it is there.
  *
+ * The coordinates, city and zone live in `site.ts` — one line to edit on the
+ * rare occasion he moves. An environment-variable override served from the API
+ * was built and removed: it spared a commit a couple of times a year and cost
+ * an endpoint, a fallback path and a fetch on every visit.
+ *
  * Deliberately not a card. Full width it shouted, and boxed it framed its own
  * empty space — both read as a widget bolted onto a section whose job is a
  * form. Masked at the edges and captioned in the same mono as the details above
@@ -105,56 +108,9 @@ function viewerZone() {
  * (`scripts/build-world-map.mjs`), so this ships an array of small integers
  * rather than a projection library and a 55KB topology.
  */
-type Place = { city: string; lat: number; lng: number; timezone: string };
-
-const HOME: Place = {
-  city: site.location,
-  lat: site.coords.lat,
-  lng: site.coords.lng,
-  timezone: site.timezone,
-};
-
-/**
- * Where he is, overridable without a deploy.
- *
- * `site.ts` holds the answer, and the API can override it — the point being
- * that moving city is then a change to an environment variable on Render
- * rather than an edit, a commit and a frontend rebuild. Anything the API omits
- * or gets wrong falls back to the file, field by field, so a half-filled
- * dashboard cannot produce a marker in the sea with the right city name under
- * it.
- */
-function usePlace(): Place {
-  const [place, setPlace] = useState<Place>(HOME);
-
-  useEffect(() => {
-    const abort = new AbortController();
-    fetch(`${API_URL}/api/location`, { signal: abort.signal })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data: { location?: Partial<Place> } | null) => {
-        const l = data?.location;
-        if (!l) return;
-        setPlace({
-          city: l.city ?? HOME.city,
-          // Coordinates move together or not at all.
-          lat: typeof l.lat === "number" ? l.lat : HOME.lat,
-          lng: typeof l.lng === "number" ? l.lng : HOME.lng,
-          timezone: l.timezone ?? HOME.timezone,
-        });
-      })
-      .catch(() => {
-        // API asleep or unreachable: the file's answer is still correct
-      });
-    return () => abort.abort();
-  }, []);
-
-  return place;
-}
-
 export default function WorldMarker() {
-  const place = usePlace();
-  const me = project(place.lng, place.lat);
-  const local = useLocalTime(place.timezone);
+  const me = project(site.coords.lng, site.coords.lat);
+  const local = useLocalTime(site.timezone);
 
   return (
     <figure className="w-full max-w-sm">
@@ -165,7 +121,7 @@ export default function WorldMarker() {
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="world-map w-full overflow-visible"
         role="img"
-        aria-label={`World map with a marker on ${place.city}`}
+        aria-label={`World map with a marker on ${site.location}`}
       >
         {/* Filled first, then stroked: the fill gives the continents body so
             they read as land rather than as wireframe, and the stroke keeps the
@@ -225,7 +181,7 @@ export default function WorldMarker() {
       <figcaption className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
         <span className="flex items-center gap-2">
           <span aria-hidden className="size-1.5 rounded-full bg-accent" />
-          {place.city}
+          {site.location}
         </span>
         {/* Empty until the clock has been read on the client. */}
         {local && (
