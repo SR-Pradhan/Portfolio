@@ -4,9 +4,12 @@
 
 :root {
   /* not pure white: #fff under a full-page layout glares, and it leaves the
-     surface tone nowhere to sit above it */
-  --background: #fcfcfd;
-  --surface: #f6f6f8;
+     surface tone nowhere to sit above it.
+     Cooled slightly toward the accent's hue as well — a page that is
+     *neutral* white reads as an unstyled default, and the tint is what makes
+     the mesh and the cards feel like they belong to the same palette. */
+  --background: #fafaff;
+  --surface: #f4f4fa;
   --border: #e6e6ec;
   --foreground: #0d0d12;
   --muted: #61616e;
@@ -88,6 +91,11 @@ html:not(.dark) body::before {
     radial-gradient(
       40rem 32rem at 88% 22%,
       color-mix(in srgb, var(--accent) 14%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      38rem 30rem at 78% 58%,
+      color-mix(in srgb, var(--accent) 13%, transparent),
       transparent 72%
     ),
     radial-gradient(
@@ -1037,4 +1045,15 @@ html:not(.dark) body::after {
 .world-map {
   mask-image: radial-gradient(120% 100% at 50% 45%, #000 45%, transparent 92%);
   -webkit-mask-image: radial-gradient(120% 100% at 50% 45%, #000 45%, transparent 92%);
+}
+
+/* The orbit's tracks are drawn with the border token, tuned for a near-black
+   page; on white the same value all but disappears and the graphic reads as
+   icons floating with nothing holding them.
+
+   Targeted through an explicit `orbit-track` class rather than a descendant
+   selector: the rotating wrapper carries no border of its own, and a
+   `.orbit-ring > span` rule would also catch the icon tiles inside it. */
+html:not(.dark) .orbit-track {
+  border-color: color-mix(in srgb, var(--accent) 26%, transparent);
 }

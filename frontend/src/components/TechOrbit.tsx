@@ -68,7 +68,7 @@ export default function TechOrbit() {
         >
           {/* the visible track */}
           <span
-            className="absolute left-1/2 top-1/2 rounded-full border border-border/70"
+            className="orbit-track absolute left-1/2 top-1/2 rounded-full border border-border/70"
             style={{
               width: radius * 2,
               height: radius * 2,
