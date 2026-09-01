@@ -154,6 +154,45 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: "AI Microservice Architect",
+    blurb:
+      "Describe a system in plain English and get an architecture you can ship: service boundaries, high and low level design, database schemas, Kafka contracts, Docker and Kubernetes manifests, and a downloadable repo scaffold. A staged pipeline, not a one-shot generator \u2014 every stage is reviewed, edited and approved before the next one runs.",
+    hardPart:
+      "Schema-valid output can still be wrong, so every stage is checked against the ones before it and contradictions are fed back to the model for repair \u2014 a design that invents a service the approved boundaries never had is perfectly valid JSON.",
+    tags: [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "Alembic",
+      "Pydantic",
+      "Gemini",
+      "React",
+      "TypeScript",
+      "Kafka",
+      "Docker",
+      "Kubernetes",
+    ],
+    caseStudy: {
+      notes: [
+        "A stage physically cannot run until the one before it is approved. Service boundaries are architectural judgement calls, so a wrong split at stage one would carry into every artifact after it.",
+        "Cross-stage validation catches what Pydantic cannot: a service invented or silently dropped against the approved boundaries, or a synchronous call to an endpoint no service actually exposes.",
+        "A stage takes 30 to 200 seconds, so progress is shown against a measured typical duration for that stage rather than a spinner, and says so when the model is probably retrying after a failed check.",
+        "The theme resolves to a concrete value before first paint, and Mermaid diagrams are re-rendered on theme change because Mermaid bakes its colours into the SVG.",
+        "87 tests cover the pipeline, the consistency checks and the export.",
+      ],
+      flow: [
+        "Plain-English brief",
+        "Service boundaries",
+        "HLD / LLD",
+        "Schemas + Kafka",
+        "Docker / K8s",
+        "Repo scaffold",
+      ],
+    },
+    code: "https://github.com/SR-Pradhan/AI-Microservice-Architect",
+    demoNote: "Runs locally; no hosted demo yet",
+  },
+  {
     title: "Solvix",
     blurb:
       "An AI-powered DSA practice tracker that automatically imports your Codeforces and LeetCode history, scores which topics have decayed, and generates a daily study plan with spaced-repetition reminders. No manual logging required.",
@@ -227,19 +266,6 @@ export const projects: Project[] = [
       flow: ["Webcam frame", "dlib landmarks", "Eye Aspect Ratio", "Threshold + frame count", "pygame alert"],
     },
     code: "https://github.com/SR-Pradhan/real-time-drowsiness-detection",
-  },
-  {
-    title: "Secure Auth System",
-    blurb:
-      "A Spring Boot authentication system implementing user registration, login, and role-based access control (USER/ADMIN), with BCrypt password encryption and session-managed protected routes.",
-    hardPart:
-      "Designing role-based access, BCrypt storage, and session handling into the Spring Security layer from the start, rather than bolting security on afterwards.",
-    tags: ["Java", "Spring Boot", "Spring Security", "Thymeleaf", "MySQL", "Maven"],
-    caseStudy: {
-      // TODO: add `notes` — the decisions you'd talk through in an interview.
-      flow: ["Login form", "Spring Security filter", "BCrypt check", "Session + role", "Guarded route"],
-    },
-    code: "https://github.com/SR-Pradhan/secure-auth-system",
   },
 ];
 
