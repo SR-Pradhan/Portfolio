@@ -1057,3 +1057,35 @@ html:not(.dark) body::after {
 html:not(.dark) .orbit-track {
   border-color: color-mix(in srgb, var(--accent) 26%, transparent);
 }
+
+/* ── Lit timeline node ────────────────────────────────────────────────
+   A glow is how you say "lit" on a near-black page: light spilling past the
+   edge of a dark-cored dot. On white the same glow has nothing to spill into
+   and washes out completely, which is why the education and achievement nodes
+   looked inert in light mode however far the rail had drawn.
+
+   So the two themes state it differently. Light fills the dot with accent and
+   rings it; dark keeps the hollow core and the glow. Both keep the background
+   ring that punches them out of the rail behind. */
+
+/* Scoped with `html:not(.dark)` rather than left bare: the timeline nodes also
+   carry `bg-surface`, and light mode's card-shadow rule for that class (0,2,0)
+   outranks a bare `.node-lit` (0,1,0) — so the node inherited a card's drop
+   shadow instead of its own ring. Matching specificity, and later in the file,
+   settles it. Third time this class has caught something; see the doc. */
+html:not(.dark) .node-lit,
+html:not(.dark) .group:hover .node-lit-hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow:
+    0 0 0 5px var(--background),
+    0 0 0 8px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.dark .node-lit,
+.dark .group:hover .node-lit-hover {
+  background: var(--background);
+  box-shadow:
+    0 0 12px 2px var(--accent),
+    0 0 0 5px var(--background);
+}

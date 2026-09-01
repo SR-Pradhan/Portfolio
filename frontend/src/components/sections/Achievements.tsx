@@ -169,7 +169,7 @@ export default function Achievements() {
                     aria-hidden
                     // same hollow-ring node as the Experience and Education timelines —
                     // muted until the row is active, then accent + glow
-                    className="absolute left-1/2 top-1/2 hidden size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-muted/70 bg-surface transition-all duration-300 group-hover:border-accent group-hover:bg-background group-hover:shadow-[0_0_12px_2px_var(--accent)] md:block"
+                    className="node-lit-hover absolute left-1/2 top-1/2 hidden size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-muted/70 bg-surface transition-all duration-300 md:block"
                   />
 
                   {/* The year owns the empty half while the row is at rest, and

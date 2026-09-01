@@ -248,7 +248,7 @@ export default function EducationCurve() {
           // punches a clean hole around it.
           className={`absolute z-20 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-surface transition-all duration-500 ${
             i < lit
-              ? "border-accent bg-background shadow-[0_0_12px_2px_var(--accent),0_0_0_5px_var(--background)]"
+              ? "node-lit"
               : "border-muted shadow-[0_0_0_5px_var(--background)]"
           }`}
         />
