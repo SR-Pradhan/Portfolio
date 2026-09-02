@@ -550,12 +550,20 @@ export type Certification = {
 
 export const certifications: Certification[] = [
   {
+    title: "Basics of Python - Part II",
+    issuer: "Code360 by Coding Ninjas",
+    year: "2026",
+    icon: "codingninjas",
+    tech: "python",
+    image: "/certificates/python-code360-part2/1-40cc0849.webp",
+  },
+  {
     title: "Basics of Python - Part I",
     issuer: "Code360 by Coding Ninjas",
     year: "2026",
     icon: "codingninjas",
     tech: "python",
-    image: "/certificates/python-code360/1-93801d04.webp",
+    image: "/certificates/python-code360-part1/1-93801d04.webp",
   },
   {
     title: "Python Course for Beginners: Mastering the Essentials",

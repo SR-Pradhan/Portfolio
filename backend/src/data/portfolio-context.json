@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T07:50:44.392Z",
+  "generatedAt": "2026-09-02T07:14:50.461Z",
   "identity": {
     "name": "Sruti Ranjan Pradhan",
     "roles": [
@@ -352,6 +352,11 @@
     }
   ],
   "certifications": [
+    {
+      "title": "Basics of Python - Part II",
+      "issuer": "Code360 by Coding Ninjas",
+      "year": "2026"
+    },
     {
       "title": "Basics of Python - Part I",
       "issuer": "Code360 by Coding Ninjas",
