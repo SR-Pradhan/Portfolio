@@ -1073,9 +1073,19 @@ html:not(.dark) .orbit-track {
    outranks a bare `.node-lit` (0,1,0) — so the node inherited a card's drop
    shadow instead of its own ring. Matching specificity, and later in the file,
    settles it. Third time this class has caught something; see the doc. */
+/* The accent border belongs to both themes. It lived only in the light rule
+   once, so in dark the node fell back to Tailwind's default border colour —
+   `currentColor` — and the education dots rendered as white rings with a glow
+   behind them instead of lit accent dots. */
+html:not(.dark) .node-lit,
+html:not(.dark) .group:hover .node-lit-hover,
+.dark .node-lit,
+.dark .group:hover .node-lit-hover {
+  border-color: var(--accent);
+}
+
 html:not(.dark) .node-lit,
 html:not(.dark) .group:hover .node-lit-hover {
-  border-color: var(--accent);
   background: var(--accent);
   box-shadow:
     0 0 0 5px var(--background),
