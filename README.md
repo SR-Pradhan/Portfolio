@@ -81,7 +81,11 @@ and an AI assistant whose knowledge base is generated from the site's own conten
   anywhere.
 - **Contact form** with server-side validation, a honeypot field, and per-IP rate
   limiting
-- **Light and dark themes**, no flash on first paint
+- **Light and dark themes**, no flash on first paint — and light is a designed
+  theme rather than an inversion: its own gradient mesh, a visible paper grid,
+  lifted card shadows, and states restated where a dark-mode idiom fails on
+  white (a lit timeline node is filled and ringed, because a glow has nothing to
+  spill into on a pale page)
 - **A cursor that reports rather than decorates** — over anything interactive it
   latches onto the element's real box, matching its size and corner radius, and prints
   one word for what a click will do (`open ↗`, `jump`, `expand`, `type`, `theme`).
