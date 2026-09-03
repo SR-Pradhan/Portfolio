@@ -68,3 +68,24 @@ export function openPalette() {
 export function openTerminal() {
   window.dispatchEvent(new CustomEvent(OPEN_TERMINAL));
 }
+
+/**
+ * Whether the pointer is coarse — a finger rather than a mouse.
+ *
+ * A media query is external state, so it is subscribed to rather than mirrored
+ * into an effect. The server snapshot is `false`: server-rendered markup gets
+ * the desktop arrangement, and touch corrects it on hydration, which is the
+ * right way round — a phone can scroll a track that was laid out for a mouse,
+ * while a mouse cannot swipe one laid out for a finger.
+ */
+export function useCoarsePointer() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const query = window.matchMedia("(pointer: coarse)");
+      query.addEventListener("change", onChange);
+      return () => query.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia("(pointer: coarse)").matches,
+    () => false,
+  );
+}

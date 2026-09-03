@@ -79,6 +79,10 @@ and an AI assistant whose knowledge base is generated from the site's own conten
   reader that is** — worked out from the timezone their browser is already set
   to, on their machine, with no permission prompt, no IP lookup and nothing sent
   anywhere.
+- **Certifications as a track that moves two ways** — with a mouse it drifts as
+  the page scrolls, since there is no sideways gesture; with a finger it becomes
+  a real snap scroller and the drift switches off, because a row that moves on
+  its own while you drag it fights you.
 - **Contact form** with server-side validation, a honeypot field, and per-IP rate
   limiting
 - **Light and dark themes**, no flash on first paint — and light is a designed

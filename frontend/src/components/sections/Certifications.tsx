@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef, useState } from "react";
 import { certifications, certificationsMore } from "@/data/site";
+import { useCoarsePointer } from "@/lib/ui";
 import ProofLightbox from "../ProofLightbox";
 import Reveal from "../Reveal";
 import Section from "../Section";
@@ -15,6 +16,7 @@ export default function Certifications() {
   // the certificate scan being viewed, if any
   const [open, setOpen] = useState<{ image: string; title: string } | null>(null);
   const reduced = useReducedMotion();
+  const coarse = useCoarsePointer();
 
   // 0 when the section first enters the viewport, 1 once it has left the top
   const { scrollYProgress } = useScroll({
@@ -39,10 +41,30 @@ export default function Certifications() {
       className="overflow-hidden"
     >
       <Reveal>
-        <div ref={trackRef}>
+        {/* Two ways through the same row.
+
+            With a mouse the track drifts as the page scrolls — there is no
+            gesture for sideways movement, so the page supplies one. With a
+            finger there is: the row becomes a real scroller and the drift is
+            switched off, because a track that moves on its own while you are
+            dragging it fights you. Snap points stop a swipe leaving a card
+            half off the screen.
+
+            The negative margin and matching padding let the row bleed to the
+            screen edges while its first card still lines up with the section's
+            text above it. */}
+        <div
+          ref={trackRef}
+          data-cert-track
+          className={
+            coarse
+              ? "-mx-6 snap-x snap-mandatory overflow-x-auto scroll-px-6 px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              : undefined
+          }
+        >
           <motion.div
-            style={reduced ? undefined : { x }}
-            className="mx-auto flex w-max gap-6"
+            style={reduced || coarse ? undefined : { x }}
+            className={`flex w-max gap-6 ${coarse ? "" : "mx-auto"}`}
           >
             {certifications.map((c, i) => {
               // A credential URL is the strongest proof, so it wins the click.
@@ -61,7 +83,7 @@ export default function Certifications() {
                             setOpen({ image: c.image!, title: c.title }),
                         }
                       : {})}
-                  className={`group relative flex w-72 shrink-0 flex-col overflow-hidden rounded-2xl border border-border bg-surface p-6 text-left transition-colors hover:border-accent/60 sm:w-80 ${
+                  className={`group relative flex w-72 shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-border bg-surface p-6 text-left transition-colors hover:border-accent/60 sm:w-80 ${
                     c.url || c.image ? "cursor-pointer" : ""
                   }`}
                 >
