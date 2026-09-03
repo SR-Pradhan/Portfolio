@@ -2,7 +2,7 @@
 
 import { ArrowUpRight, Hourglass } from "lucide-react";
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { useMotionValueEvent, useReducedMotion, useScroll, useSpring } from "motion/react";
 import { useRef, useState } from "react";
 import { certifications, certificationsMore } from "@/data/site";
 import { useCoarsePointer } from "@/lib/ui";
@@ -28,8 +28,70 @@ export default function Certifications() {
     damping: 30,
     restDelta: 0.001,
   });
-  // scrolling down drags the row leftwards
-  const x = useTransform(smooth, [0, 1], ["10%", "-10%"]);
+
+  /**
+   * The drift, and the drag, on one axis.
+   *
+   * It used to translate the row with a CSS transform, which nothing else can
+   * take hold of — a scrollbar, a trackpad swipe and a drag all move
+   * `scrollLeft`, and a transform is invisible to all three. Driving the same
+   * property from page progress means the two ways of moving the row compose
+   * instead of fighting: the page nudges it along, and the moment anyone
+   * touches it themselves they simply win.
+   */
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const lastTouchedAt = useRef(0);
+
+  useMotionValueEvent(smooth, "change", (progress) => {
+    const el = scrollerRef.current;
+    if (!el || reduced) return;
+    // Hands off for a moment after anyone moves it themselves. Without this the
+    // drift drags the row back under the cursor mid-gesture.
+    if (performance.now() - lastTouchedAt.current < 2000) return;
+    const max = el.scrollWidth - el.clientWidth;
+    if (max <= 0) return;
+    el.scrollLeft = max * progress;
+  });
+
+  const noteInteraction = () => {
+    lastTouchedAt.current = performance.now();
+  };
+
+  /**
+   * Drag to scroll, for the pointer that cannot swipe.
+   *
+   * A trackpad can already scroll this sideways and a touchscreen can drag it;
+   * a mouse has neither gesture, so the row gets a grab handle. Pointer capture
+   * keeps the drag alive if the cursor leaves the element mid-pull.
+   */
+  const dragFrom = useRef<{ x: number; scroll: number } | null>(null);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Every pointer marks the interaction, mouse or finger — a touch drag needs
+    // the drift to stand down just as much, and only the drag-to-scroll code
+    // below is mouse-specific. Marking it after the early return meant a swipe
+    // on a phone was pulled back under the thumb.
+    noteInteraction();
+    if (e.pointerType !== "mouse") return;
+    const el = scrollerRef.current;
+    if (!el) return;
+    dragFrom.current = { x: e.clientX, scroll: el.scrollLeft };
+    el.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = scrollerRef.current;
+    const from = dragFrom.current;
+    if (!el || !from) return;
+    el.scrollLeft = from.scroll - (e.clientX - from.x);
+    noteInteraction();
+  };
+
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = scrollerRef.current;
+    if (el?.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
+    dragFrom.current = null;
+  };
 
   return (
     <Section
@@ -53,19 +115,23 @@ export default function Certifications() {
             The negative margin and matching padding let the row bleed to the
             screen edges while its first card still lines up with the section's
             text above it. */}
-        <div
-          ref={trackRef}
-          data-cert-track
-          className={
-            coarse
-              ? "-mx-6 snap-x snap-mandatory overflow-x-auto scroll-px-6 px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              : undefined
-          }
-        >
-          <motion.div
-            style={reduced || coarse ? undefined : { x }}
-            className={`flex w-max gap-6 ${coarse ? "" : "mx-auto"}`}
+        <div ref={trackRef}>
+          <div
+            ref={scrollerRef}
+            data-cert-track
+            onWheel={noteInteraction}
+            onTouchMove={noteInteraction}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            className={`-mx-6 overflow-x-auto px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
+              coarse
+                ? "snap-x snap-mandatory scroll-px-6"
+                : "cursor-grab active:cursor-grabbing"
+            }`}
           >
+            <div className="flex w-max gap-6">
             {certifications.map((c, i) => {
               // A credential URL is the strongest proof, so it wins the click.
               // Failing that, the scan is what lets someone verify the claim.
@@ -159,7 +225,8 @@ export default function Certifications() {
                 </p>
               </div>
             )}
-          </motion.div>
+            </div>
+          </div>
         </div>
       </Reveal>
 
