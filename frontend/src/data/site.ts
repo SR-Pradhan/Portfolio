@@ -20,10 +20,14 @@ export const site = {
     "Aspiring AI Engineer with a backend development foundation, solving real-world problems through code.",
   /**
    * Canonical origin, used for OG tags, sitemap and JSON-LD.
-   * Set NEXT_PUBLIC_SITE_URL in the deploy environment; the fallback is only
-   * so local builds produce absolute URLs.
+   *
+   * Set NEXT_PUBLIC_SITE_URL in the deploy environment; the fallback only
+   * matters for local builds, which still need absolute URLs. It points at the
+   * live domain rather than an old Vercel subdomain — the previous fallback
+   * (`sruti-ranjan.vercel.app`) now 404s, and a canonical tag aimed at a dead
+   * URL is worse than none, which is exactly the bug that once shipped.
    */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sruti-ranjan.vercel.app",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.srutiranjanpradhan.online",
   location: "Gurugram, India",
   /** Where the marker sits on the contact map. Gurugram, Haryana. */
   coords: { lat: 28.4595, lng: 77.0266 },
