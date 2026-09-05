@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T07:14:50.461Z",
+  "generatedAt": "2026-09-05T18:11:54.387Z",
   "identity": {
     "name": "Sruti Ranjan Pradhan",
     "roles": [
@@ -345,7 +345,7 @@
       "detail": "Ran two editions of a hands-on Python workshop for B.Tech, BBA and MBA students, pitching the same material at very different levels of prior experience."
     },
     {
-      "title": "300+ Coding Problems Solved",
+      "title": "350+ Coding Problems Solved",
       "org": "LeetCode · GeeksforGeeks · HackerRank",
       "year": "Ongoing",
       "detail": "Consistent DSA practice across three platforms. It’s the habit behind the problem-solving the rest of this page is built on."
